@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "../ui/Button";
 import { useAuthStore } from "../../features/auth/useAuthStore";
+import logoImg from "../../../public/images/nova-logo.png";
 
 export function Navbar() {
   const { setLoginModalOpen } = useAuthStore();
@@ -11,62 +12,69 @@ export function Navbar() {
   void setLoginModalOpen;
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-40 bg-brand-navy/80 backdrop-blur-md border-b border-brand-border h-16">
+    <nav className="fixed top-0 left-0 right-0 z-40 backdrop-blur-md  h-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 group">
           <img
-            src="/logo.svg"
+            src={logoImg}
             alt="Nova Group"
-            className="h-8 hidden sm:block"
+            className="hidden sm:block w-[130px] h-auto"
             onError={(e) => {
               (e.target as HTMLImageElement).style.display = "none";
             }}
           />
-          <div className="w-10 h-10 bg-brand-blue rounded-lg flex items-center justify-center text-white font-bold text-xl group-hover:scale-105 transition-transform">
+          {/* <div className="w-10 h-10 bg-brand-blue rounded-lg flex items-center justify-center text-white font-bold text-xl group-hover:scale-105 transition-transform">
             N
           </div>
           <span className="text-white font-bold tracking-widest hidden sm:inline">
             NOVA GROUP
-          </span>
+          </span> */}
         </Link>
 
         {/* Desktop links */}
         <div className="hidden md:flex items-center gap-8 text-sm font-medium">
           <Link
             to="/"
-            className="text-text-secondary hover:text-white transition-colors [&.active]:text-white [&.active]:font-bold"
+            activeOptions={{ exact: true, includeHash: true }}
+            className="text-text-secondary hover:text-brand-blue-light transition-colors [&.active]:text-brand-blue [&.active]:font-bold"
           >
             Home
           </Link>
           <Link
-            to="/courses"
-            className="text-text-secondary hover:text-white transition-colors [&.active]:text-white [&.active]:font-bold"
+            to="/"
+            hash="packages"
+            activeOptions={{ includeHash: true }}
+            className="text-text-secondary hover:text-brand-blue-light transition-colors [&.active]:text-brand-blue [&.active]:font-bold"
           >
-            Courses
+            Packages
           </Link>
           <Link
-            to="/about"
-            className="text-text-secondary hover:text-white transition-colors [&.active]:text-white [&.active]:font-bold"
+            to="/courses"
+            className="text-text-secondary hover:text-brand-blue-light transition-colors [&.active]:text-brand-blue [&.active]:font-bold"
           >
-            About
+            Courses
           </Link>
         </div>
 
         {/* Auth CTAs — now link to pages */}
         <div className="hidden md:flex items-center gap-3">
-          <Link to="/login">
-            <Button variant="ghost" size="sm" className="hover:bg-white/5">
-              Login
-            </Button>
-          </Link>
           <Link to="/register">
             <Button
               variant="primary"
               size="sm"
-              className="shadow-lg shadow-brand-blue/20"
+              className="shadow-lg text-[15px] py-[10px] px-[26px] shadow-brand-blue/20"
             >
               Sign up
+            </Button>
+          </Link>
+          <Link to="/login">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="hover:bg-white/5 text-[15px] py-[10px] px-[26px] border border-white rounded-[8px]"
+            >
+              Login
             </Button>
           </Link>
         </div>
@@ -98,22 +106,32 @@ export function Navbar() {
         <div className="p-4 flex flex-col gap-2">
           <Link
             to="/"
+            activeOptions={{ exact: true, includeHash: true }}
             onClick={() => setMenuOpen(false)}
-            className="text-text-secondary hover:text-white p-3 rounded-lg hover:bg-white/5 transition-colors"
+            className="text-text-secondary hover:text-brand-blue-light p-3 rounded-lg hover:bg-white/5 transition-colors [&.active]:text-brand-blue [&.active]:font-bold"
           >
             Home
           </Link>
           <Link
+            to="/"
+            hash="packages"
+            activeOptions={{ includeHash: true }}
+            onClick={() => setMenuOpen(false)}
+            className="text-text-secondary hover:text-brand-blue-light p-3 rounded-lg hover:bg-white/5 transition-colors [&.active]:text-brand-blue [&.active]:font-bold"
+          >
+            Packages
+          </Link>
+          <Link
             to="/courses"
             onClick={() => setMenuOpen(false)}
-            className="text-text-secondary hover:text-white p-3 rounded-lg hover:bg-white/5 transition-colors"
+            className="text-text-secondary hover:text-brand-blue-light p-3 rounded-lg hover:bg-white/5 transition-colors"
           >
             Courses
           </Link>
           <Link
             to="/about"
             onClick={() => setMenuOpen(false)}
-            className="text-text-secondary hover:text-white p-3 rounded-lg hover:bg-white/5 transition-colors"
+            className="text-text-secondary hover:text-brand-blue-light p-3 rounded-lg hover:bg-white/5 transition-colors"
           >
             About
           </Link>
