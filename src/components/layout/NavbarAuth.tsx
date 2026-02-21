@@ -17,7 +17,7 @@ export function NavbarAuth() {
     <nav className="fixed top-0 left-0 right-0 z-40 bg-brand-navy/90 backdrop-blur-md border-b border-brand-border h-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
         {/* Logo */}
-        <Link to="/_auth/dashboard" className="flex items-center gap-2 group">
+        <Link to="/dashboard" className="flex items-center gap-2 group">
           {/* Place logo.svg in /public/ */}
           <img
             src="/logo.svg"
@@ -35,13 +35,13 @@ export function NavbarAuth() {
         {/* Desktop nav links */}
         <div className="hidden md:flex items-center gap-8 text-sm font-medium">
           <Link
-            to="/_auth/dashboard"
+            to="/dashboard"
             className="text-text-secondary hover:text-white transition-colors [&.active]:text-white [&.active]:font-bold"
           >
             Home
           </Link>
           <Link
-            to="/_auth/courses"
+            to="/library"
             className="text-text-secondary hover:text-white transition-colors [&.active]:text-white [&.active]:font-bold"
           >
             Courses
@@ -105,14 +105,14 @@ export function NavbarAuth() {
                     <span>👤</span> View Profile
                   </button>
                   <Link
-                    to="/_auth/dashboard"
+                    to="/dashboard"
                     onClick={() => setDropdownOpen(false)}
                     className="w-full text-left px-4 py-2.5 text-sm text-text-secondary hover:text-white hover:bg-white/5 transition-colors flex items-center gap-3"
                   >
                     <span>📊</span> Dashboard
                   </Link>
                   <Link
-                    to="/_auth/courses"
+                    to="/library"
                     onClick={() => setDropdownOpen(false)}
                     className="w-full text-left px-4 py-2.5 text-sm text-text-secondary hover:text-white hover:bg-white/5 transition-colors flex items-center gap-3"
                   >

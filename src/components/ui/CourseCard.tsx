@@ -1,26 +1,18 @@
+import { type Course } from "../../features/courses/courseQueries";
 import { Button } from "./Button";
-
-interface Course {
-  id: string;
-  title: string;
-  thumbnail: string;
-  category: string;
-  duration: string;
-  chapters: number;
-  description: string;
-  completedPercent: number;
-}
 
 interface CourseCardProps {
   course: Course;
-  onViewDetails: (id: string) => void;
-  onPackage: (id: string) => void;
+  onViewDetails?: (id: string) => void;
+  onPackage?: (id: string) => void;
+  isLibraryView?: boolean;
 }
 
 export function CourseCard({
   course,
   onViewDetails,
   onPackage,
+  isLibraryView = false,
 }: CourseCardProps) {
   return (
     <div className="bg-white rounded-xl overflow-hidden shadow-card hover:shadow-lg transition-all duration-300 flex flex-col group border border-transparent hover:border-brand-blue/20">
@@ -67,24 +59,35 @@ export function CourseCard({
           </div>
         </div>
 
-        {/* Actions */}
-        <div className="flex gap-2 mt-3">
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex-1 !text-gray-700 !border-gray-200 hover:!bg-gray-50 !px-0"
-            onClick={() => onViewDetails(course.id)}
-          >
-            View Details
-          </Button>
-          <Button
-            size="sm"
-            className="flex-1 !px-0 shadow-sm"
-            onClick={() => onPackage(course.id)}
-          >
-            Package
-          </Button>
-        </div>
+        {/* Actions - Hidden in library view if needed, or shown as "Continue" */}
+        {!isLibraryView ? (
+          <div className="flex gap-2 mt-3">
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex-1 !text-gray-700 !border-gray-200 hover:!bg-gray-50 !px-0"
+              onClick={() => onViewDetails?.(course.id)}
+            >
+              View Details
+            </Button>
+            <Button
+              size="sm"
+              className="flex-1 !px-0 shadow-sm"
+              onClick={() => onPackage?.(course.id)}
+            >
+              Package
+            </Button>
+          </div>
+        ) : (
+          <div className="mt-3">
+            <Button
+              className="w-full shadow-lg shadow-brand-blue/20"
+              onClick={() => onViewDetails?.(course.id)}
+            >
+              Continue Learning →
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Input } from "../components/ui/Input";
 import { Button } from "../components/ui/Button";
 import { Stepper } from "../components/ui/Stepper";
-import { useAuthStore } from "../features/auth/useAuthStore";
+import { useAuthStore, type User } from "../features/auth/useAuthStore";
 import { COUNTRY_CODES } from "../lib/countryCodes";
 import api from "../lib/api";
 import type {
@@ -38,7 +38,7 @@ function RegisterPage() {
   const [formData, setFormData] = useState<SignUpData>({});
 
   if (isAuthenticated) {
-    navigate({ to: "/_auth/dashboard" });
+    navigate({ to: "/dashboard" });
     return null;
   }
 
@@ -92,7 +92,7 @@ function RegisterPage() {
                 onBack={back}
                 onSuccess={(user, token) => {
                   login(user, token);
-                  navigate({ to: "/_auth/dashboard" });
+                  navigate({ to: "/dashboard" });
                 }}
               />
             )}
@@ -395,15 +395,6 @@ function StepCreatePin({
   );
 }
 
-interface ReviewUser {
-  firstName?: string;
-  lastName?: string;
-  username?: string;
-  email?: string;
-  sponsorId?: string;
-  [key: string]: string | undefined;
-}
-
 function StepReview({
   data,
   onBack,
@@ -411,7 +402,7 @@ function StepReview({
 }: {
   data: SignUpData;
   onBack: () => void;
-  onSuccess: (user: ReviewUser, token: string) => void;
+  onSuccess: (user: User, token: string) => void;
 }) {
   const [agreed, setAgreed] = useState(false);
   const {
@@ -421,8 +412,19 @@ function StepReview({
   } = useMutation({
     mutationFn: () => api.post("/auth/register", data),
     onSuccess: (response) => {
+      // Mapping the response to ensure it matches the User interface
       const { user, token } = response.data;
-      onSuccess(user, token);
+      const completeUser: User = {
+        id: user.id || Math.random().toString(36).substr(2, 9),
+        firstName: user.firstName || data.firstName || "",
+        lastName: user.lastName || data.lastName || "",
+        username: user.username || data.username || "",
+        email: user.email || data.email || "",
+        phone: user.phone || data.phone || "",
+        avatarUrl: user.avatarUrl,
+        sponsorId: user.sponsorId || data.sponsorId || "",
+      };
+      onSuccess(completeUser, token);
     },
   });
 

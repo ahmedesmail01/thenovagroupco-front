@@ -13,7 +13,6 @@ function CourseDetailPage() {
   const navigate = useNavigate();
   const { data: course, isLoading } = useCourse(courseId);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
-  const setLoginModalOpen = useAuthStore((s) => s.setLoginModalOpen);
 
   if (isLoading) {
     return (

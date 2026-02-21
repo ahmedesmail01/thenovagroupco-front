@@ -20,12 +20,6 @@ function LoginPage() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const [showPassword, setShowPassword] = useState(false);
 
-  // Redirect if already logged in
-  if (isAuthenticated) {
-    navigate({ to: "/_auth/dashboard" });
-    return null;
-  }
-
   const {
     register,
     handleSubmit,
@@ -43,9 +37,15 @@ function LoginPage() {
     onSuccess: (response) => {
       const { user, token } = response.data;
       login(user, token);
-      navigate({ to: "/_auth/dashboard" });
+      navigate({ to: "/dashboard" });
     },
   });
+
+  // Redirect if already logged in - called AFTER hooks
+  if (isAuthenticated) {
+    navigate({ to: "/dashboard" });
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-brand-navy flex items-center justify-center px-4 relative overflow-hidden">

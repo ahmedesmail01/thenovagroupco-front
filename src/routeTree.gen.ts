@@ -8,269 +8,234 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from '@tanstack/react-router'
 
-import { Route as rootRouteImport } from "./routes/__root";
-import { Route as AuthRouteImport } from "./routes/_auth";
-import { Route as PackagesCourseIdRouteImport } from "./routes/packages/$courseId";
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthRouteImport } from './routes/_auth'
 
-// Lazy stubs created by createFileRoute (used by TanStack Router's code-splitting)
-const IndexLazyRouteImport = createFileRoute("/")();
-const AboutLazyRouteImport = createFileRoute("/about")();
-const LoginLazyRouteImport = createFileRoute("/login")();
-const RegisterLazyRouteImport = createFileRoute("/register")();
-const CoursesIndexLazyRouteImport = createFileRoute("/courses/")();
-const CoursesCourseIdLazyRouteImport = createFileRoute("/courses/$courseId")();
-const AuthDashboardLazyRouteImport = createFileRoute("/_auth/dashboard")();
-const AuthCoursesIndexLazyRouteImport = createFileRoute("/_auth/courses/")();
-
-// ─── Route instances ────────────────────────────────────────────────────────
-
-const IndexLazyRoute = IndexLazyRouteImport.update({
-  id: "/",
-  path: "/",
-  getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import("./routes/index.lazy").then((d) => d.Route));
-
-const AboutLazyRoute = AboutLazyRouteImport.update({
-  id: "/about",
-  path: "/about",
-  getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import("./routes/about.lazy").then((d) => d.Route));
-
-const LoginLazyRoute = LoginLazyRouteImport.update({
-  id: "/login",
-  path: "/login",
-  getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import("./routes/login.lazy").then((d) => d.Route));
+const RegisterLazyRouteImport = createFileRoute('/register')()
+const LoginLazyRouteImport = createFileRoute('/login')()
+const AboutLazyRouteImport = createFileRoute('/about')()
+const IndexLazyRouteImport = createFileRoute('/')()
+const CoursesIndexLazyRouteImport = createFileRoute('/courses/')()
+const CoursesCourseIdLazyRouteImport = createFileRoute('/courses/$courseId')()
+const AuthLibraryLazyRouteImport = createFileRoute('/_auth/library')()
+const AuthDashboardLazyRouteImport = createFileRoute('/_auth/dashboard')()
 
 const RegisterLazyRoute = RegisterLazyRouteImport.update({
-  id: "/register",
-  path: "/register",
+  id: '/register',
+  path: '/register',
   getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import("./routes/register.lazy").then((d) => d.Route));
-
-const CoursesIndexLazyRoute = CoursesIndexLazyRouteImport.update({
-  id: "/courses/",
-  path: "/courses",
+} as any).lazy(() => import('./routes/register.lazy').then((d) => d.Route))
+const LoginLazyRoute = LoginLazyRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
-} as any).lazy(() =>
-  import("./routes/courses/index.lazy").then((d) => d.Route),
-);
-
-const CoursesCourseIdLazyRoute = CoursesCourseIdLazyRouteImport.update({
-  id: "/courses/$courseId",
-  path: "/courses/$courseId",
+} as any).lazy(() => import('./routes/login.lazy').then((d) => d.Route))
+const AboutLazyRoute = AboutLazyRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
-} as any).lazy(() =>
-  import("./routes/courses/$courseId.lazy").then((d) => d.Route),
-);
-
-const PackagesCourseIdRoute = PackagesCourseIdRouteImport.update({
-  id: "/packages/$courseId",
-  path: "/packages/$courseId",
-  getParentRoute: () => rootRouteImport,
-} as any);
-
+} as any).lazy(() => import('./routes/about.lazy').then((d) => d.Route))
 const AuthRoute = AuthRouteImport.update({
-  id: "/_auth",
+  id: '/_auth',
   getParentRoute: () => rootRouteImport,
-} as any);
-
+} as any)
+const IndexLazyRoute = IndexLazyRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+const CoursesIndexLazyRoute = CoursesIndexLazyRouteImport.update({
+  id: '/courses/',
+  path: '/courses/',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/courses/index.lazy').then((d) => d.Route))
+const CoursesCourseIdLazyRoute = CoursesCourseIdLazyRouteImport.update({
+  id: '/courses/$courseId',
+  path: '/courses/$courseId',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() =>
+  import('./routes/courses/$courseId.lazy').then((d) => d.Route),
+)
+const AuthLibraryLazyRoute = AuthLibraryLazyRouteImport.update({
+  id: '/library',
+  path: '/library',
+  getParentRoute: () => AuthRoute,
+} as any).lazy(() => import('./routes/_auth/library.lazy').then((d) => d.Route))
 const AuthDashboardLazyRoute = AuthDashboardLazyRouteImport.update({
-  id: "/_auth/dashboard",
-  path: "/dashboard",
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => AuthRoute,
 } as any).lazy(() =>
-  import("./routes/_auth/dashboard.lazy").then((d) => d.Route),
-);
-
-const AuthCoursesIndexLazyRoute = AuthCoursesIndexLazyRouteImport.update({
-  id: "/_auth/courses/",
-  path: "/courses",
-  getParentRoute: () => AuthRoute,
-} as any).lazy(() =>
-  import("./routes/_auth/courses/index.lazy").then((d) => d.Route),
-);
-
-// ─── Type declarations ───────────────────────────────────────────────────────
+  import('./routes/_auth/dashboard.lazy').then((d) => d.Route),
+)
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexLazyRoute;
-  "/about": typeof AboutLazyRoute;
-  "/login": typeof LoginLazyRoute;
-  "/register": typeof RegisterLazyRoute;
-  "/courses": typeof CoursesIndexLazyRoute;
-  "/courses/$courseId": typeof CoursesCourseIdLazyRoute;
-  "/packages/$courseId": typeof PackagesCourseIdRoute;
-  "/dashboard": typeof AuthDashboardLazyRoute;
-  "/_auth/courses": typeof AuthCoursesIndexLazyRoute;
+  '/': typeof IndexLazyRoute
+  '/about': typeof AboutLazyRoute
+  '/login': typeof LoginLazyRoute
+  '/register': typeof RegisterLazyRoute
+  '/dashboard': typeof AuthDashboardLazyRoute
+  '/library': typeof AuthLibraryLazyRoute
+  '/courses/$courseId': typeof CoursesCourseIdLazyRoute
+  '/courses/': typeof CoursesIndexLazyRoute
 }
 export interface FileRoutesByTo {
-  "/": typeof IndexLazyRoute;
-  "/about": typeof AboutLazyRoute;
-  "/login": typeof LoginLazyRoute;
-  "/register": typeof RegisterLazyRoute;
-  "/courses": typeof CoursesIndexLazyRoute;
-  "/courses/$courseId": typeof CoursesCourseIdLazyRoute;
-  "/packages/$courseId": typeof PackagesCourseIdRoute;
-  "/_auth/dashboard": typeof AuthDashboardLazyRoute;
-  "/_auth/courses": typeof AuthCoursesIndexLazyRoute;
+  '/': typeof IndexLazyRoute
+  '/about': typeof AboutLazyRoute
+  '/login': typeof LoginLazyRoute
+  '/register': typeof RegisterLazyRoute
+  '/dashboard': typeof AuthDashboardLazyRoute
+  '/library': typeof AuthLibraryLazyRoute
+  '/courses/$courseId': typeof CoursesCourseIdLazyRoute
+  '/courses': typeof CoursesIndexLazyRoute
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport;
-  "/": typeof IndexLazyRoute;
-  "/about": typeof AboutLazyRoute;
-  "/login": typeof LoginLazyRoute;
-  "/register": typeof RegisterLazyRoute;
-  "/courses/": typeof CoursesIndexLazyRoute;
-  "/courses/$courseId": typeof CoursesCourseIdLazyRoute;
-  "/packages/$courseId": typeof PackagesCourseIdRoute;
-  "/_auth": typeof AuthRoute;
-  "/_auth/dashboard": typeof AuthDashboardLazyRoute;
-  "/_auth/courses/": typeof AuthCoursesIndexLazyRoute;
+  __root__: typeof rootRouteImport
+  '/': typeof IndexLazyRoute
+  '/_auth': typeof AuthRouteWithChildren
+  '/about': typeof AboutLazyRoute
+  '/login': typeof LoginLazyRoute
+  '/register': typeof RegisterLazyRoute
+  '/_auth/dashboard': typeof AuthDashboardLazyRoute
+  '/_auth/library': typeof AuthLibraryLazyRoute
+  '/courses/$courseId': typeof CoursesCourseIdLazyRoute
+  '/courses/': typeof CoursesIndexLazyRoute
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
+  fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | "/"
-    | "/about"
-    | "/login"
-    | "/register"
-    | "/courses"
-    | "/courses/$courseId"
-    | "/packages/$courseId"
-    | "/dashboard"
-    | "/_auth/courses";
-  fileRoutesByTo: FileRoutesByTo;
+    | '/'
+    | '/about'
+    | '/login'
+    | '/register'
+    | '/dashboard'
+    | '/library'
+    | '/courses/$courseId'
+    | '/courses/'
+  fileRoutesByTo: FileRoutesByTo
   to:
-    | "/"
-    | "/about"
-    | "/login"
-    | "/register"
-    | "/courses"
-    | "/courses/$courseId"
-    | "/packages/$courseId"
-    | "/_auth/dashboard"
-    | "/_auth/courses";
+    | '/'
+    | '/about'
+    | '/login'
+    | '/register'
+    | '/dashboard'
+    | '/library'
+    | '/courses/$courseId'
+    | '/courses'
   id:
-    | "__root__"
-    | "/"
-    | "/about"
-    | "/login"
-    | "/register"
-    | "/courses/"
-    | "/courses/$courseId"
-    | "/packages/$courseId"
-    | "/_auth"
-    | "/_auth/dashboard"
-    | "/_auth/courses/";
-  fileRoutesById: FileRoutesById;
+    | '__root__'
+    | '/'
+    | '/_auth'
+    | '/about'
+    | '/login'
+    | '/register'
+    | '/_auth/dashboard'
+    | '/_auth/library'
+    | '/courses/$courseId'
+    | '/courses/'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexLazyRoute: typeof IndexLazyRoute;
-  AboutLazyRoute: typeof AboutLazyRoute;
-  LoginLazyRoute: typeof LoginLazyRoute;
-  RegisterLazyRoute: typeof RegisterLazyRoute;
-  CoursesIndexLazyRoute: typeof CoursesIndexLazyRoute;
-  CoursesCourseIdLazyRoute: typeof CoursesCourseIdLazyRoute;
-  PackagesCourseIdRoute: typeof PackagesCourseIdRoute;
-  AuthRoute: typeof AuthRoute;
+  IndexLazyRoute: typeof IndexLazyRoute
+  AuthRoute: typeof AuthRouteWithChildren
+  AboutLazyRoute: typeof AboutLazyRoute
+  LoginLazyRoute: typeof LoginLazyRoute
+  RegisterLazyRoute: typeof RegisterLazyRoute
+  CoursesCourseIdLazyRoute: typeof CoursesCourseIdLazyRoute
+  CoursesIndexLazyRoute: typeof CoursesIndexLazyRoute
 }
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexLazyRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/about": {
-      id: "/about";
-      path: "/about";
-      fullPath: "/about";
-      preLoaderRoute: typeof AboutLazyRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/login": {
-      id: "/login";
-      path: "/login";
-      fullPath: "/login";
-      preLoaderRoute: typeof LoginLazyRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/register": {
-      id: "/register";
-      path: "/register";
-      fullPath: "/register";
-      preLoaderRoute: typeof RegisterLazyRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/courses/": {
-      id: "/courses/";
-      path: "/courses";
-      fullPath: "/courses";
-      preLoaderRoute: typeof CoursesIndexLazyRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/courses/$courseId": {
-      id: "/courses/$courseId";
-      path: "/courses/$courseId";
-      fullPath: "/courses/$courseId";
-      preLoaderRoute: typeof CoursesCourseIdLazyRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/packages/$courseId": {
-      id: "/packages/$courseId";
-      path: "/packages/$courseId";
-      fullPath: "/packages/$courseId";
-      preLoaderRoute: typeof PackagesCourseIdRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/_auth": {
-      id: "/_auth";
-      path: "";
-      fullPath: "";
-      preLoaderRoute: typeof AuthRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/_auth/dashboard": {
-      id: "/_auth/dashboard";
-      path: "/dashboard";
-      fullPath: "/dashboard";
-      preLoaderRoute: typeof AuthDashboardLazyRouteImport;
-      parentRoute: typeof AuthRoute;
-    };
-    "/_auth/courses/": {
-      id: "/_auth/courses/";
-      path: "/courses";
-      fullPath: "/courses";
-      preLoaderRoute: typeof AuthCoursesIndexLazyRouteImport;
-      parentRoute: typeof AuthRoute;
-    };
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/courses/': {
+      id: '/courses/'
+      path: '/courses'
+      fullPath: '/courses/'
+      preLoaderRoute: typeof CoursesIndexLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/courses/$courseId': {
+      id: '/courses/$courseId'
+      path: '/courses/$courseId'
+      fullPath: '/courses/$courseId'
+      preLoaderRoute: typeof CoursesCourseIdLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_auth/library': {
+      id: '/_auth/library'
+      path: '/library'
+      fullPath: '/library'
+      preLoaderRoute: typeof AuthLibraryLazyRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/dashboard': {
+      id: '/_auth/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthDashboardLazyRouteImport
+      parentRoute: typeof AuthRoute
+    }
   }
 }
 
-// ─── Assemble the route tree ──────────────────────────────────────────────────
+interface AuthRouteChildren {
+  AuthDashboardLazyRoute: typeof AuthDashboardLazyRoute
+  AuthLibraryLazyRoute: typeof AuthLibraryLazyRoute
+}
 
-const AuthRouteWithChildren = AuthRoute._addFileChildren([
-  AuthDashboardLazyRoute,
-  AuthCoursesIndexLazyRoute,
-]);
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthDashboardLazyRoute: AuthDashboardLazyRoute,
+  AuthLibraryLazyRoute: AuthLibraryLazyRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexLazyRoute,
-  AboutLazyRoute,
-  LoginLazyRoute,
-  RegisterLazyRoute,
-  CoursesIndexLazyRoute,
-  CoursesCourseIdLazyRoute,
-  PackagesCourseIdRoute,
+  IndexLazyRoute: IndexLazyRoute,
   AuthRoute: AuthRouteWithChildren,
-};
-
+  AboutLazyRoute: AboutLazyRoute,
+  LoginLazyRoute: LoginLazyRoute,
+  RegisterLazyRoute: RegisterLazyRoute,
+  CoursesCourseIdLazyRoute: CoursesCourseIdLazyRoute,
+  CoursesIndexLazyRoute: CoursesIndexLazyRoute,
+}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
