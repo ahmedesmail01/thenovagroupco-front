@@ -1,7 +1,10 @@
 @import "tailwindcss";
 
 @theme {
-  --color-mint-500: oklch(0.72 0.11 178);
+  --color-primary: #458fce;
+  --color-secondary: #ebebeb;
+  --color-light-blue: #4b9be0;
+  --color-dark-blue: #0c1721;
 }
 
 /* :root {
