@@ -1,0 +1,504 @@
+import { createLazyFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { Input } from "../components/ui/Input";
+import { Button } from "../components/ui/Button";
+import { Stepper } from "../components/ui/Stepper";
+import { useAuthStore } from "../features/auth/useAuthStore";
+import { COUNTRY_CODES } from "../lib/countryCodes";
+import api from "../lib/api";
+import type {
+  SponsorIdSchema,
+  AccountDetailsSchema,
+  SignUpData,
+} from "../features/auth/schemas";
+import {
+  sponsorIdSchema,
+  accountDetailsSchema,
+} from "../features/auth/schemas";
+
+export const Route = createLazyFileRoute("/register")({
+  component: RegisterPage,
+});
+
+const STEPS = [
+  "Sponsor ID",
+  "Confirm Sponsor",
+  "Account Details",
+  "Create PIN",
+  "Review",
+];
+
+function RegisterPage() {
+  const navigate = useNavigate();
+  const { login, isAuthenticated } = useAuthStore();
+  const [step, setStep] = useState(0);
+  const [formData, setFormData] = useState<SignUpData>({});
+
+  if (isAuthenticated) {
+    navigate({ to: "/_auth/dashboard" });
+    return null;
+  }
+
+  const next = (data: Partial<SignUpData>) => {
+    setFormData((prev) => ({ ...prev, ...data }));
+    setStep((s) => s + 1);
+  };
+  const back = () => setStep((s) => s - 1);
+
+  return (
+    <div className="min-h-screen bg-brand-navy flex items-center justify-center px-4 py-12 relative overflow-hidden">
+      {/* Background glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-brand-blue/8 rounded-full blur-[130px] pointer-events-none" />
+
+      <div className="relative z-10 w-full max-w-xl">
+        {/* Logo */}
+        <div className="text-center mb-8">
+          <Link to="/">
+            <div className="w-12 h-12 bg-brand-blue rounded-xl mx-auto mb-4 items-center justify-center text-white font-black text-2xl flex">
+              N
+            </div>
+          </Link>
+          <h1 className="text-3xl font-black text-white">
+            Create Your Account
+          </h1>
+          <p className="text-text-secondary text-sm mt-2">
+            Join Nova Group and start your evolution
+          </p>
+        </div>
+
+        {/* Card */}
+        <div className="bg-brand-surface border border-brand-border rounded-2xl p-8 shadow-modal">
+          <Stepper steps={STEPS} current={step} />
+
+          <div className="mt-8">
+            {step === 0 && <StepSponsorId onNext={next} />}
+            {step === 1 && (
+              <StepConfirmSponsorId
+                data={formData}
+                onNext={next}
+                onBack={back}
+              />
+            )}
+            {step === 2 && (
+              <StepAccountDetails data={formData} onNext={next} onBack={back} />
+            )}
+            {step === 3 && <StepCreatePin onNext={next} onBack={back} />}
+            {step === 4 && (
+              <StepReview
+                data={formData}
+                onBack={back}
+                onSuccess={(user, token) => {
+                  login(user, token);
+                  navigate({ to: "/_auth/dashboard" });
+                }}
+              />
+            )}
+          </div>
+        </div>
+
+        <p className="text-center mt-6 text-sm text-text-secondary">
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="text-white font-semibold hover:text-brand-blue-light underline underline-offset-2 transition-colors"
+          >
+            Login →
+          </Link>
+        </p>
+        <p className="text-center mt-3 text-xs text-text-muted">
+          <Link to="/" className="hover:text-white transition-colors">
+            ← Back to Home
+          </Link>
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ─── Step Components ────────────────────────────────
+
+function StepSponsorId({ onNext }: { onNext: (d: SponsorIdSchema) => void }) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SponsorIdSchema>({
+    resolver: zodResolver(sponsorIdSchema),
+  });
+  return (
+    <form onSubmit={handleSubmit(onNext)} className="space-y-5">
+      <Input
+        label="Sponsor ID *"
+        placeholder="Enter your Sponsor ID"
+        error={errors.sponsorId?.message}
+        {...register("sponsorId")}
+      />
+      <p className="text-text-muted text-xs">
+        Enter the Sponsor ID of the person who referred you.
+      </p>
+      <div className="flex gap-3 pt-2">
+        <Button type="button" variant="outline" className="flex-1" disabled>
+          Back
+        </Button>
+        <Button type="submit" className="flex-1">
+          Next →
+        </Button>
+      </div>
+    </form>
+  );
+}
+
+function StepConfirmSponsorId({
+  data,
+  onNext,
+  onBack,
+}: {
+  data: SignUpData;
+  onNext: (d: Record<string, never>) => void;
+  onBack: () => void;
+}) {
+  const [confirmed, setConfirmed] = useState(false);
+  return (
+    <div className="space-y-5">
+      <div className="p-6 bg-brand-navy/50 rounded-xl border border-brand-border text-center space-y-3">
+        <p className="text-text-secondary text-sm">
+          You are joining under Sponsor ID:
+        </p>
+        <p className="text-white font-black text-3xl tracking-tight">
+          {data.sponsorId}
+        </p>
+        <span className="inline-flex items-center gap-2 px-3 py-1 bg-brand-blue/10 text-brand-blue-light rounded-full text-xs font-bold">
+          <span className="w-2 h-2 rounded-full bg-brand-blue-light animate-pulse" />
+          Verified Sponsor
+        </span>
+      </div>
+      <label className="flex items-center gap-4 p-4 bg-white/5 hover:bg-white/10 rounded-xl cursor-pointer transition-colors border border-white/5">
+        <input
+          type="checkbox"
+          checked={confirmed}
+          onChange={(e) => setConfirmed(e.target.checked)}
+          className="w-5 h-5 accent-brand-blue rounded"
+        />
+        <span className="text-white text-sm font-medium">
+          Yes, I confirm this Sponsor ID
+        </span>
+      </label>
+      <div className="flex gap-3 pt-2">
+        <Button
+          type="button"
+          variant="outline"
+          className="flex-1"
+          onClick={onBack}
+        >
+          ← Back
+        </Button>
+        <Button
+          type="button"
+          className="flex-1"
+          disabled={!confirmed}
+          onClick={() => onNext({})}
+        >
+          Next →
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+function StepAccountDetails({
+  data,
+  onNext,
+  onBack,
+}: {
+  data: SignUpData;
+  onNext: (d: AccountDetailsSchema) => void;
+  onBack: () => void;
+}) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<AccountDetailsSchema>({
+    resolver: zodResolver(accountDetailsSchema),
+    defaultValues: { sponsorId: data.sponsorId, countryCode: "+20" },
+  });
+
+  return (
+    <form
+      onSubmit={handleSubmit(onNext)}
+      className="space-y-4 max-h-[55vh] overflow-y-auto pr-1"
+    >
+      <Input
+        label="Sponsor ID *"
+        error={errors.sponsorId?.message}
+        {...register("sponsorId")}
+        readOnly
+      />
+
+      <div className="grid grid-cols-2 gap-4">
+        <Input
+          label="First Name *"
+          placeholder="First name"
+          error={errors.firstName?.message}
+          {...register("firstName")}
+        />
+        <Input
+          label="Last Name *"
+          placeholder="Last name"
+          error={errors.lastName?.message}
+          {...register("lastName")}
+        />
+      </div>
+
+      <Input
+        label="Username *"
+        placeholder="e.g. johndoe_23"
+        error={errors.username?.message}
+        {...register("username")}
+      />
+
+      <div>
+        <label className="block text-sm font-medium text-text-primary mb-1.5">
+          Phone Number *
+        </label>
+        <div className="flex gap-2">
+          <select
+            className="w-28 rounded-lg bg-white px-2 py-3 text-gray-900 outline-none focus:ring-2 focus:ring-brand-blue text-sm"
+            {...register("countryCode")}
+          >
+            {COUNTRY_CODES.map((c) => (
+              <option key={c.code} value={c.code}>
+                {c.flag} {c.code}
+              </option>
+            ))}
+          </select>
+          <input
+            className="flex-1 rounded-lg bg-white px-4 py-3 text-gray-900 outline-none focus:ring-2 focus:ring-brand-blue"
+            placeholder="Phone number"
+            {...register("phone")}
+          />
+        </div>
+        {errors.phone && (
+          <p className="text-xs text-red-400 mt-1">{errors.phone.message}</p>
+        )}
+      </div>
+
+      <Input
+        label="Email *"
+        type="email"
+        placeholder="your@email.com"
+        error={errors.email?.message}
+        {...register("email")}
+      />
+      <Input
+        label="Password *"
+        type="password"
+        placeholder="Min 8 chars, 1 uppercase, 1 number"
+        error={errors.password?.message}
+        {...register("password")}
+      />
+      <Input
+        label="Confirm Password *"
+        type="password"
+        placeholder="Repeat password"
+        error={errors.confirmPassword?.message}
+        {...register("confirmPassword")}
+      />
+
+      <div className="flex gap-3 pt-2 sticky bottom-0 bg-brand-surface pb-2">
+        <Button
+          type="button"
+          variant="outline"
+          className="flex-1"
+          onClick={onBack}
+        >
+          ← Back
+        </Button>
+        <Button type="submit" className="flex-1">
+          Next →
+        </Button>
+      </div>
+    </form>
+  );
+}
+
+function StepCreatePin({
+  onNext,
+  onBack,
+}: {
+  onNext: (d: { pin: string }) => void;
+  onBack: () => void;
+}) {
+  const [pin, setPin] = useState(["", "", "", ""]);
+
+  const handlePinChange = (i: number, val: string) => {
+    if (!/^\d?$/.test(val)) return;
+    const next = [...pin];
+    next[i] = val;
+    setPin(next);
+    if (val && i < 3) document.getElementById(`reg-pin-${i + 1}`)?.focus();
+  };
+
+  const handleKeyDown = (i: number, e: React.KeyboardEvent) => {
+    if (e.key === "Backspace" && !pin[i] && i > 0) {
+      document.getElementById(`reg-pin-${i - 1}`)?.focus();
+    }
+  };
+
+  return (
+    <div className="flex flex-col items-center space-y-6">
+      <p className="text-text-secondary text-sm text-center">
+        Create a 4-digit PIN to secure your account
+      </p>
+      <div className="flex gap-4">
+        {pin.map((v, i) => (
+          <input
+            key={i}
+            id={`reg-pin-${i}`}
+            type="password"
+            inputMode="numeric"
+            maxLength={1}
+            value={v}
+            onChange={(e) => handlePinChange(i, e.target.value)}
+            onKeyDown={(e) => handleKeyDown(i, e)}
+            className="w-16 h-16 text-center text-3xl font-black rounded-xl bg-white text-gray-900 border-2 border-transparent focus:border-brand-blue outline-none transition-colors shadow-sm"
+          />
+        ))}
+      </div>
+      {pin.every(Boolean) && (
+        <p className="text-green-400 text-xs font-bold flex items-center gap-1">
+          ✓ PIN set successfully
+        </p>
+      )}
+      <div className="flex gap-3 w-full">
+        <Button
+          type="button"
+          variant="outline"
+          className="flex-1"
+          onClick={onBack}
+        >
+          ← Back
+        </Button>
+        <Button
+          type="button"
+          className="flex-1"
+          disabled={pin.some((p) => !p)}
+          onClick={() => onNext({ pin: pin.join("") })}
+        >
+          Next →
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+interface ReviewUser {
+  firstName?: string;
+  lastName?: string;
+  username?: string;
+  email?: string;
+  sponsorId?: string;
+  [key: string]: string | undefined;
+}
+
+function StepReview({
+  data,
+  onBack,
+  onSuccess,
+}: {
+  data: SignUpData;
+  onBack: () => void;
+  onSuccess: (user: ReviewUser, token: string) => void;
+}) {
+  const [agreed, setAgreed] = useState(false);
+  const {
+    mutate: registerMutation,
+    isPending,
+    isError,
+  } = useMutation({
+    mutationFn: () => api.post("/auth/register", data),
+    onSuccess: (response) => {
+      const { user, token } = response.data;
+      onSuccess(user, token);
+    },
+  });
+
+  const fields = [
+    { label: "Sponsor ID", value: data.sponsorId },
+    { label: "First Name", value: data.firstName },
+    { label: "Last Name", value: data.lastName },
+    { label: "Username", value: data.username },
+    {
+      label: "Phone",
+      value: `${data.countryCode ?? ""} ${data.phone ?? ""}`.trim(),
+    },
+    { label: "Email", value: data.email },
+  ];
+
+  return (
+    <div className="space-y-5">
+      {isError && (
+        <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">
+          Registration failed. Please try again.
+        </div>
+      )}
+      <div className="grid grid-cols-2 gap-x-6 gap-y-3 p-5 bg-brand-navy/40 rounded-xl border border-brand-border">
+        {fields.map((f) => (
+          <div key={f.label}>
+            <p className="text-text-muted text-[10px] uppercase font-bold tracking-wider mb-0.5">
+              {f.label}
+            </p>
+            <p className="text-white text-sm font-semibold">{f.value || "—"}</p>
+          </div>
+        ))}
+      </div>
+      <hr className="border-brand-border" />
+      <label className="flex items-start gap-3 cursor-pointer group">
+        <input
+          type="checkbox"
+          checked={agreed}
+          onChange={(e) => setAgreed(e.target.checked)}
+          className="w-5 h-5 accent-brand-blue rounded mt-0.5"
+        />
+        <span className="text-sm text-text-secondary group-hover:text-white transition-colors">
+          I agree to the{" "}
+          <span className="text-brand-blue-light underline">
+            Terms & Conditions
+          </span>{" "}
+          and{" "}
+          <span className="text-brand-blue-light underline">
+            Privacy Policy
+          </span>
+        </span>
+      </label>
+      <div className="flex gap-3">
+        <Button
+          type="button"
+          variant="outline"
+          className="flex-1"
+          onClick={onBack}
+        >
+          ← Back
+        </Button>
+        <Button
+          type="button"
+          className="flex-1 h-12"
+          disabled={!agreed || isPending}
+          onClick={() => registerMutation()}
+        >
+          {isPending ? (
+            <span className="flex items-center justify-center gap-2">
+              <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              Creating account...
+            </span>
+          ) : (
+            "Create Account ✓"
+          )}
+        </Button>
+      </div>
+    </div>
+  );
+}

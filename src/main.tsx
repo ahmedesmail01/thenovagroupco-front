@@ -8,6 +8,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { routeTree } from "./routeTree.gen";
 
 import "./index.css";
+import "./lib/api"; // Added import for api.ts
 
 // Create a new query client
 const queryClient = new QueryClient();
