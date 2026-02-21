@@ -19,7 +19,7 @@ export function Navbar() {
           <img
             src={logoImg}
             alt="Nova Group"
-            className="hidden sm:block w-[130px] h-auto"
+            className="  w-[130px] h-auto"
             onError={(e) => {
               (e.target as HTMLImageElement).style.display = "none";
             }}
