@@ -1,46 +1,109 @@
+// Image placeholders - user will provide paths
+const STORY_IMAGE = "/images/bg-pattern.png";
+const STORY_WAVE = "/images/hero-bg.png";
+const ICON_CIRCLE_1 = "path_to_icon_1";
+const ICON_CIRCLE_2 = "path_to_icon_2";
+const ICON_CIRCLE_3 = "path_to_icon_3";
+
 import { Badge } from "../ui/Badge";
 import { Button } from "../ui/Button";
 
 export function StorySection() {
   return (
-    <section className="py-32 bg-brand-navy relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-blue/5 rounded-full blur-[100px] -mr-64 -mt-32" />
+    <section className="py-24 md:py-32 bg-white relative overflow-hidden font-inter">
+      {/* Background Wave */}
+      <div className="absolute top-1/2 left-1/2 -translate-y-1/2 w-full h-full opacity-40 pointer-events-none z-0 overflow-visible">
+        <img
+          src={STORY_WAVE}
+          alt=""
+          className="w-full h-full object-contain scale-150 translate-x-1/4"
+        />
+      </div>
 
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-        <div className="relative group">
-          <div className="absolute -inset-4 bg-gradient-to-tr from-brand-blue to-brand-blue-light rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000" />
-          <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-brand-border">
-            <img
-              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop"
-              alt="Our Team"
-              className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
-            />
+      <div className="max-w-[1400px] mx-auto px-4 lg:px-[80px] grid grid-cols-1 lg:grid-cols-[1.1fr_557px] gap-16 lg:gap-24 items-center relative z-10">
+        {/* Left: Content */}
+        <div className="space-y-8 max-w-2xl">
+          <div className="space-y-4">
+            <span className="text-brand-blue font-bold tracking-widest text-sm uppercase">
+              OUR STORY
+            </span>
+            <h2 className="text-4xl md:text-5xl lg:text-[56px] font-bold text-[#1a365d] font-playfair leading-[1.1]">
+              How we started, what drives us, and why we exist
+            </h2>
+          </div>
+
+          <div className="space-y-6 text-[#4a5568] text-lg leading-relaxed">
+            <p>
+              At NOVA Group, we measure success by the lives we impact and the
+              opportunities we create. Born from a vision of evolution and
+              purpose, NOVA empowers individuals to grow together — gaining
+              knowledge, financial independence, and personal fulfillment
+              through smart investing, education, and innovation.
+            </p>
           </div>
         </div>
 
-        <div className="space-y-8">
-          <Badge variant="primary">OUR STORY</Badge>
-          <h2 className="text-4xl md:text-5xl font-black text-white leading-tight">
-            Empowering the Next Generation of{" "}
-            <span className="text-brand-blue">Evolved</span> Professionals
-          </h2>
-          <div className="space-y-6 text-text-secondary text-lg leading-relaxed font-light">
-            <p>
-              Founded with a mission to bridge the gap between academic theory
-              and real-world mastery, Nova Group has evolved from a small
-              collective of visionaries into a global community.
-            </p>
-            <p>
-              We believe that true growth happens when cutting-edge technology
-              meets human mentorship. Our platform is designed to provide not
-              just information, but the transformation required to excel in
-              today's landscape.
-            </p>
+        {/* Right: Graphic */}
+        <div className="relative w-full max-w-[557px] aspect-[557/515] mx-auto lg:mx-0">
+          {/* Main Circle Ring */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] h-[90%] border-2 border-blue-100/50 rounded-full z-0" />
+
+          {/* Core Image Circle */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] rounded-full overflow-hidden border-8 border-white shadow-[0_20px_50px_rgba(43,108,176,0.15)] z-10">
+            <img
+              src={STORY_IMAGE}
+              className="w-full h-full object-cover"
+              alt="Our Story"
+            />
           </div>
-          <div className="pt-4">
-            <Button variant="outline" size="lg">
-              Learn More About Us
-            </Button>
+
+          {/* Floating Lesson Badge */}
+          <div className="absolute top-[25%] -left-4 z-30 bg-white rounded-2xl p-4 shadow-[0_10px_30px_rgba(0,0,0,0.08)] flex flex-col items-center gap-1 border border-gray-50 min-w-24">
+            <div className="text-blue-500">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+              </svg>
+            </div>
+            <span className="text-brand-blue font-bold text-lg">1850+</span>
+            <span className="text-xs text-gray-400 font-medium">Lessons</span>
+          </div>
+
+          {/* Circular Icons/Thumbnails position absolutely along the ring */}
+          {/* Top Center Icon */}
+          <div className="absolute top-[5%] left-1/2 -translate-x-1/2 w-12 h-12 bg-white rounded-full shadow-lg border border-gray-100 flex items-center justify-center z-20 text-blue-600">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
+            </svg>
+          </div>
+
+          {/* Right Mid Thumbnail */}
+          <div className="absolute top-[20%] right-[3%] w-16 h-16 rounded-full border-4 border-white shadow-xl overflow-hidden z-20">
+            <img
+              src={ICON_CIRCLE_1}
+              className="w-full h-full object-cover"
+              alt=""
+            />
+          </div>
+
+          {/* Bottom Right Symbol */}
+          <div className="absolute bottom-[10%] right-[8%] w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white shadow-lg z-20 border-2 border-white">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" />
+            </svg>
+          </div>
+
+          {/* Left Bottom Thumbnail */}
+          <div className="absolute bottom-[20%] left-[8%] w-14 h-14 rounded-full border-4 border-white shadow-xl overflow-hidden z-20">
+            <img
+              src={ICON_CIRCLE_2}
+              className="w-full h-full object-cover"
+              alt=""
+            />
           </div>
         </div>
       </div>
