@@ -114,7 +114,7 @@ export function FocusSection() {
                 className="w-full h-full object-contain"
               />
             </div>
-            <div className="relative z-10 w-full max-h-[570px] aspect-575/670 rounded-[40px] overflow-hidden">
+            <div className="relative z-10 w-full max-h-[570px] aspect-575/670 rounded-[33px] overflow-hidden">
               <img
                 src={unsplashVideo}
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
