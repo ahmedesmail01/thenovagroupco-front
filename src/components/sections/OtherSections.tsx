@@ -1,8 +1,9 @@
 // Image placeholders - user will provide paths
 const BackGroundPattern = "/images/bg-pattern.svg";
 const LadyWithCircles = "/images/story-img.png";
+const pkgTriangle = "/images/pkg-triangle.png";
+const eventsBanner = "/images/events-banner.png";
 
-import { Badge } from "../ui/Badge";
 import { Button } from "../ui/Button";
 
 export function StorySection() {
@@ -194,12 +195,13 @@ function PackageCard({ pkg }: { pkg: PackageData }) {
     <div className="flex flex-col w-full max-w-[340px] bg-white rounded-[24px] shadow-[0_15px_40px_rgba(0,0,0,0.12)] font-montserrat p-[8px] pb-[20px] border border-gray-100">
       {/* Header Slant */}
       <div
-        className="h-[140px] bg-gradient-to-r from-[#172635] to-[#254261] rounded-[16px] relative flex justify-center pt-8"
+        className="h-[140px] rounded-[16px] relative flex justify-center pt-8 bg-size-[100%_100%] bg-no-repeat bg-center"
         style={{
-          clipPath:
-            pkg.slant === "up"
-              ? "polygon(0 0, 100% 0, 100% 80%, 0% 100%)"
-              : "polygon(0 0, 100% 0, 100% 100%, 0% 80%)",
+          // clipPath:
+          //   pkg.slant === "up"
+          //     ? "polygon(0 0, 100% 0, 100% 80%, 0% 100%)"
+          //     : "polygon(0 0, 100% 0, 100% 100%, 0% 80%)",
+          backgroundImage: `url(${pkgTriangle})`,
         }}
       >
         <h3 className="text-white text-[28px] font-semibold tracking-wide z-10 text-center">
@@ -256,78 +258,26 @@ function PackageCard({ pkg }: { pkg: PackageData }) {
 }
 
 export function EventsSection() {
-  const events = [
-    {
-      title: "Global Mastermind 2024",
-      date: "SEP 12-14",
-      loc: "Dubai, UAE",
-      img: "https://images.unsplash.com/photo-1540575861501-7ad060e39fe1?q=80&w=2070&auto=format&fit=crop",
-    },
-    {
-      title: "Digital Evolution Webcast",
-      date: "OCT 05",
-      loc: "Online",
-      img: "https://images.unsplash.com/photo-1591115765373-520b7a217294?q=80&w=2070&auto=format&fit=crop",
-    },
-    {
-      title: "The Future of AI Summit",
-      date: "NOV 20",
-      loc: "New York, USA",
-      img: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=2070&auto=format&fit=crop",
-    },
-    {
-      title: "Nova Exclusive Meetup",
-      date: "DEC 01",
-      loc: "London, UK",
-      img: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2070&auto=format&fit=crop",
-    },
-  ];
-
   return (
-    <section className="py-32 bg-brand-surface/10 relative">
-      <div className="absolute inset-0 bg-brand-blue/5 pointer-events-none blur-[150px] rounded-full mx-auto max-w-4xl h-1/2 mt-32" />
-
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-          <div className="space-y-4 max-w-xl">
-            <Badge variant="primary">JOIN THE MOVEMENT</Badge>
-            <h2 className="text-4xl md:text-5xl font-black text-white">
-              Upcoming Events
-            </h2>
-            <p className="text-text-secondary text-lg">
-              Experience Nova Group in the real world. Connect, learn, and
-              expand your horizons.
-            </p>
-          </div>
-          <Button variant="outline" className="mb-2">
-            View Full Calendar
-          </Button>
+    <section className="py-24 bg-white" id="events">
+      <div className="max-w-[1200px] mx-auto px-4">
+        {/* Header */}
+        <div className="text-center mb-16 space-y-3">
+          <h2 className="text-4xl md:text-[40px] font-bold text-[#1a202c] font-playfair uppercase tracking-wide">
+            EVENTS
+          </h2>
+          <p className="text-[#a0aec0] text-sm md:text-md font-montserrat">
+            What drives our vision and shapes everything we do
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {events.map((e) => (
-            <div
-              key={e.title}
-              className="group relative aspect-[3/4] rounded-3xl overflow-hidden border border-brand-border cursor-pointer"
-            >
-              <img
-                src={e.img}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                alt={e.title}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-brand-navy via-brand-navy/20 to-transparent p-6 flex flex-col justify-end">
-                <div className="bg-white/10 backdrop-blur-md w-fit px-3 py-1 rounded-lg text-[10px] font-bold text-white mb-3">
-                  {e.date}
-                </div>
-                <h3 className="text-xl font-bold text-white group-hover:text-brand-blue-light transition-colors mb-2">
-                  {e.title}
-                </h3>
-                <div className="flex items-center gap-2 text-text-muted text-xs">
-                  <span>📍 {e.loc}</span>
-                </div>
-              </div>
-            </div>
-          ))}
+        {/* Banner Image */}
+        <div className="flex justify-center w-full">
+          <img
+            src={eventsBanner}
+            alt="Events"
+            className="w-full h-auto object-contain"
+          />
         </div>
       </div>
     </section>
