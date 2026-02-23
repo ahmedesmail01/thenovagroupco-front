@@ -18,6 +18,7 @@ import {
   sponsorIdSchema,
   accountDetailsSchema,
 } from "../features/auth/schemas";
+import logo from "../../public/images/nova-logo.png";
 
 export const Route = createLazyFileRoute("/register")({
   component: RegisterPage,
@@ -49,31 +50,34 @@ function RegisterPage() {
   const back = () => setStep((s) => s - 1);
 
   return (
-    <div className="min-h-screen bg-brand-navy flex items-center justify-center px-4 py-12 relative overflow-hidden">
-      {/* Background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-brand-blue/8 rounded-full blur-[130px] pointer-events-none" />
-
-      <div className="relative z-10 w-full max-w-xl">
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <Link to="/">
-            <div className="w-12 h-12 bg-brand-blue rounded-xl mx-auto mb-4 items-center justify-center text-white font-black text-2xl flex">
-              N
-            </div>
-          </Link>
-          <h1 className="text-3xl font-black text-white">
-            Create Your Account
-          </h1>
-          <p className="text-text-secondary text-sm mt-2">
-            Join Nova Group and start your evolution
-          </p>
-        </div>
-
+    <div
+      className="fixed inset-0 flex  justify-center px-6  items-center  overflow-auto bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: 'url("/images/register-bg.png")' }}
+    >
+      <div className="relative z-10 max-[1229px]">
         {/* Card */}
-        <div className="bg-brand-surface border border-brand-border rounded-2xl p-8 shadow-modal">
+        <div className="rounded-[12px] bg-gradient-to-b  from-brand-terquaz to-brand-navy p-10 shadow-[0_32px_80px_rgba(0,0,0,0.65)]">
+          <div className="flex items-start justify-between mb-4">
+            <button
+              type="button"
+              className="text-white text-2xl leading-none px-1"
+              onClick={() => navigate({ to: "/" })}
+            >
+              ×
+            </button>
+            <img src={logo} alt="Nova Group" className="h-16" />
+          </div>
+
+          <div className="text-center mb-[66px]">
+            <h1 className="text-[28px] font-semibold text-white">Sign Up</h1>
+            <p className="text-sm text-white ">
+              Enter your details to create your member account
+            </p>
+          </div>
+
           <Stepper steps={STEPS} current={step} />
 
-          <div className="mt-8">
+          <div className="mt-[66px]">
             {step === 0 && <StepSponsorId onNext={next} />}
             {step === 1 && (
               <StepConfirmSponsorId
@@ -97,22 +101,16 @@ function RegisterPage() {
               />
             )}
           </div>
+          <p className="text-center mt-6 text-sm text-text-secondary">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="text-white font-semibold hover:text-brand-blue-light underline underline-offset-2 transition-colors"
+            >
+              Login →
+            </Link>
+          </p>
         </div>
-
-        <p className="text-center mt-6 text-sm text-text-secondary">
-          Already have an account?{" "}
-          <Link
-            to="/login"
-            className="text-white font-semibold hover:text-brand-blue-light underline underline-offset-2 transition-colors"
-          >
-            Login →
-          </Link>
-        </p>
-        <p className="text-center mt-3 text-xs text-text-muted">
-          <Link to="/" className="hover:text-white transition-colors">
-            ← Back to Home
-          </Link>
-        </p>
       </div>
     </div>
   );
@@ -177,7 +175,7 @@ function StepSponsorId({ onNext }: { onNext: (d: SponsorIdSchema) => void }) {
       <p className="text-text-muted text-xs">
         Enter the Sponsor ID of the person who referred you.
       </p>
-      <div className="flex gap-3 pt-2">
+      <div className="flex gap-3 pt-2 mx-auto w-[80%]">
         <Button type="button" variant="outline" className="flex-1" disabled>
           Back
         </Button>
@@ -423,7 +421,7 @@ function StepCreatePin({
           ✓ PIN set successfully
         </p>
       )}
-      <div className="flex gap-3 w-full">
+      <div className="flex gap-3 w-[80%] mx-auto">
         <Button
           type="button"
           variant="outline"
