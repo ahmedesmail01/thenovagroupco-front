@@ -9,6 +9,8 @@ import { useAuthStore } from "../features/auth/useAuthStore";
 import api from "../lib/api";
 import { loginSchema } from "../features/auth/schemas";
 import type { LoginSchema } from "../features/auth/schemas";
+import logo from "../../public/images/nova-logo.png";
+import { Eye, EyeClosed } from "lucide-react";
 
 export const Route = createLazyFileRoute("/login")({
   component: LoginPage,
@@ -33,7 +35,7 @@ function LoginPage() {
     isPending,
     isError,
   } = useMutation({
-    mutationFn: (data: LoginSchema) => api.post("/auth/login", data),
+    mutationFn: (data: LoginSchema) => api.post("/login", data),
     onSuccess: (response) => {
       const { user, token } = response.data;
       login(user, token);
@@ -48,26 +50,22 @@ function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-brand-navy flex items-center justify-center px-4 relative overflow-hidden">
-      {/* Background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-blue/10 rounded-full blur-[120px] pointer-events-none" />
-
+    <div
+      className="fixed inset-0 flex items-center justify-center px-4 bg-cover bg-bottom bg-no-repeat"
+      style={{ backgroundImage: 'url("/images/Login-bg.png")' }}
+    >
       <div className="relative z-10 w-full max-w-md">
-        {/* Logo */}
-        <div className="text-center mb-10">
-          <Link to="/">
-            <div className="w-12 h-12 bg-brand-blue rounded-xl mx-auto mb-4 items-center justify-center text-white font-black text-2xl flex">
-              N
-            </div>
-          </Link>
-          <h1 className="text-3xl font-black text-white">Welcome Back</h1>
-          <p className="text-text-secondary text-sm mt-2">
-            Log in to access your Nova Group account
-          </p>
-        </div>
-
         {/* Card */}
-        <div className="bg-brand-surface border border-brand-border rounded-2xl p-8 shadow-modal">
+        <div className="rounded-[12px] font-poppins p-8 pt-2 pb-10 shadow-[0_24px_60px_rgba(0,0,0,0.6)] bg-gradient-to-b from-brand-terquaz to-brand-navy  ">
+          <div className="flex items-center justify-end">
+            <img src={logo} alt="logo" />
+          </div>
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-semibold text-white">Login</h1>
+            <p className="  text-sm mt-2    tracking-wider">
+              Welcome back! Please log in to access your account.
+            </p>
+          </div>
           {isError && (
             <div className="mb-5 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">
               Invalid email or password. Please try again.
@@ -100,7 +98,16 @@ function LoginPage() {
                 onClick={() => setShowPassword(!showPassword)}
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
-                {showPassword ? "🙈" : "👁"}
+                {showPassword ? <EyeClosed /> : <Eye />}
+              </button>
+            </div>
+
+            <div className="flex items-center justify-end">
+              <button
+                type="button"
+                className="text-white text-[14px] hover:cursor-pointer hover:underline font-medium"
+              >
+                Forgot password?
               </button>
             </div>
 
@@ -113,17 +120,11 @@ function LoginPage() {
                 />
                 Remember me
               </label>
-              <button
-                type="button"
-                className="text-brand-blue-light hover:underline font-medium"
-              >
-                Forgot password?
-              </button>
             </div>
 
             <Button
               type="submit"
-              className="w-full h-12 text-base shadow-lg shadow-brand-blue/20"
+              className="w-full h-12 mb-6 text-base shadow-lg shadow-brand-blue/20"
               disabled={isPending}
             >
               {isPending ? (
@@ -137,7 +138,7 @@ function LoginPage() {
             </Button>
           </form>
 
-          <div className="relative my-6">
+          {/* <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-brand-border" />
             </div>
@@ -146,7 +147,7 @@ function LoginPage() {
                 Or
               </span>
             </div>
-          </div>
+          </div> */}
 
           <p className="text-center text-sm text-text-secondary">
             Don't have an account?{" "}
@@ -159,11 +160,11 @@ function LoginPage() {
           </p>
         </div>
 
-        <p className="text-center mt-6 text-xs text-text-muted">
+        {/* <p className="text-center mt-6 text-xs text-text-muted">
           <Link to="/" className="hover:text-white transition-colors">
             ← Back to Home
           </Link>
-        </p>
+        </p> */}
       </div>
     </div>
   );

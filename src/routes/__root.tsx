@@ -1,4 +1,8 @@
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import {
+  createRootRoute,
+  Outlet,
+  useRouterState,
+} from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { Navbar } from "../components/layout/Navbar";
 import { Footer } from "../components/layout/Footer";
@@ -13,17 +17,20 @@ export const Route = createRootRoute({
 
 function RootLayout() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const { location } = useRouterState();
+  const isAuthPage =
+    location.pathname === "/login" || location.pathname === "/register";
 
   return (
     <div className="min-h-screen bg-brand-navy text-text-primary flex flex-col font-sans">
       {/* Show NavbarAuth when logged in, public Navbar when logged out */}
-      {isAuthenticated ? <NavbarAuth /> : <Navbar />}
+      {!isAuthPage && (isAuthenticated ? <NavbarAuth /> : <Navbar />)}
 
-      <main className="flex-1 pt-16">
+      <main className={isAuthPage ? "flex-1" : "flex-1 pt-16"}>
         <Outlet />
       </main>
 
-      <Footer />
+      {!isAuthPage && <Footer />}
 
       <TanStackRouterDevtools position="bottom-right" />
     </div>

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
   rememberMe: z.boolean().optional(),
 });
 export type LoginSchema = z.infer<typeof loginSchema>;
@@ -29,7 +29,7 @@ export const accountDetailsSchema = z
     email: z.string().email("Invalid email address"),
     password: z
       .string()
-      .min(8, "At least 8 characters")
+      .min(6, "At least 6 characters")
       .regex(/[A-Z]/, "Must include uppercase")
       .regex(/[0-9]/, "Must include a number"),
     confirmPassword: z.string(),
