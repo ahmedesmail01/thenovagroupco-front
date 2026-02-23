@@ -121,6 +121,7 @@ function RegisterPage() {
 // ─── Step Components ────────────────────────────────
 
 function StepSponsorId({ onNext }: { onNext: (d: SponsorIdSchema) => void }) {
+  const [serverError, setServerError] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -128,14 +129,51 @@ function StepSponsorId({ onNext }: { onNext: (d: SponsorIdSchema) => void }) {
   } = useForm<SponsorIdSchema>({
     resolver: zodResolver(sponsorIdSchema),
   });
+
+  const { mutate: validateSponsor, isPending } = useMutation({
+    mutationFn: (sponsorId: string) => api.get(`/sponsor-data/${sponsorId}`),
+    onSuccess: (response, sponsorId) => {
+      const data = response.data;
+      if (data?.status) {
+        setServerError(null);
+        onNext({ sponsorId });
+      } else if (data?.message) {
+        const msgField = data.message as
+          | string
+          | {
+              sponsor_id?: string[];
+            };
+        const msg =
+          typeof msgField === "string" ? msgField : msgField.sponsor_id?.[0];
+        setServerError(msg || "Registration failed , incorrect sponsor id");
+      } else {
+        setServerError("Registration failed , incorrect sponsor id");
+      }
+    },
+    onError: (error: unknown) => {
+      const maybeAxiosError = error as {
+        response?: { data?: { message?: string | { sponsor_id?: string[] } } };
+      };
+      const message = maybeAxiosError.response?.data?.message;
+      const msg =
+        typeof message === "string" ? message : message?.sponsor_id?.[0];
+      setServerError(msg || "Registration failed , incorrect sponsor id");
+    },
+  });
+
+  const onSubmit = (values: SponsorIdSchema) => {
+    setServerError(null);
+    validateSponsor(values.sponsorId);
+  };
   return (
-    <form onSubmit={handleSubmit(onNext)} className="space-y-5">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       <Input
         label="Sponsor ID *"
         placeholder="Enter your Sponsor ID"
         error={errors.sponsorId?.message}
         {...register("sponsorId")}
       />
+      {serverError && <p className="text-xs text-red-400">{serverError}</p>}
       <p className="text-text-muted text-xs">
         Enter the Sponsor ID of the person who referred you.
       </p>
@@ -143,8 +181,8 @@ function StepSponsorId({ onNext }: { onNext: (d: SponsorIdSchema) => void }) {
         <Button type="button" variant="outline" className="flex-1" disabled>
           Back
         </Button>
-        <Button type="submit" className="flex-1">
-          Next →
+        <Button type="submit" className="flex-1" disabled={isPending}>
+          {isPending ? "Checking..." : "Next →"}
         </Button>
       </div>
     </form>
@@ -308,6 +346,18 @@ function StepAccountDetails({
         {...register("confirmPassword")}
       />
 
+      <div>
+        <label className="block text-sm font-medium text-text-primary mb-1.5">
+          Profile Image
+        </label>
+        <input
+          type="file"
+          accept="image/*"
+          className="block w-full text-sm text-text-primary file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-brand-blue file:text-white hover:file:bg-brand-blue-light"
+          {...register("avatar")}
+        />
+      </div>
+
       <div className="flex gap-3 pt-2 sticky bottom-0 bg-brand-surface pb-2">
         <Button
           type="button"
@@ -410,7 +460,34 @@ function StepReview({
     isPending,
     isError,
   } = useMutation({
-    mutationFn: () => api.post("/auth/register", data),
+    mutationFn: () => {
+      const formData = new FormData();
+
+      formData.append("first_name", data.firstName ?? "");
+      formData.append("last_name", data.lastName ?? "");
+      formData.append("email", data.email ?? "");
+      formData.append("mobile", data.phone ?? "");
+      formData.append("password", data.password ?? "");
+      formData.append("password_confirmation", data.confirmPassword ?? "");
+      formData.append("sponsor_id", data.sponsorId ?? "");
+      formData.append("username", data.username ?? "");
+      formData.append("pin_code", data.pin ?? "");
+
+      const avatar = data.avatar as File | FileList | undefined;
+      const file =
+        avatar instanceof FileList
+          ? avatar.item(0)
+          : avatar instanceof File
+            ? avatar
+            : null;
+      if (file) {
+        formData.append("image", file);
+      }
+
+      return api.post("/register", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+    },
     onSuccess: (response) => {
       // Mapping the response to ensure it matches the User interface
       const { user, token } = response.data;
@@ -425,6 +502,14 @@ function StepReview({
         sponsorId: user.sponsorId || data.sponsorId || "",
       };
       onSuccess(completeUser, token);
+    },
+    onError: (error: unknown) => {
+      const maybeAxiosError = error as {
+        response?: { data?: { message?: string | { image?: string[] } } };
+      };
+      const message = maybeAxiosError.response?.data?.message;
+      const msg = typeof message === "string" ? message : message?.image?.[0];
+      console.error(msg || "Registration failed.");
     },
   });
 
@@ -444,7 +529,7 @@ function StepReview({
     <div className="space-y-5">
       {isError && (
         <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">
-          Registration failed. Please try again.
+          Registration failed. Please check your image and other fields.
         </div>
       )}
       <div className="grid grid-cols-2 gap-x-6 gap-y-3 p-5 bg-brand-navy/40 rounded-xl border border-brand-border">
