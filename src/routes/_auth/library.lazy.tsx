@@ -15,7 +15,7 @@ function LibraryPage() {
   // Using dummy data for now.
   const { data, isLoading } = useCourses({}, 1);
 
-  return (
+  const ui = (
     <div className="bg-brand-navy min-h-screen pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <header className="mb-10">
@@ -73,4 +73,8 @@ function LibraryPage() {
       </div>
     </div>
   );
+
+  console.log(ui);
+
+  return <>courses page</>;
 }
