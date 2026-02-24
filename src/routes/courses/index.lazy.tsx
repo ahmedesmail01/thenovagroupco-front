@@ -150,5 +150,7 @@ function CoursesPage() {
     </div>
   );
 
+  console.log(ui);
+
   return <>Courses page</>;
 }

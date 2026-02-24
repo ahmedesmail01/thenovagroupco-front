@@ -254,5 +254,7 @@ function CourseDetailPage() {
     </div>
   );
 
+  console.log(ui);
+
   return <>Course page</>;
 }
