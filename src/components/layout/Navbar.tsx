@@ -50,7 +50,7 @@ export function Navbar() {
             Packages
           </Link>
           <Link
-            to="/courses"
+            to="/"
             className="text-text-secondary hover:text-brand-blue-light transition-colors [&.active]:text-brand-blue [&.active]:font-bold"
           >
             Courses
