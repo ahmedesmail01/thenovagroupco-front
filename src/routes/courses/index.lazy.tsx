@@ -26,7 +26,7 @@ function CoursesPage() {
     setPage(1);
   };
 
-  return (
+  const ui = (
     <div className="bg-brand-navy min-h-screen">
       {/* Hero banner */}
       <div className="relative pt-16 h-52 bg-hero-gradient flex flex-col items-center justify-center text-center border-b border-brand-border">
@@ -149,4 +149,6 @@ function CoursesPage() {
       </div>
     </div>
   );
+
+  return <>Courses page</>;
 }

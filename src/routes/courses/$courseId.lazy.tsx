@@ -27,7 +27,7 @@ function CourseDetailPage() {
 
   if (!course) return null;
 
-  return (
+  const ui = (
     <div className="bg-brand-navy min-h-screen text-white">
       <div className="pt-16">
         {/* Back link */}
@@ -253,4 +253,6 @@ function CourseDetailPage() {
       </div>
     </div>
   );
+
+  return <>Course page</>;
 }
