@@ -53,12 +53,12 @@ function RegisterPage() {
 
   return (
     <div
-      className="fixed inset-0 flex justify-center px-6 py-10 overflow-auto bg-cover bg-center bg-no-repeat"
+      className="fixed inset-0 flex justify-center px-4 sm:px-6 py-4 sm:py-10 overflow-auto bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: 'url("/images/register-bg.png")' }}
     >
-      <div className="relative z-10 max-[1229px] my-auto">
+      <div className="relative z-10 w-full max-w-[1000px] my-auto">
         {/* Card */}
-        <div className="rounded-[12px] bg-[#1a2f3f] p-10 shadow-[0_32px_80px_rgba(0,0,0,0.65)]">
+        <div className="rounded-[12px] bg-[#1a2f3f] p-6 sm:p-10 shadow-[0_32px_80px_rgba(0,0,0,0.65)]">
           <div className="flex items-start justify-between mb-4">
             <button
               type="button"
@@ -67,11 +67,11 @@ function RegisterPage() {
             >
               ×
             </button>
-            <img src={logo} alt="Nova Group" className="h-16" />
+            <img src={logo} alt="Nova Group" className="h-12 sm:h-16" />
           </div>
 
           <div className="text-center mb-[66px]">
-            <h1 className="text-[28px] font-semibold text-white">
+            <h1 className="text-2xl sm:text-[28px] font-semibold text-white">
               {step === 0 && "Sign Up"}
               {step === 1 && "Confirm Sponsor ID"}
               {step === 2 && "Account Details"}
@@ -290,7 +290,7 @@ function StepAccountDetails({
       {/* Profile Image */}
       <div className="space-y-1.5">
         <label className="text-sm font-medium text-white">Profile Image</label>
-        <div className="flex items-center justify-between bg-white rounded-xl p-3 border border-white/10">
+        <div className="flex flex-col sm:items-center sm:justify-between sm:flex-row bg-white rounded-xl p-3 border border-white/10 gap-4">
           <div className="flex items-center gap-3">
             <div className="h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden border-2 border-white/20">
               {avatarPreview ? (
@@ -330,7 +330,7 @@ function StepAccountDetails({
         placeholder="Enter your Name"
       />
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input
           label="First Name *"
           placeholder="Enter your Name"

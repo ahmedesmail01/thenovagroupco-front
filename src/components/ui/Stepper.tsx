@@ -30,7 +30,7 @@ export function Stepper({ steps, current }: StepperProps) {
             </div>
             {i < steps.length - 1 && (
               <div
-                className={`h-px mx-4 min-w-[56px] ${
+                className={`h-px mx-2 sm:mx-4 min-w-[20px] sm:min-w-[56px] ${
                   i < current ? "bg-white" : "bg-brand-border"
                 }`}
               />
