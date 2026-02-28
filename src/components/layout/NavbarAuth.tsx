@@ -67,8 +67,9 @@ export function NavbarAuth() {
                 alt={user?.firstName ?? "User"}
                 className="w-9 h-9 rounded-full object-cover border-2 border-brand-border"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src =
-                    "/images/default-avatar.png";
+                  const target = e.target as HTMLImageElement;
+                  target.onerror = null; // Prevent infinite loop
+                  target.src = "/images/default-avatar.png";
                 }}
               />
               <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-brand-navy rounded-full" />
