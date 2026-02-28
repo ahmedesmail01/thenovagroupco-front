@@ -5,7 +5,7 @@ interface StepperProps {
 
 export function Stepper({ steps, current }: StepperProps) {
   return (
-    <div className="flex items-center justify-center w-full mb-8 overflow-x-auto pb-4 scrollbar-hide">
+    <div className="flex items-center justify-start sm:justify-center w-full mb-8 overflow-x-auto pb-4 scrollbar-hide px-4">
       {steps.map((label, i) => {
         const done = i < current;
         const active = i === current;
