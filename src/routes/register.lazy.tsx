@@ -69,9 +69,20 @@ function RegisterPage() {
           </div>
 
           <div className="text-center mb-[66px]">
-            <h1 className="text-[28px] font-semibold text-white">Sign Up</h1>
+            <h1 className="text-[28px] font-semibold text-white">
+              {step === 0 && "Sign Up"}
+              {step === 1 && "Confirm Sponsor ID"}
+              {step === 2 && "Account Details"}
+              {step === 3 && "Create PIN"}
+              {step === 4 && "Review"}
+            </h1>
             <p className="text-sm text-white ">
-              Enter your details to create your member account
+              {step === 0 && "Enter your details to create your member account"}
+              {step === 1 &&
+                "Confirm your Sponsor ID" + " " + formData.sponsorId}
+              {step === 2 && "Enter your account details"}
+              {step === 3 && "Create your PIN"}
+              {step === 4 && "Review your details"}
             </p>
           </div>
 
@@ -199,26 +210,14 @@ function StepConfirmSponsorId({
   const [confirmed, setConfirmed] = useState(false);
   return (
     <div className="space-y-5">
-      <div className="p-6 bg-brand-navy/50 rounded-xl border border-brand-border text-center space-y-3">
-        <p className="text-text-secondary text-sm">
-          You are joining under Sponsor ID:
-        </p>
-        <p className="text-white font-black text-3xl tracking-tight">
-          {data.sponsorId}
-        </p>
-        <span className="inline-flex items-center gap-2 px-3 py-1 bg-brand-blue/10 text-brand-blue-light rounded-full text-xs font-bold">
-          <span className="w-2 h-2 rounded-full bg-brand-blue-light animate-pulse" />
-          Verified Sponsor
-        </span>
-      </div>
-      <label className="flex items-center gap-4 p-4 bg-white/5 hover:bg-white/10 rounded-xl cursor-pointer transition-colors border border-white/5">
+      <label className="flex items-center gap-4 p-4 bg-white  rounded-xl cursor-pointer transition-colors border border-white/5">
         <input
           type="checkbox"
           checked={confirmed}
           onChange={(e) => setConfirmed(e.target.checked)}
           className="w-5 h-5 accent-brand-blue rounded"
         />
-        <span className="text-white text-sm font-medium">
+        <span className="text-black text-sm font-medium">
           Yes, I confirm this Sponsor ID
         </span>
       </label>
