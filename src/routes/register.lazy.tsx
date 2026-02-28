@@ -363,10 +363,16 @@ function StepAccountDetails({
             value={watch("phone")}
             onChange={(phone) => setValue("phone", phone)}
             className="w-full"
+            forceDialCode
             inputClassName="!w-full !h-[48px] !rounded-lg !border-0 !bg-white !text-gray-900 !px-4 !py-3 !outline-none !ring-2 !ring-transparent focus:!ring-brand-blue"
             countrySelectorStyleProps={{
               buttonClassName:
-                "!h-[48px] !bg-white !border-0 !rounded-lg !px-3",
+                "!h-[48px] !bg-white !border-0 !rounded-lg !px-3 !ml-2",
+            }}
+            style={{
+              flexDirection: "row-reverse",
+              display: "flex",
+              gap: "8px",
             }}
           />
         </div>
