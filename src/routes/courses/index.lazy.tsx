@@ -44,7 +44,7 @@ function CoursesPage() {
               results find for “ui/ux design”{" "}
             </p>
             <button
-              className="lg:hidden flex items-center gap-2 text-sm text-white border border-brand-border rounded-lg px-3 py-2 bg-brand-surface hover:bg-white/5 transition-colors"
+              className="lg:hidden text-nowrap mx-1 flex items-center gap-2 text-sm text-white border border-brand-border rounded-lg px-3 py-2 bg-brand-surface hover:bg-white/5 transition-colors"
               onClick={() => setMobileFiltersOpen(true)}
             >
               ⚙ Filters &amp; Categories
