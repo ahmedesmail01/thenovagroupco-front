@@ -43,7 +43,7 @@ export function Footer() {
             <ul className="space-y-3 text-sm text-white font-bold font-montserrat">
               <li>
                 <Link
-                  to="/about"
+                  to="/"
                   className="hover:text-brand-blue-light transition-colors"
                 >
                   About Us

@@ -22,7 +22,7 @@ export interface Course {
   id: string;
   title: string;
   description: string;
-  thumbnail: string; // e.g. "/images/courses/course-1.jpg"
+  thumbnail: string; // e.g. "/images/course-1.png"
   category: string;
   level: string;
   duration: string; // e.g. "12 Hours"
@@ -57,7 +57,7 @@ const DUMMY_COURSES: Course[] = [
     title: "Complete UI/UX Design Masterclass",
     description:
       "Master design thinking, wireframing, prototyping, and building beautiful digital experiences in Figma.",
-    thumbnail: "/images/courses/course-1.jpg",
+    thumbnail: "/images/course-1.png",
     category: "Design",
     level: "Beginner",
     duration: "12",
@@ -72,7 +72,7 @@ const DUMMY_COURSES: Course[] = [
     title: "Full-Stack React & Node.js — Pro Edition",
     description:
       "Build production-ready full-stack web applications from scratch using React, Node, Express and MongoDB.",
-    thumbnail: "/images/courses/course-2.jpg",
+    thumbnail: "/images/course-1.png",
     category: "Development",
     level: "Intermediate",
     duration: "45",
@@ -87,7 +87,7 @@ const DUMMY_COURSES: Course[] = [
     title: "Financial Freedom — Stocks & Investing",
     description:
       "Learn to analyze markets, build a portfolio, and invest with confidence in equities and ETFs.",
-    thumbnail: "/images/courses/course-3.jpg",
+    thumbnail: "/images/course-1.png",
     category: "Finance & Accounting",
     level: "All Level",
     duration: "8",
@@ -102,7 +102,7 @@ const DUMMY_COURSES: Course[] = [
     title: "Advanced Digital Marketing Strategy",
     description:
       "Go beyond the basics — SEO, paid ads, email funnels, analytics, and brand building for growth.",
-    thumbnail: "/images/courses/course-4.jpg",
+    thumbnail: "/images/course-1.png",
     category: "Marketing",
     level: "Expert",
     duration: "22",
@@ -117,7 +117,7 @@ const DUMMY_COURSES: Course[] = [
     title: "Personal Development & Mindset Mastery",
     description:
       "Rewire your mindset, build unbreakable habits, and unlock your full potential in life and career.",
-    thumbnail: "/images/courses/course-5.jpg",
+    thumbnail: "/images/course-1.png",
     category: "Personal Development",
     level: "All Level",
     duration: "10",
@@ -132,7 +132,7 @@ const DUMMY_COURSES: Course[] = [
     title: "Laravel & PHP — Backend Mastery",
     description:
       "Build secure, scalable REST APIs and web apps using Laravel, MySQL, and modern PHP best practices.",
-    thumbnail: "/images/courses/course-6.jpg",
+    thumbnail: "/images/course-1.png",
     category: "IT & Software",
     level: "Intermediate",
     duration: "30",
@@ -280,7 +280,7 @@ export function useCourse(id: string) {
     queryFn: async (): Promise<CourseDetail> => {
       try {
         // TODO: Replace with real API call when backend is ready
-        // const data = await api.get(`/courses/${id}`);
+        // const data = await api.get(`/${id}`);
         // return data.data;
 
         // ── Dummy data simulation ──
