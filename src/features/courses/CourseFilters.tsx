@@ -1,38 +1,59 @@
 import { useState } from "react";
 import { type CourseFiltersType } from "../../features/courses/courseQueries";
+import {
+  ChevronUp,
+  ChevronDown,
+  Cpu,
+  Handshake,
+  Calculator,
+  Flag,
+  Smile,
+  Monitor,
+  PenTool,
+  Megaphone,
+  Box,
+  Camera,
+  Headphones,
+  BriefcaseMedical,
+} from "lucide-react";
+import { cn } from "../../lib/utils";
 
 const CATEGORIES = [
-  "Development",
-  "Business",
-  "Finance & Accounting",
-  "IT & Software",
-  "Office Productivity",
-  "Personal Development",
-  "Design",
-  "Marketing",
-  "Lifestyle",
-  "Photography & Video",
-  "Music",
-  "Health & Fitness",
+  {
+    name: "Development",
+    icon: Cpu,
+    sub: [
+      { name: "Web development", count: 574 },
+      { name: "Data Science", count: 568 },
+      { name: "Mobile Development", count: 1345 },
+      { name: "Software Testing", count: 317 },
+      { name: "Software Engineering", count: 31 },
+      { name: "Software Development Tools", count: 558 },
+      { name: "No-Code Development", count: 37 },
+    ],
+  },
+  { name: "Business", icon: Handshake, sub: [] },
+  { name: "Finance & Accounting", icon: Calculator, sub: [] },
+  { name: "IT & Software", icon: Flag, sub: [] },
+  { name: "Office Productivity", icon: Smile, sub: [] },
+  { name: "Personal Development", icon: Monitor, sub: [] },
+  { name: "Design", icon: PenTool, sub: [] },
+  { name: "Marketing", icon: Megaphone, sub: [] },
+  { name: "Lifestyle", icon: Box, sub: [] },
+  { name: "Photography & Video", icon: Camera, sub: [] },
+  { name: "Music", icon: Headphones, sub: [] },
+  { name: "Health & Fitness", icon: BriefcaseMedical, sub: [] },
 ];
+
 const TOOLS = [
-  "HTML 5",
-  "CSS 3",
-  "React",
-  "Webflow",
-  "Node.js",
-  "Laravel",
-  "Saas",
-  "Wordpress",
-];
-const LEVELS = ["All Level", "Beginner", "Intermediate", "Expert"];
-const PACKAGES = ["Basic", "Premium", "Pro"];
-const DURATIONS = [
-  "6-12 Months",
-  "3-6 Months",
-  "1-3 Months",
-  "1-4 Weeks",
-  "1-7 Days",
+  { name: "HTML 5", count: 1345 },
+  { name: "CSS 3", count: 12736 },
+  { name: "React", count: 1345 },
+  { name: "Webflow", count: 1345 },
+  { name: "Node.js", count: 1345 },
+  { name: "Laravel", count: 1345 },
+  { name: "Saas", count: 1345 },
+  { name: "Wordpress", count: 1345 },
 ];
 
 interface CourseFiltersProps {
@@ -41,7 +62,17 @@ interface CourseFiltersProps {
 }
 
 export function CourseFilters({ filters, onChange }: CourseFiltersProps) {
-  const toggle = (key: keyof CourseFiltersType, item: string) => {
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({
+    category: true,
+    tools: true,
+    level: true,
+  });
+
+  const toggleSection = (section: string) => {
+    setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
+  };
+
+  const handleToggle = (key: keyof CourseFiltersType, item: string) => {
     const current = (filters[key] as string[] | undefined) || [];
     const next = current.includes(item)
       ? current.filter((i) => i !== item)
@@ -49,109 +80,168 @@ export function CourseFilters({ filters, onChange }: CourseFiltersProps) {
     onChange({ ...filters, [key]: next.length ? next : undefined });
   };
 
-  const clearAll = () => onChange({});
-  const hasFilters = Object.values(filters).some(
-    (v) => v && (Array.isArray(v) ? v.length > 0 : true),
-  );
-
   return (
-    <div className="flex flex-col gap-6 text-sm">
-      {/* Clear all */}
-      {hasFilters && (
+    <div className="flex flex-col gap-0 border border-[#E9EAF0]">
+      {/* Category Section */}
+      <div className="border-b border-[#E9EAF0]">
         <button
-          className="text-xs text-brand-blue-light hover:underline text-left"
-          onClick={clearAll}
+          onClick={() => toggleSection("category")}
+          className="w-full flex items-center justify-between p-4 uppercase font-bold text-[#1D2026] text-sm tracking-tight"
         >
-          Clear all filters
+          CATEGORY
+          {openSections.category ? (
+            <ChevronUp size={20} className="text-[#999DA3]" />
+          ) : (
+            <ChevronDown size={20} className="text-[#999DA3]" />
+          )}
         </button>
-      )}
 
-      <FilterGroup
-        label="CATEGORY"
-        items={CATEGORIES}
-        selected={filters.categories}
-        onToggle={(i) => toggle("categories", i)}
-      />
-      <FilterGroup
-        label="TOOLS"
-        items={TOOLS}
-        selected={filters.tools}
-        onToggle={(i) => toggle("tools", i)}
-      />
-      <FilterGroup
-        label="COURSE LEVEL"
-        items={LEVELS}
-        selected={filters.levels}
-        onToggle={(i) => toggle("levels", i)}
-      />
-      <FilterGroup
-        label="PACKAGES"
-        items={PACKAGES}
-        selected={filters.packages}
-        onToggle={(i) => toggle("packages", i)}
-      />
-      <FilterGroup
-        label="DURATION"
-        items={DURATIONS}
-        selected={filters.durations}
-        onToggle={(i) => toggle("durations", i)}
-      />
+        {openSections.category && (
+          <div className="pb-2">
+            {CATEGORIES.map((cat) => (
+              <CategoryItem
+                key={cat.name}
+                category={cat}
+                selectedItems={filters.categories || []}
+                onToggle={(sub) => handleToggle("categories", sub)}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Tools Section */}
+      <div className="border-b border-[#E9EAF0]">
+        <button
+          onClick={() => toggleSection("tools")}
+          className="w-full flex items-center justify-between p-4 uppercase font-bold text-[#1D2026] text-sm tracking-tight"
+        >
+          TOOLS
+          {openSections.tools ? (
+            <ChevronUp size={20} className="text-[#999DA3]" />
+          ) : (
+            <ChevronDown size={20} className="text-[#999DA3]" />
+          )}
+        </button>
+
+        {openSections.tools && (
+          <div className="px-4 pb-4 flex flex-col gap-3">
+            {TOOLS.map((tool) => (
+              <label
+                key={tool.name}
+                className="flex items-center justify-between cursor-pointer group"
+              >
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    checked={(filters.tools || []).includes(tool.name)}
+                    onChange={() => handleToggle("tools", tool.name)}
+                    className="w-5 h-5 rounded border-[#D1D5DB] text-brand-blue focus:ring-brand-blue cursor-pointer"
+                  />
+                  <span
+                    className={cn(
+                      "text-sm",
+                      (filters.tools || []).includes(tool.name)
+                        ? "text-brand-blue font-medium"
+                        : "text-[#4E5566] group-hover:text-brand-blue",
+                    )}
+                  >
+                    {tool.name}
+                  </span>
+                </div>
+                <span className="text-xs text-[#999DA3]">
+                  {tool.count.toLocaleString()}
+                </span>
+              </label>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
 
-interface FilterGroupProps {
-  label: string;
-  items: string[];
-  selected?: string[];
-  onToggle: (item: string) => void;
-}
-
-function FilterGroup({
-  label,
-  items,
-  selected = [],
+function CategoryItem({
+  category,
+  selectedItems,
   onToggle,
-}: FilterGroupProps) {
-  const [open, setOpen] = useState(true);
+}: {
+  category: (typeof CATEGORIES)[0];
+  selectedItems: string[];
+  onToggle: (name: string) => void;
+}) {
+  const [isOpen, setIsOpen] = useState(category.name === "Development");
+  const hasSub = category.sub.length > 0;
+  const isActive = selectedItems.some((item) =>
+    category.sub.map((s) => s.name).includes(item),
+  );
 
   return (
-    <div className="border-b border-brand-border pb-5">
+    <div className="flex flex-col border-b border-[#E9EAF0] last:border-b-0">
       <button
-        className="flex items-center justify-between w-full font-semibold text-text-primary uppercase tracking-wider text-xs mb-3 hover:text-white transition-colors"
-        onClick={() => setOpen(!open)}
+        onClick={() => hasSub && setIsOpen(!isOpen)}
+        className={cn(
+          "w-full flex items-center justify-between px-4 py-3.5 transition-colors",
+          isActive ? "bg-[#F5F7FA]" : "hover:bg-[#F5F7FA]",
+        )}
       >
-        <span>
-          {label}
-          {selected.length > 0 && (
-            <span className="ml-2 text-[10px] bg-brand-blue text-white px-1.5 py-0.5 rounded-full font-bold lowercase">
-              {selected.length}
-            </span>
-          )}
-        </span>
-        <span className="text-text-muted">{open ? "▲" : "▼"}</span>
+        <div className="flex items-center gap-3">
+          <category.icon
+            size={20}
+            className={cn(isActive ? "text-brand-blue" : "text-[#999DA3]")}
+          />
+          <span
+            className={cn(
+              "text-sm",
+              isActive ? "text-brand-blue font-semibold" : "text-[#4E5566]",
+            )}
+          >
+            {category.name}
+          </span>
+        </div>
+        {hasSub &&
+          (isOpen ? (
+            <ChevronUp size={16} className="text-brand-blue" />
+          ) : (
+            <ChevronDown size={16} className="text-[#999DA3]" />
+          ))}
       </button>
-      {open && (
-        <div className="flex flex-col gap-2.5">
-          {items.map((item) => (
+
+      {isOpen && hasSub && (
+        <div className="flex flex-col gap-3 px-4 pb-4 pt-1">
+          {category.sub.map((sub) => (
             <label
-              key={item}
-              className="flex items-center justify-between cursor-pointer group"
+              key={sub.name}
+              className="flex items-center justify-between cursor-pointer group ml-8"
             >
-              <span className="flex items-center gap-2.5">
+              <div className="flex items-center gap-3">
                 <input
                   type="checkbox"
-                  checked={selected.includes(item)}
-                  onChange={() => onToggle(item)}
-                  className="w-4 h-4 accent-brand-blue rounded cursor-pointer"
+                  checked={selectedItems.includes(sub.name)}
+                  onChange={() => onToggle(sub.name)}
+                  className="w-5 h-5 rounded border-[#D1D5DB] text-brand-blue focus:ring-brand-blue cursor-pointer"
                 />
                 <span
-                  className={`transition-colors text-xs ${selected.includes(item) ? "text-white font-medium" : "text-text-secondary group-hover:text-white"}`}
+                  className={cn(
+                    "text-sm",
+                    selectedItems.includes(sub.name)
+                      ? "text-brand-blue font-medium"
+                      : "text-[#4E5566] group-hover:text-brand-blue",
+                  )}
                 >
-                  {item}
+                  {sub.name}
                 </span>
+              </div>
+              <span
+                className={cn(
+                  "text-xs",
+                  selectedItems.includes(sub.name)
+                    ? "text-[#1D2026] font-bold"
+                    : "text-[#999DA3]",
+                )}
+              >
+                {sub.count.toLocaleString()}
               </span>
-              <span className="text-text-muted text-[10px]">1345</span>
             </label>
           ))}
         </div>

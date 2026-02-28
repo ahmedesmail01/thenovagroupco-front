@@ -51,27 +51,28 @@ function CoursesPage() {
             </button>
           </div>
 
-          <div className="flex gap-40 items-start">
+          <div className="flex gap-8 items-start">
             {/* Sidebar */}
             <aside
-              className={`lg:block lg:w-64 lg:flex-shrink-0 lg:sticky lg:top-24
+              className={`lg:block lg:w-80 lg:flex-shrink-0 lg:sticky lg:top-24
               ${
                 mobileFiltersOpen
-                  ? "fixed inset-0 z-50 bg-brand-navy overflow-y-auto p-6"
+                  ? "fixed inset-0 z-50 bg-white overflow-y-auto p-6"
                   : "hidden"
               }`}
             >
               {mobileFiltersOpen && (
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-bold text-white">Filters</h2>
+                <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#E9EAF0]">
+                  <h2 className="text-xl font-bold text-[#1D2026]">Filters</h2>
                   <button
-                    className="text-white w-8 h-8 flex items-center justify-center bg-white/10 rounded-full"
+                    className="text-[#1D2026] w-10 h-10 flex items-center justify-center bg-[#F5F7FA] hover:bg-[#E9EAF0] rounded-full transition-colors"
                     onClick={() => setMobileFiltersOpen(false)}
                   >
                     ✕
                   </button>
                 </div>
               )}
+
               <CourseFilters filters={filters} onChange={handleFilterChange} />
             </aside>
 
