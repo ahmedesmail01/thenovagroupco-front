@@ -76,7 +76,7 @@ function RegisterPage() {
               {step === 1 && "Confirm Sponsor ID"}
               {step === 2 && "Account Details"}
               {step === 3 && "Create PIN"}
-              {step === 4 && "Review"}
+              {step === 4 && "Review and Confirm"}
             </h1>
             <p className="text-sm text-white ">
               {step === 0 && "Enter your details to create your member account"}
@@ -84,7 +84,8 @@ function RegisterPage() {
                 "Confirm your Sponsor ID" + " " + formData.sponsorId}
               {step === 2 && "Enter your account details"}
               {step === 3 && "Create your PIN"}
-              {step === 4 && "Review your details"}
+              {step === 4 &&
+                "Please review your information before creating your account."}
             </p>
           </div>
 
@@ -368,6 +369,12 @@ function StepAccountDetails({
             countrySelectorStyleProps={{
               buttonClassName:
                 "!h-[48px] !bg-white !border-0 !rounded-lg !px-3 !ml-2",
+              dropdownStyleProps: {
+                style: {
+                  right: 0,
+                  left: "auto",
+                },
+              },
             }}
             style={{
               flexDirection: "row-reverse",
@@ -590,75 +597,74 @@ function StepReview({
   });
 
   const fields = [
-    { label: "Sponsor ID", value: data.sponsorId },
     { label: "First Name", value: data.firstName },
     { label: "Last Name", value: data.lastName },
-    { label: "Username", value: data.username },
+    { label: "User Name", value: data.username },
     {
-      label: "Phone",
-      value: `${data.countryCode ?? ""} ${data.phone ?? ""}`.trim(),
+      label: "Phone Number",
+      value: `${data.phone ?? ""}`.trim(),
     },
     { label: "Email", value: data.email },
+    { label: "Sponsor ID", value: `${data.sponsorId} ()` },
   ];
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-8">
       {isError && (
         <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">
           Registration failed. Please check your image and other fields.
         </div>
       )}
-      <div className="grid grid-cols-2 gap-x-6 gap-y-3 p-5 bg-brand-navy/40 rounded-xl border border-brand-border">
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-6">
         {fields.map((f) => (
-          <div key={f.label}>
-            <p className="text-text-muted text-[10px] uppercase font-bold tracking-wider mb-0.5">
-              {f.label}
-            </p>
-            <p className="text-white text-sm font-semibold">{f.value || "—"}</p>
+          <div key={f.label} className="flex items-baseline gap-2">
+            <span className="text-white text-base font-semibold whitespace-nowrap">
+              {f.label}:
+            </span>
+            <span className="text-white/90 text-base font-medium truncate">
+              {f.value || "—"}
+            </span>
           </div>
         ))}
       </div>
-      <hr className="border-brand-border" />
-      <label className="flex items-start gap-3 cursor-pointer group">
+
+      <hr className="border-white/10" />
+
+      <label className="flex items-center gap-3 cursor-pointer group">
         <input
           type="checkbox"
           checked={agreed}
           onChange={(e) => setAgreed(e.target.checked)}
-          className="w-5 h-5 accent-brand-blue rounded mt-0.5"
+          className="w-6 h-6 rounded bg-white accent-brand-blue"
         />
-        <span className="text-sm text-text-secondary group-hover:text-white transition-colors">
-          I agree to the{" "}
-          <span className="text-brand-blue-light underline">
-            Terms & Conditions
-          </span>{" "}
-          and{" "}
-          <span className="text-brand-blue-light underline">
-            Privacy Policy
-          </span>
+        <span className="text-base text-white font-medium">
+          I agree to the terms and conditions
         </span>
       </label>
-      <div className="flex gap-3">
+
+      <div className="flex gap-4 pt-4">
         <Button
           type="button"
           variant="outline"
-          className="flex-1"
+          className="flex-1 py-3 border-white/40 hover:bg-white/5 rounded-xl h-[52px]"
           onClick={onBack}
         >
-          ← Back
+          Back
         </Button>
         <Button
           type="button"
-          className="flex-1 h-12"
+          className="flex-1 h-[52px] bg-brand-blue text-white rounded-xl font-semibold shadow-lg hover:shadow-brand-blue/20 transition-all"
           disabled={!agreed || isPending}
           onClick={() => registerMutation()}
         >
           {isPending ? (
             <span className="flex items-center justify-center gap-2">
               <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              Creating account...
+              Submitting...
             </span>
           ) : (
-            "Create Account ✓"
+            "Submit"
           )}
         </Button>
       </div>
