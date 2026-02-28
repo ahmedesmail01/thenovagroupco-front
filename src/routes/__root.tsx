@@ -7,7 +7,7 @@ import {
 import { Navbar } from "../components/layout/Navbar";
 import { Footer } from "../components/layout/Footer";
 import { NotFoundPage } from "../components/NotFoundPage";
-import { useAuthStore } from "../features/auth/useAuthStore";
+// import { useAuthStore } from "../features/auth/useAuthStore";
 
 export const Route = createRootRoute({
   component: RootLayout,
@@ -15,7 +15,7 @@ export const Route = createRootRoute({
 });
 
 function RootLayout() {
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  // const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const { location } = useRouterState();
 
   // Define public pages that should have the default navbar/footer
@@ -25,7 +25,7 @@ function RootLayout() {
   return (
     <div className="min-h-screen bg-brand-navy text-text-primary flex flex-col font-sans">
       {/* Show Navbar only on public pages when not logged in, or if explicitly requested */}
-      {isPublicPage && !isAuthenticated && <Navbar />}
+      {isPublicPage && <Navbar />}
 
       {/* For authenticated dashboard, we don't show the root navbar/footer 
           as AuthLayout handles it */}
@@ -33,7 +33,7 @@ function RootLayout() {
         <Outlet />
       </main>
 
-      {isPublicPage && !isAuthenticated && <Footer />}
+      {isPublicPage && <Footer />}
 
       {/* <TanStackRouterDevtools position="bottom-right" /> */}
     </div>
