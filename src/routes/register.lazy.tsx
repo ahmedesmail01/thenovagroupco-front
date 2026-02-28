@@ -7,7 +7,9 @@ import { Input } from "../components/ui/Input";
 import { Button } from "../components/ui/Button";
 import { Stepper } from "../components/ui/Stepper";
 import { useAuthStore, type User } from "../features/auth/useAuthStore";
-import { COUNTRY_CODES } from "../lib/countryCodes";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
+import { Eye, EyeOff, Upload } from "lucide-react";
 import api from "../lib/api";
 import type {
   SponsorIdSchema,
@@ -56,7 +58,7 @@ function RegisterPage() {
     >
       <div className="relative z-10 max-[1229px]">
         {/* Card */}
-        <div className="rounded-[12px] bg-gradient-to-b  from-brand-terquaz to-brand-navy p-10 shadow-[0_32px_80px_rgba(0,0,0,0.65)]">
+        <div className="rounded-[12px] bg-[#1a2f3f] p-10 shadow-[0_32px_80px_rgba(0,0,0,0.65)]">
           <div className="flex items-start justify-between mb-4">
             <button
               type="button"
@@ -199,7 +201,6 @@ function StepSponsorId({ onNext }: { onNext: (d: SponsorIdSchema) => void }) {
 }
 
 function StepConfirmSponsorId({
-  data,
   onNext,
   onBack,
 }: {
@@ -252,68 +253,124 @@ function StepAccountDetails({
   onNext: (d: AccountDetailsSchema) => void;
   onBack: () => void;
 }) {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<AccountDetailsSchema>({
     resolver: zodResolver(accountDetailsSchema),
-    defaultValues: { sponsorId: data.sponsorId, countryCode: "+20" },
+    defaultValues: {
+      sponsorId: data.sponsorId,
+      countryCode: "+20",
+    },
   });
+
+  const avatarFile = watch("avatar");
+
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatarPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+      setValue("avatar", e.target.files);
+    }
+  };
 
   return (
     <form
       onSubmit={handleSubmit(onNext)}
-      className="space-y-4 max-h-[55vh] overflow-y-auto pr-1"
+      className="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar"
     >
+      {/* Profile Image */}
+      <div className="space-y-1.5">
+        <label className="text-sm font-medium text-white">Profile Image</label>
+        <div className="flex items-center justify-between bg-white rounded-xl p-3 border border-white/10">
+          <div className="flex items-center gap-3">
+            <div className="h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden border-2 border-white/20">
+              {avatarPreview ? (
+                <img
+                  src={avatarPreview}
+                  alt="Preview"
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <div className="h-full w-full flex items-center justify-center bg-gray-200">
+                  <Upload className="h-6 w-6 text-gray-400" />
+                </div>
+              )}
+            </div>
+            <span className="text-gray-500 text-sm">
+              {avatarFile?.[0]?.name || "No file chosen"}
+            </span>
+          </div>
+          <label className="cursor-pointer bg-white border border-brand-blue/30 text-brand-blue px-4 py-2 rounded-lg text-sm font-semibold hover:bg-brand-blue/5 transition-colors">
+            Choose File
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleAvatarChange}
+            />
+          </label>
+        </div>
+      </div>
+
       <Input
         label="Sponsor ID *"
         error={errors.sponsorId?.message}
         {...register("sponsorId")}
         readOnly
+        className="bg-white"
+        placeholder="Enter your Name"
       />
 
       <div className="grid grid-cols-2 gap-4">
         <Input
           label="First Name *"
-          placeholder="First name"
+          placeholder="Enter your Name"
           error={errors.firstName?.message}
           {...register("firstName")}
+          className="bg-white"
         />
         <Input
           label="Last Name *"
-          placeholder="Last name"
+          placeholder="Enter your Email"
           error={errors.lastName?.message}
           {...register("lastName")}
+          className="bg-white"
         />
       </div>
 
       <Input
         label="Username *"
-        placeholder="e.g. johndoe_23"
+        placeholder="Enter Username"
         error={errors.username?.message}
         {...register("username")}
+        className="bg-white"
       />
 
-      <div>
-        <label className="block text-sm font-medium text-text-primary mb-1.5">
-          Phone Number *
-        </label>
-        <div className="flex gap-2">
-          <select
-            className="w-28 rounded-lg bg-white px-2 py-3 text-gray-900 outline-none focus:ring-2 focus:ring-brand-blue text-sm"
-            {...register("countryCode")}
-          >
-            {COUNTRY_CODES.map((c) => (
-              <option key={c.code} value={c.code}>
-                {c.flag} {c.code}
-              </option>
-            ))}
-          </select>
-          <input
-            className="flex-1 rounded-lg bg-white px-4 py-3 text-gray-900 outline-none focus:ring-2 focus:ring-brand-blue"
-            placeholder="Phone number"
-            {...register("phone")}
+      <div className="space-y-1.5">
+        <label className="text-sm font-medium text-white">Phone Number*</label>
+        <div className="phone-input-container">
+          <PhoneInput
+            defaultCountry="eg"
+            value={watch("phone")}
+            onChange={(phone) => setValue("phone", phone)}
+            className="w-full"
+            inputClassName="!w-full !h-[48px] !rounded-lg !border-0 !bg-white !text-gray-900 !px-4 !py-3 !outline-none !ring-2 !ring-transparent focus:!ring-brand-blue"
+            countrySelectorStyleProps={{
+              buttonClassName:
+                "!h-[48px] !bg-white !border-0 !rounded-lg !px-3",
+            }}
           />
         </div>
         {errors.phone && (
@@ -324,38 +381,57 @@ function StepAccountDetails({
       <Input
         label="Email *"
         type="email"
-        placeholder="your@email.com"
+        placeholder="Enter your Email"
         error={errors.email?.message}
         {...register("email")}
+        className="bg-white"
       />
+
       <Input
         label="Password *"
-        type="password"
-        placeholder="Min 8 chars, 1 uppercase, 1 number"
+        type={showPassword ? "text" : "password"}
+        placeholder="Enter your Password"
         error={errors.password?.message}
+        className="bg-white"
         {...register("password")}
+        rightElement={
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="text-gray-400 hover:text-gray-600 focus:outline-none"
+          >
+            {showPassword ? (
+              <EyeOff className="h-5 w-5" />
+            ) : (
+              <Eye className="h-5 w-5" />
+            )}
+          </button>
+        }
       />
+
       <Input
         label="Confirm Password *"
-        type="password"
-        placeholder="Repeat password"
+        type={showConfirmPassword ? "text" : "password"}
+        placeholder="Enter your Password"
         error={errors.confirmPassword?.message}
+        className="bg-white"
         {...register("confirmPassword")}
+        rightElement={
+          <button
+            type="button"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            className="text-gray-400 hover:text-gray-600 focus:outline-none"
+          >
+            {showConfirmPassword ? (
+              <EyeOff className="h-5 w-5" />
+            ) : (
+              <Eye className="h-5 w-5" />
+            )}
+          </button>
+        }
       />
 
-      <div>
-        <label className="block text-sm font-medium text-text-primary mb-1.5">
-          Profile Image
-        </label>
-        <input
-          type="file"
-          accept="image/*"
-          className="block w-full text-sm text-text-primary file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-brand-blue file:text-white hover:file:bg-brand-blue-light"
-          {...register("avatar")}
-        />
-      </div>
-
-      <div className="flex gap-3 pt-2 sticky bottom-0 bg-brand-surface pb-2">
+      <div className="flex gap-3 pt-4 sticky bottom-0 bg-transparent py-2">
         <Button
           type="button"
           variant="outline"
