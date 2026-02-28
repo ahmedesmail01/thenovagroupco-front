@@ -53,10 +53,10 @@ function RegisterPage() {
 
   return (
     <div
-      className="fixed inset-0 flex  justify-center px-6  items-center  overflow-auto bg-cover bg-center bg-no-repeat"
+      className="fixed inset-0 flex justify-center px-6 py-10 overflow-auto bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: 'url("/images/register-bg.png")' }}
     >
-      <div className="relative z-10 max-[1229px]">
+      <div className="relative z-10 max-[1229px] my-auto">
         {/* Card */}
         <div className="rounded-[12px] bg-[#1a2f3f] p-10 shadow-[0_32px_80px_rgba(0,0,0,0.65)]">
           <div className="flex items-start justify-between mb-4">
@@ -286,10 +286,7 @@ function StepAccountDetails({
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onNext)}
-      className="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar"
-    >
+    <form onSubmit={handleSubmit(onNext)} className="space-y-4 pr-2">
       {/* Profile Image */}
       <div className="space-y-1.5">
         <label className="text-sm font-medium text-white">Profile Image</label>
