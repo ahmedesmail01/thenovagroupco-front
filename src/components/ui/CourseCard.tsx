@@ -1,5 +1,5 @@
 import { type Course } from "../../features/courses/courseQueries";
-import { Button } from "./Button";
+import { Clock } from "lucide-react";
 
 interface CourseCardProps {
   course: Course;
@@ -15,79 +15,82 @@ export function CourseCard({
   isLibraryView = false,
 }: CourseCardProps) {
   return (
-    <div className="bg-white rounded-xl overflow-hidden shadow-card hover:shadow-lg transition-all duration-300 flex flex-col group border border-transparent hover:border-brand-blue/20">
-      {/* Thumbnail */}
-      <div className="relative overflow-hidden">
+    <div className="bg-white rounded-[1rem] p-3 border border-[#E9EAF0] shadow-sm hover:shadow-md transition-all duration-300 flex flex-col group">
+      {/* Thumbnail Area */}
+      <div className="relative rounded-2xl overflow-hidden aspect-[1.8/1] mb-4">
         <img
           src={course.thumbnail}
           alt={course.title}
-          className="w-full h-44 object-cover transform group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
         />
-        <div className="absolute top-3 left-3 bg-brand-blue/90 text-white text-[10px] px-2 py-1 rounded-full font-bold uppercase tracking-wider backdrop-blur-sm">
-          {course.category}
+        {/* Category Tag */}
+        <div className="absolute bottom-3 left-4 bg-white px-8 py-2  shadow-sm">
+          <span className="text-brand-blue text-[10px] font-bold uppercase tracking-widest leading-none">
+            {course.category}
+          </span>
         </div>
       </div>
 
-      {/* Body */}
-      <div className="p-4 flex flex-col flex-1 gap-2">
-        <div className="flex items-center justify-between text-[11px] text-text-muted font-medium">
-          <span className="flex items-center gap-1">
-            🕒 {course.duration} Hours
-          </span>
-          <span>{course.chapters} chapters</span>
+      {/* Content Area */}
+      <div className="flex flex-col flex-1">
+        {/* Header: Title and Time */}
+        <div className="flex items-start justify-between gap-4 mb-2">
+          <h3 className="font-bold text-[#1D2026] text-lg leading-tight line-clamp-2">
+            {course.title}
+          </h3>
+          <div className="flex items-center gap-1.5 shrink-0 mt-1">
+            <Clock size={16} className="text-[#999DA3]" />
+            <span className="text-[#999DA3] text-xs font-medium">
+              <span className="text-[#4E5566] font-bold">
+                {course.duration}
+              </span>{" "}
+              Hours
+            </span>
+          </div>
         </div>
 
-        <h3 className="font-bold text-gray-900 line-clamp-1 group-hover:text-brand-blue transition-colors">
-          {course.title}
-        </h3>
-
-        <p className="text-xs text-gray-500 line-clamp-2 flex-1 leading-relaxed">
+        {/* Description */}
+        <p className="text-sm text-[#999DA3] line-clamp-2 leading-relaxed mb-4">
           {course.description}
         </p>
 
-        {/* Progress bar */}
-        <div className="space-y-1.5 mt-2">
-          <div className="flex justify-between items-center text-[10px] font-bold text-gray-400">
-            <span>Progress</span>
-            <span className="text-brand-blue">{course.completedPercent}%</span>
-          </div>
-          <div className="h-1.5 rounded-full bg-gray-100 overflow-hidden">
+        {/* Status and Progress */}
+        <div className="mt-auto">
+          <p className="text-[13px] text-[#999DA3] mb-2 font-medium">
+            Course Status - <span className="text-[#4E5566]">0 Completed</span>
+          </p>
+          <div className="h-1.5 w-full bg-[#F5F7FA] rounded-full overflow-hidden mb-6">
             <div
-              className="h-full rounded-full bg-brand-blue transition-all duration-1000"
+              className="h-full bg-brand-blue/10 rounded-full transition-all duration-500"
               style={{ width: `${course.completedPercent}%` }}
             />
           </div>
-        </div>
 
-        {/* Actions - Hidden in library view if needed, or shown as "Continue" */}
-        {!isLibraryView ? (
-          <div className="flex gap-2 mt-3">
-            <Button
-              variant="outline"
-              size="sm"
-              className="flex-1 !text-gray-700 !border-gray-200 hover:!bg-gray-50 !px-0"
+          {/* Actions */}
+          {!isLibraryView ? (
+            <div className="grid grid-cols-2 gap-3 mb-4 mx-2">
+              <button
+                onClick={() => onViewDetails?.(course.id)}
+                className="py-3 px-4  bg-[#E8F1F8] text-[#3B82F6] font-bold text-sm hover:bg-[#D1E5F3] transition-colors"
+              >
+                View Details
+              </button>
+              <button
+                onClick={() => onPackage?.(course.id)}
+                className="py-3 px-4  bg-[#3B82F6] text-white font-bold text-sm hover:bg-[#2563EB] transition-colors shadow-lg shadow-blue-500/20"
+              >
+                Package
+              </button>
+            </div>
+          ) : (
+            <button
               onClick={() => onViewDetails?.(course.id)}
-            >
-              View Details
-            </Button>
-            <Button
-              size="sm"
-              className="flex-1 !px-0 shadow-sm"
-              onClick={() => onPackage?.(course.id)}
-            >
-              Package
-            </Button>
-          </div>
-        ) : (
-          <div className="mt-3">
-            <Button
-              className="w-full shadow-lg shadow-brand-blue/20"
-              onClick={() => onViewDetails?.(course.id)}
+              className="w-full py-3 px-4  bg-[#3B82F6] text-white font-bold text-sm hover:bg-[#2563EB] transition-colors shadow-lg shadow-blue-500/20"
             >
               Continue Learning →
-            </Button>
-          </div>
-        )}
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
