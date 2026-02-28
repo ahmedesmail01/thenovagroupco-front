@@ -3,12 +3,11 @@ import {
   Outlet,
   useRouterState,
 } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/router-devtools";
+// import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { Navbar } from "../components/layout/Navbar";
 import { Footer } from "../components/layout/Footer";
 import { NotFoundPage } from "../components/NotFoundPage";
 import { useAuthStore } from "../features/auth/useAuthStore";
-import { NavbarAuth } from "../components/layout/NavbarAuth";
 
 export const Route = createRootRoute({
   component: RootLayout,
@@ -18,21 +17,25 @@ export const Route = createRootRoute({
 function RootLayout() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const { location } = useRouterState();
-  const isAuthPage =
-    location.pathname === "/login" || location.pathname === "/register";
+
+  // Define public pages that should have the default navbar/footer
+  const publicPages = ["/", "/about", "/courses", "/library"];
+  const isPublicPage = publicPages.includes(location.pathname);
 
   return (
     <div className="min-h-screen bg-brand-navy text-text-primary flex flex-col font-sans">
-      {/* Show NavbarAuth when logged in, public Navbar when logged out */}
-      {!isAuthPage && (isAuthenticated ? <NavbarAuth /> : <Navbar />)}
+      {/* Show Navbar only on public pages when not logged in, or if explicitly requested */}
+      {isPublicPage && !isAuthenticated && <Navbar />}
 
-      <main className={isAuthPage ? "flex-1" : "flex-1 pt-16"}>
+      {/* For authenticated dashboard, we don't show the root navbar/footer 
+          as AuthLayout handles it */}
+      <main className="flex-1">
         <Outlet />
       </main>
 
-      {!isAuthPage && <Footer />}
+      {isPublicPage && !isAuthenticated && <Footer />}
 
-      <TanStackRouterDevtools position="bottom-right" />
+      {/* <TanStackRouterDevtools position="bottom-right" /> */}
     </div>
   );
 }

@@ -20,6 +20,7 @@ const IndexLazyRouteImport = createFileRoute('/')()
 const CoursesIndexLazyRouteImport = createFileRoute('/courses/')()
 const CoursesCourseIdLazyRouteImport = createFileRoute('/courses/$courseId')()
 const AuthLibraryLazyRouteImport = createFileRoute('/_auth/library')()
+const AuthGenealogyLazyRouteImport = createFileRoute('/_auth/genealogy')()
 const AuthDashboardLazyRouteImport = createFileRoute('/_auth/dashboard')()
 
 const RegisterLazyRoute = RegisterLazyRouteImport.update({
@@ -63,6 +64,13 @@ const AuthLibraryLazyRoute = AuthLibraryLazyRouteImport.update({
   path: '/library',
   getParentRoute: () => AuthRoute,
 } as any).lazy(() => import('./routes/_auth/library.lazy').then((d) => d.Route))
+const AuthGenealogyLazyRoute = AuthGenealogyLazyRouteImport.update({
+  id: '/genealogy',
+  path: '/genealogy',
+  getParentRoute: () => AuthRoute,
+} as any).lazy(() =>
+  import('./routes/_auth/genealogy.lazy').then((d) => d.Route),
+)
 const AuthDashboardLazyRoute = AuthDashboardLazyRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -77,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginLazyRoute
   '/register': typeof RegisterLazyRoute
   '/dashboard': typeof AuthDashboardLazyRoute
+  '/genealogy': typeof AuthGenealogyLazyRoute
   '/library': typeof AuthLibraryLazyRoute
   '/courses/$courseId': typeof CoursesCourseIdLazyRoute
   '/courses/': typeof CoursesIndexLazyRoute
@@ -87,6 +96,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginLazyRoute
   '/register': typeof RegisterLazyRoute
   '/dashboard': typeof AuthDashboardLazyRoute
+  '/genealogy': typeof AuthGenealogyLazyRoute
   '/library': typeof AuthLibraryLazyRoute
   '/courses/$courseId': typeof CoursesCourseIdLazyRoute
   '/courses': typeof CoursesIndexLazyRoute
@@ -99,6 +109,7 @@ export interface FileRoutesById {
   '/login': typeof LoginLazyRoute
   '/register': typeof RegisterLazyRoute
   '/_auth/dashboard': typeof AuthDashboardLazyRoute
+  '/_auth/genealogy': typeof AuthGenealogyLazyRoute
   '/_auth/library': typeof AuthLibraryLazyRoute
   '/courses/$courseId': typeof CoursesCourseIdLazyRoute
   '/courses/': typeof CoursesIndexLazyRoute
@@ -111,6 +122,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/dashboard'
+    | '/genealogy'
     | '/library'
     | '/courses/$courseId'
     | '/courses/'
@@ -121,6 +133,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/dashboard'
+    | '/genealogy'
     | '/library'
     | '/courses/$courseId'
     | '/courses'
@@ -132,6 +145,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/_auth/dashboard'
+    | '/_auth/genealogy'
     | '/_auth/library'
     | '/courses/$courseId'
     | '/courses/'
@@ -205,6 +219,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLibraryLazyRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/genealogy': {
+      id: '/_auth/genealogy'
+      path: '/genealogy'
+      fullPath: '/genealogy'
+      preLoaderRoute: typeof AuthGenealogyLazyRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/dashboard': {
       id: '/_auth/dashboard'
       path: '/dashboard'
@@ -217,11 +238,13 @@ declare module '@tanstack/react-router' {
 
 interface AuthRouteChildren {
   AuthDashboardLazyRoute: typeof AuthDashboardLazyRoute
+  AuthGenealogyLazyRoute: typeof AuthGenealogyLazyRoute
   AuthLibraryLazyRoute: typeof AuthLibraryLazyRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthDashboardLazyRoute: AuthDashboardLazyRoute,
+  AuthGenealogyLazyRoute: AuthGenealogyLazyRoute,
   AuthLibraryLazyRoute: AuthLibraryLazyRoute,
 }
 
