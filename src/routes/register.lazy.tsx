@@ -78,11 +78,13 @@ function RegisterPage() {
               {step === 3 && "Create PIN"}
               {step === 4 && "Review and Confirm"}
             </h1>
-            <p className="text-sm text-white ">
+            <p className="text-[20px] text-white ">
               {step === 0 && "Enter your details to create your member account"}
               {step === 1 &&
-                "Confirm your Sponsor ID" + " " + formData.sponsorId}
-              {step === 2 && "Enter your account details"}
+                "Are you sure you want to join under the Sponsor ID:" +
+                  " " +
+                  formData.sponsorId}
+              {step === 2 && "Enter your details to create your member account"}
               {step === 3 && "Create your PIN"}
               {step === 4 &&
                 "Please review your information before creating your account."}
@@ -189,7 +191,7 @@ function StepSponsorId({ onNext }: { onNext: (d: SponsorIdSchema) => void }) {
       <p className="text-text-muted text-xs">
         Enter the Sponsor ID of the person who referred you.
       </p>
-      <div className="flex gap-3 pt-2 mx-auto w-[80%]">
+      <div className="flex gap-4 pt-8 mx-auto w-full max-w-[480px]">
         <Button type="button" variant="outline" className="flex-1" disabled>
           Back
         </Button>
@@ -223,14 +225,14 @@ function StepConfirmSponsorId({
           Yes, I confirm this Sponsor ID
         </span>
       </label>
-      <div className="flex gap-3 pt-2">
+      <div className="flex gap-4 pt-8 mx-auto w-full max-w-[480px]">
         <Button
           type="button"
           variant="outline"
           className="flex-1"
           onClick={onBack}
         >
-          ← Back
+          Back
         </Button>
         <Button
           type="button"
@@ -441,14 +443,14 @@ function StepAccountDetails({
         }
       />
 
-      <div className="flex gap-3 pt-6 pb-2">
+      <div className="flex gap-4 pt-8 mx-auto w-full max-w-[480px]">
         <Button
           type="button"
           variant="outline"
           className="flex-1"
           onClick={onBack}
         >
-          ← Back
+          Back
         </Button>
         <Button type="submit" className="flex-1">
           Next →
@@ -506,14 +508,14 @@ function StepCreatePin({
           ✓ PIN set successfully
         </p>
       )}
-      <div className="flex gap-3 w-[80%] mx-auto">
+      <div className="flex gap-4 pt-8 mx-auto w-full max-w-[480px]">
         <Button
           type="button"
           variant="outline"
           className="flex-1"
           onClick={onBack}
         >
-          ← Back
+          Back
         </Button>
         <Button
           type="button"
@@ -643,18 +645,18 @@ function StepReview({
         </span>
       </label>
 
-      <div className="flex gap-4 pt-4">
+      <div className="flex gap-4 pt-8 mx-auto w-full max-w-[480px]">
         <Button
           type="button"
           variant="outline"
-          className="flex-1 py-3 border-white/40 hover:bg-white/5 rounded-xl h-[52px]"
+          className="flex-1"
           onClick={onBack}
         >
           Back
         </Button>
         <Button
           type="button"
-          className="flex-1 h-[52px] bg-brand-blue text-white rounded-xl font-semibold shadow-lg hover:shadow-brand-blue/20 transition-all"
+          className="flex-1 shadow-lg hover:shadow-brand-blue/20 transition-all font-semibold"
           disabled={!agreed || isPending}
           onClick={() => registerMutation()}
         >
