@@ -71,13 +71,13 @@ export function CourseCard({
             <div className="grid grid-cols-2 gap-3 mb-4 mx-2">
               <button
                 onClick={() => onViewDetails?.(course.id)}
-                className="py-3 px-4  bg-[#E8F1F8] text-[#3B82F6] font-bold text-sm hover:bg-[#D1E5F3] transition-colors"
+                className="py-3 px-4  bg-[#E8F1F8] text-[#458FCE] font-bold text-sm hover:bg-[#D1E5F3] transition-colors"
               >
                 View Details
               </button>
               <button
                 onClick={() => onPackage?.(course.id)}
-                className="py-3 px-4  bg-[#3B82F6] text-white font-bold text-sm hover:bg-[#2563EB] transition-colors shadow-lg shadow-blue-500/20"
+                className="py-3 px-4  bg-[#458FCE] text-white font-bold text-sm hover:bg-[#2563EB] transition-colors shadow-lg shadow-blue-500/20"
               >
                 Package
               </button>
