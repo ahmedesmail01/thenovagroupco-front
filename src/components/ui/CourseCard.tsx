@@ -24,7 +24,7 @@ export function CourseCard({
           className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
         />
         {/* Category Tag */}
-        <div className="absolute bottom-3 left-4 bg-white px-8 py-2  shadow-sm">
+        <div className="absolute bottom-3 left-4 bg-white px-6 py-1.5 shadow-sm rounded-sm">
           <span className="text-brand-blue text-[10px] font-bold uppercase tracking-widest leading-none">
             {course.category}
           </span>
@@ -71,13 +71,13 @@ export function CourseCard({
             <div className="grid grid-cols-2 gap-3 mb-4 mx-2">
               <button
                 onClick={() => onViewDetails?.(course.id)}
-                className="py-3 px-4  bg-[#E8F1F8] text-[#458FCE] font-bold text-sm hover:bg-[#D1E5F3] transition-colors"
+                className="py-3 px-4 bg-[#E8F1F8] text-[#458FCE] font-bold text-sm hover:bg-[#D1E5F3] transition-colors rounded-sm"
               >
                 View Details
               </button>
               <button
                 onClick={() => onPackage?.(course.id)}
-                className="py-3 px-4  bg-[#458FCE] text-white font-bold text-sm hover:bg-[#2563EB] transition-colors shadow-lg shadow-blue-500/20"
+                className="py-3 px-4 bg-[#458FCE] text-white font-bold text-sm hover:bg-[#2563EB] transition-colors shadow-lg shadow-blue-500/20 rounded-sm"
               >
                 Package
               </button>
