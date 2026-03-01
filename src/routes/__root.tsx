@@ -20,7 +20,9 @@ function RootLayout() {
 
   // Define public pages that should have the default navbar/footer
   const publicPages = ["/", "/about", "/courses", "/library"];
-  const isPublicPage = publicPages.includes(location.pathname);
+  const isPublicPage =
+    publicPages.includes(location.pathname) ||
+    location.pathname.startsWith("/courses/");
 
   return (
     <div className="min-h-screen bg-brand-navy text-text-primary flex flex-col font-sans">

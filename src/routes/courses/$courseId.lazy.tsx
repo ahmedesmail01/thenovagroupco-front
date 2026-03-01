@@ -29,74 +29,77 @@ function CourseDetailPage() {
 
   return (
     <>
-      <div className="bg-white min-h-screen text-[#1D2026]">
+      <div className="bg-white p-4 md:px-[100px] min-h-screen text-[#1D2026]">
         <div className="pt-16">
           {/* Back link */}
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="max-w-7xl   py-4">
             <Link
               to="/courses"
-              className="text-text-secondary text-sm hover:text-white flex items-center gap-1 w-fit transition-colors"
+              className="text-gray-700 font-semibold text-lg mb-6 hover:text-brand-blue flex items-start  gap-1 w-fit transition-colors"
             >
               ← Back to All Courses
             </Link>
           </div>
 
-          {/* Hero: video thumbnail + course info */}
-          <div className="bg-[#0D1B2A] border-b border-brand-border">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-              {/* Video thumbnail */}
-              <div className="relative aspect-video rounded-xl overflow-hidden group cursor-pointer border border-brand-border/30 shadow-2xl">
+          {/* Hero Section */}
+          <div className="bg-[#0D1B2A]  overflow-hidden shadow-2xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 min-h-[400px] md:min-h-[500px]">
+              {/* Left: Video Thumbnail (Full Bleed) */}
+              <div className="relative group cursor-pointer overflow-hidden order-1">
                 <img
                   src={course.thumbnail}
                   alt={course.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  className="w-full h-full object-cover"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src =
                       "/images/courses/placeholder.jpg";
                   }}
                 />
-                <div className="absolute inset-0 bg-black/20 flex items-center justify-center group-hover:bg-black/10 transition-colors">
-                  <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center text-[#458FCE] text-xl shadow-xl transform group-hover:scale-110 transition-transform">
-                    <span className="ml-1">▶</span>
+                {/* Play Button */}
+                <div className="absolute inset-0 bg-black/10 flex items-center justify-center">
+                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white flex items-center justify-center text-[#458FCE] text-2xl shadow-2xl transition-transform group-hover:scale-110">
+                    <span className="ml-1.5 font-bold">▶</span>
                   </div>
                 </div>
               </div>
 
-              {/* Info */}
-              <div className="max-w-xl">
-                <h1 className="text-3xl sm:text-5xl font-bold text-white mb-4 leading-tight">
-                  {course.title}
-                </h1>
-                <p className="text-text-secondary text-lg leading-relaxed mb-8">
-                  {course.description}
-                </p>
-                <div className="text-3xl font-bold text-white mb-8">
-                  ${course.price}
-                </div>
-                <div className="flex flex-wrap gap-4">
-                  <Button
-                    className="w-full sm:w-auto rounded-full bg-[#458FCE] hover:bg-[#3b7db5] px-10 py-4 text-lg font-bold"
-                    onClick={() => {
-                      if (!isAuthenticated) {
-                        navigate({ to: "/login" });
-                      }
-                    }}
-                  >
-                    {isAuthenticated ? "Enroll Now" : "Login to Enroll"}
-                  </Button>
+              {/* Right: Info Section */}
+              <div className="p-8 md:p-16 flex flex-col justify-center order-2">
+                <div className="space-y-8">
+                  <h1 className="text-4xl sm:text-5xl font-bold text-white leading-tight">
+                    {course.title}
+                  </h1>
+                  <p className="text-gray-300 text-lg leading-relaxed max-w-lg">
+                    {course.description}
+                  </p>
+                  <div className="text-4xl font-bold text-white pt-2">
+                    ${course.price}
+                  </div>
+                  <div className="pt-4">
+                    <Button
+                      className="w-full sm:w-auto rounded-lg bg-[#458FCE] hover:bg-[#3b7db5] px-12 py-3.5 text-base font-semibold transition-all shadow-lg"
+                      onClick={() => {
+                        if (!isAuthenticated) {
+                          navigate({ to: "/login" });
+                        }
+                      }}
+                    >
+                      {isAuthenticated ? "Enroll Now" : "You Are Not Eligible"}
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Course details */}
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 flex flex-col gap-12">
+          <div className="max-w-full mx-auto px-4 sm:px-6 py-12 flex flex-col gap-12">
             {/* Duration */}
             <section className="text-center py-16">
-              <h2 className="text-2xl font-bold text-[#1D2026] mb-4">
+              <h2 className="text-[35px] font-bold text-[#1D2026] mb-4">
                 Course Duration
               </h2>
-              <p className="text-5xl font-medium text-[#4E5566]">
+              <p className="text-[30px] font-medium text-[#4E5566]">
                 {course.duration.includes(":")
                   ? course.duration
                   : `${course.duration}:00:00`}
@@ -105,10 +108,10 @@ function CourseDetailPage() {
 
             {/* What You'll Learn */}
             <section>
-              <h2 className="text-3xl font-bold text-[#1D2026] mb-6">
+              <h2 className="text-[35px] font-bold text-[#1D2026] mb-6">
                 What You Will Learn
               </h2>
-              <p className="text-[#4E5566] text-lg leading-relaxed">
+              <p className="text-[#4E5566] text-lg max-w-[800px] leading-relaxed">
                 {course.learningOutcomes}
               </p>
             </section>
@@ -116,7 +119,7 @@ function CourseDetailPage() {
             {/* Course Content */}
             <section className="space-y-8">
               <div>
-                <h2 className="text-3xl font-bold text-[#1D2026]">
+                <h2 className="text-3xl mb-6 font-bold text-[#1D2026]">
                   Course Content
                 </h2>
                 <p className="text-[#999DA3] text-sm mt-2">
@@ -124,20 +127,20 @@ function CourseDetailPage() {
                 </p>
               </div>
 
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col ">
                 {course.modules.map((mod) => (
                   <details
                     key={mod.id}
-                    className="bg-[#F9F9F9] rounded-xl overflow-hidden group cursor-pointer border border-[#E9EAF0]"
+                    className="bg-[#F9F9F9] border border-b border-[#E9EAF0] overflow-hidden group cursor-pointer "
                   >
                     <summary className="flex items-center justify-between px-6 py-5 font-semibold text-[#1D2026] list-none hover:bg-gray-100 transition-colors">
                       <div className="flex items-center gap-3">
-                        <span className="text-[#4E5566] group-open:rotate-180 transition-transform inline-block text-xs">
+                        <span className="text-gray-500 group-open:rotate-180 transition-transform inline-block text-xs">
                           ▼
                         </span>
-                        <span>{mod.title}</span>
+                        <span className="text-gray-500">{mod.title}</span>
                       </div>
-                      <span className="text-[#4E5566] text-sm font-medium">
+                      <span className="text-gray-500 text-sm font-medium">
                         {mod.chapterCount} Chapters
                       </span>
                     </summary>
@@ -172,7 +175,7 @@ function CourseDetailPage() {
                     {course.availableForPackages.map((p) => (
                       <span
                         key={p}
-                        className="px-8 py-2.5 rounded-full bg-[#1A334B] text-white text-sm font-medium"
+                        className="px-8 py-2.5 rounded-full bg-linear-to-r from-[#458FCE] to-[#1A334B] text-white text-sm font-medium"
                       >
                         {p}
                       </span>
@@ -188,7 +191,7 @@ function CourseDetailPage() {
                     {course.availableForGroups.map((g) => (
                       <span
                         key={g}
-                        className="px-8 py-2.5 rounded-full bg-[#458FCE] text-white text-sm font-medium"
+                        className="px-8 py-2.5 rounded-full bg-linear-to-r from-[#458FCE] to-[#1A334B] text-white text-sm font-medium"
                       >
                         {g}
                       </span>
@@ -204,7 +207,7 @@ function CourseDetailPage() {
                     {course.skills.map((s) => (
                       <span
                         key={s}
-                        className="px-8 py-2.5 rounded-full bg-[#1A334B] text-white text-sm font-medium"
+                        className="px-8 py-2.5 rounded-full bg-linear-to-r from-[#458FCE] to-[#1A334B] text-white text-sm font-medium"
                       >
                         {s}
                       </span>
