@@ -62,7 +62,7 @@ export function Sidebar({
       className={cn(
         "fixed left-0 top-0 h-full bg-dash-sidebar border-r border-dash-border transition-all duration-300 z-50 flex flex-col",
         // Desktop width
-        isCollapsed ? "lg:w-24" : "lg:w-64",
+        isCollapsed ? "lg:w-20" : "lg:w-64",
         // Mobile positioning
         "w-64 -translate-x-full lg:translate-x-0",
         isMobileOpen && "translate-x-0 shadow-2xl",

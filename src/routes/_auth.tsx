@@ -41,7 +41,7 @@ function AuthLayout() {
       <div
         className={cn(
           "flex-1 flex flex-col transition-all duration-300 min-w-0",
-          isCollapsed ? "lg:pl-24" : "lg:pl-64",
+          isCollapsed ? "lg:pl-20" : "lg:pl-64",
         )}
       >
         <AuthNavbar onMenuClick={() => setIsMobileOpen(true)} />
