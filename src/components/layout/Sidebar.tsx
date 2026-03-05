@@ -33,6 +33,8 @@ export function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
     navigate({ to: "/" });
   };
 
+  const logo = "/images/logo-gray.png";
+
   const menuItems = [
     { icon: LayoutDashboard, label: "Dashboard", to: "/dashboard" },
     { icon: Network, label: "Genealogy", to: "/genealogy" },
@@ -58,14 +60,14 @@ export function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
       {/* Header */}
       <div className="h-16 flex items-center px-6 border-b border-dash-border justify-between">
         {!isCollapsed && (
-          <div className="flex items-center gap-2">
-            <img src="/logo.svg" alt="Nova Group" className="h-8" />
-            <span className="font-bold text-dash-text tracking-tight">
+          <div className="flex items-center gap-2  w-full">
+            <img src={logo} alt="Nova Group" className="w-30 mx-auto" />
+            {/* <span className="font-bold text-dash-text tracking-tight">
               NOVA GROUP
-            </span>
+            </span> */}
           </div>
         )}
-        {isCollapsed && <img src="/logo.svg" alt="N" className="h-8" />}
+        {isCollapsed && <img src={logo} alt="N" className="h-8" />}
 
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
