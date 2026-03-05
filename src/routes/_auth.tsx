@@ -31,7 +31,7 @@ function AuthLayout() {
         )}
       >
         <AuthNavbar />
-        <main className="flex-1 p-8">
+        <main className="flex-1 p-4 lg:p-8">
           <Outlet />
         </main>
       </div>
