@@ -1,6 +1,5 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import {
-  ChevronDown,
   Facebook,
   Instagram,
   Linkedin,
@@ -18,10 +17,12 @@ import {
   Share2,
   MapPin,
   TrendingUp,
+  ChevronDown,
 } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { useState } from "react";
 import { TeamSalesCard } from "../../components/dashboard/TeamSalesCard";
+import { RankGoalsCard } from "../../components/dashboard/RankGoalsCard";
 
 export const Route = createLazyFileRoute("/_auth/dashboard")({
   component: RouteComponent,
@@ -43,7 +44,7 @@ function Card({
   return (
     <div
       className={cn(
-        "bg-white rounded-[2.5rem] p-6 border border-dash-border shadow-[0_8px_30px_rgb(0,0,0,0.04)]",
+        "bg-white rounded-[20px] p-6 border border-dash-border shadow-[0_8px_30px_rgb(0,0,0,0.04)]",
         className,
       )}
     >
@@ -56,44 +57,6 @@ function Card({
         </div>
       )}
       {children}
-    </div>
-  );
-}
-
-function ProgressBar({
-  label,
-  achieved,
-  percentage,
-  color,
-}: {
-  label: string;
-  achieved: string;
-  percentage: string;
-  color: string;
-}) {
-  return (
-    <div className="space-y-2">
-      <div className="flex justify-between items-end">
-        <div>
-          <p className="text-sm font-bold text-[#1a2d42]">{label}</p>
-          <p className="text-xs text-dash-muted mt-0.5">
-            <span className="font-bold text-[#1a2d42]">{achieved}</span>{" "}
-            Achieved
-          </p>
-        </div>
-        <div className="bg-blue-50 text-blue-600 text-[10px] font-bold px-2 py-0.5 rounded-md border border-blue-100 uppercase">
-          {percentage}
-        </div>
-      </div>
-      <div className="h-2.5 w-full bg-[#f1f5f9] rounded-full overflow-hidden">
-        <div
-          className={cn(
-            "h-full rounded-full transition-all duration-1000",
-            color,
-          )}
-          style={{ width: percentage }}
-        />
-      </div>
     </div>
   );
 }
@@ -149,44 +112,8 @@ function RouteComponent() {
         {/* Team Sales Component */}
         <TeamSalesCard className="lg:col-span-1" />
 
-        {/* Next Rank Goals */}
-        <Card title="Next Rank Goals" className="lg:col-span-1">
-          <div className="space-y-8 py-2">
-            <ProgressBar
-              label="Team Volume in LEFT"
-              achieved="0/200"
-              percentage="0.00%"
-              color="bg-[#1a2d42]"
-            />
-            <ProgressBar
-              label="Team Volume in RIGHT"
-              achieved="0/200"
-              percentage="0.00%"
-              color="bg-[#1a2d42]"
-            />
-            <ProgressBar
-              label="Direct Recruits in LEFT"
-              achieved="0/200"
-              percentage="100%"
-              color="bg-emerald-500"
-            />
-            <ProgressBar
-              label="Direct Recruits in RIGHT"
-              achieved="0/200"
-              percentage="100%"
-              color="bg-emerald-500"
-            />
-          </div>
-          <div className="mt-10 flex justify-center">
-            <div className="relative w-40 h-40">
-              {/* Decorative background for progress section */}
-              <div className="absolute inset-0 bg-blue-50/50 rounded-full animate-pulse" />
-              <div className="absolute inset-4 bg-white rounded-full shadow-inner flex items-center justify-center">
-                <Trophy size={48} className="text-blue-600 opacity-20" />
-              </div>
-            </div>
-          </div>
-        </Card>
+        {/* Next Rank Goals Component */}
+        <RankGoalsCard className="lg:col-span-1" />
 
         {/* User Profile Card */}
         <Card className="lg:col-span-1 flex flex-col items-center text-center">
