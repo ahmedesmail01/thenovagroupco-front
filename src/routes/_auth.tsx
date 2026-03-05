@@ -17,20 +17,34 @@ export const Route = createFileRoute("/_auth")({
 
 function AuthLayout() {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-dash-bg flex">
+      {/* Sidebar Overlay for Mobile */}
+      {isMobileOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden animate-in fade-in duration-300"
+          onClick={() => setIsMobileOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+      <Sidebar
+        isCollapsed={isCollapsed}
+        setIsCollapsed={setIsCollapsed}
+        isMobileOpen={isMobileOpen}
+        setIsMobileOpen={setIsMobileOpen}
+      />
 
       {/* Main Content */}
       <div
         className={cn(
-          "flex-1 flex flex-col transition-all duration-300",
-          isCollapsed ? "pl-20" : "pl-64",
+          "flex-1 flex flex-col transition-all duration-300 min-w-0",
+          isCollapsed ? "lg:pl-24" : "lg:pl-64",
         )}
       >
-        <AuthNavbar />
+        <AuthNavbar onMenuClick={() => setIsMobileOpen(true)} />
         <main className="flex-1 p-4 lg:p-8">
           <Outlet />
         </main>

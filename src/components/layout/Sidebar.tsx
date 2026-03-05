@@ -22,9 +22,16 @@ import { cn } from "../../lib/utils";
 interface SidebarProps {
   isCollapsed: boolean;
   setIsCollapsed: (value: boolean) => void;
+  isMobileOpen: boolean;
+  setIsMobileOpen: (value: boolean) => void;
 }
 
-export function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
+export function Sidebar({
+  isCollapsed,
+  setIsCollapsed,
+  isMobileOpen,
+  setIsMobileOpen,
+}: SidebarProps) {
   const { logout } = useAuthStore();
   const navigate = useNavigate();
 
@@ -54,26 +61,44 @@ export function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
     <aside
       className={cn(
         "fixed left-0 top-0 h-full bg-dash-sidebar border-r border-dash-border transition-all duration-300 z-50 flex flex-col",
-        isCollapsed ? "w-20 " : "w-64",
+        // Desktop width
+        isCollapsed ? "lg:w-24" : "lg:w-64",
+        // Mobile positioning
+        "w-64 -translate-x-full lg:translate-x-0",
+        isMobileOpen && "translate-x-0 shadow-2xl",
       )}
     >
       {/* Header */}
       <div className="h-16 flex items-center px-6 border-b border-dash-border justify-between">
-        {!isCollapsed && (
-          <div className="flex items-center gap-2  w-full">
-            <img src={logo} alt="Nova Group" className="w-30 mx-auto" />
-            {/* <span className="font-bold text-dash-text tracking-tight">
-              NOVA GROUP
-            </span> */}
+        <div
+          className={cn(
+            "flex items-center gap-2 w-full",
+            isCollapsed && "lg:hidden",
+          )}
+        >
+          <img src={logo} alt="Nova Group" className="w-30 mx-auto" />
+        </div>
+
+        {isCollapsed && (
+          <div className="hidden lg:flex items-center justify-center w-full">
+            <img src={logo} alt="N" className="h-8" />
           </div>
         )}
-        {isCollapsed && <img src={logo} alt="N" className="h-8" />}
 
+        {/* Desktop Toggle */}
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="absolute -right-3 top-20 bg-dash-sidebar border border-dash-border rounded-full p-1 text-dash-muted hover:text-dash-accent transition-colors shadow-sm"
+          className="hidden lg:flex absolute -right-3 top-20 bg-dash-sidebar border border-dash-border rounded-full p-1 text-dash-muted hover:text-dash-accent transition-colors shadow-sm"
         >
           {isCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+        </button>
+
+        {/* Mobile Close Button */}
+        <button
+          onClick={() => setIsMobileOpen(false)}
+          className="lg:hidden p-2 text-dash-muted hover:text-dash-accent transition-colors"
+        >
+          <ChevronLeft size={20} />
         </button>
       </div>
 
@@ -83,6 +108,7 @@ export function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
           <Link
             key={item.label}
             to={item.to}
+            onClick={() => setIsMobileOpen(false)}
             className={cn(
               "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group",
               "text-dash-muted hover:text-dash-accent hover:bg-dash-bg",
@@ -90,11 +116,14 @@ export function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
             )}
           >
             <item.icon size={20} className="shrink-0" />
-            {!isCollapsed && (
-              <span className="font-medium text-sm whitespace-nowrap">
-                {item.label}
-              </span>
-            )}
+            <span
+              className={cn(
+                "font-medium text-sm whitespace-nowrap",
+                isCollapsed && "lg:hidden",
+              )}
+            >
+              {item.label}
+            </span>
           </Link>
         ))}
       </nav>

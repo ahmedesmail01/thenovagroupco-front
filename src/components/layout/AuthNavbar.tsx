@@ -1,10 +1,14 @@
-import { Bell, ChevronDown, LogOut, User, Settings } from "lucide-react";
+import { Bell, ChevronDown, LogOut, User, Settings, Menu } from "lucide-react";
 import { useAuthStore } from "../../features/auth/useAuthStore";
 import { useState } from "react";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { cn } from "../../lib/utils";
 
-export function AuthNavbar() {
+interface AuthNavbarProps {
+  onMenuClick?: () => void;
+}
+
+export function AuthNavbar({ onMenuClick }: AuthNavbarProps) {
   const { user, logout } = useAuthStore();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
@@ -26,8 +30,16 @@ export function AuthNavbar() {
   };
 
   return (
-    <header className="h-16 bg-dash-sidebar border-b border-dash-border px-8 flex items-center justify-between sticky top-0 z-40">
-      <h1 className="text-xl font-bold text-dash-text">{title}</h1>
+    <header className="h-16 bg-dash-sidebar border-b border-dash-border px-4 lg:px-8 flex items-center justify-between sticky top-0 z-40">
+      <div className="flex items-center gap-4">
+        <button
+          onClick={onMenuClick}
+          className="lg:hidden p-2 text-dash-muted hover:text-dash-accent hover:bg-dash-bg rounded-lg transition-colors"
+        >
+          <Menu size={20} />
+        </button>
+        <h1 className="text-xl font-bold text-dash-text">{title}</h1>
+      </div>
 
       <div className="flex items-center gap-6">
         {/* Notifications */}
