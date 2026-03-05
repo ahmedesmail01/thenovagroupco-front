@@ -60,6 +60,37 @@ const decorativeHighlights: Record<string, string> = {
   "276": "#3b82f6", // DEU
 };
 
+const badgeColorMap: Record<
+  string,
+  { text: string; border: string; bg: string }
+> = {
+  "bg-orange-400": {
+    text: "text-orange-600",
+    border: "border-orange-200",
+    bg: "bg-orange-50",
+  },
+  "bg-rose-500": {
+    text: "text-rose-600",
+    border: "border-rose-200",
+    bg: "bg-rose-50",
+  },
+  "bg-blue-500": {
+    text: "text-blue-600",
+    border: "border-blue-200",
+    bg: "bg-blue-50",
+  },
+  "bg-emerald-500": {
+    text: "text-emerald-600",
+    border: "border-emerald-200",
+    bg: "bg-emerald-50",
+  },
+  "bg-purple-500": {
+    text: "text-purple-600",
+    border: "border-purple-200",
+    bg: "bg-purple-50",
+  },
+};
+
 function CountryProgessItem({
   country,
   color,
@@ -69,6 +100,12 @@ function CountryProgessItem({
   color: string;
   percentage: string;
 }) {
+  const badgeStyles = badgeColorMap[color] || {
+    text: "text-slate-600",
+    border: "border-slate-200",
+    bg: "bg-slate-50",
+  };
+
   return (
     <div className="space-y-3 py-4 border-b border-slate-50 last:border-0 relative z-10">
       <div className="flex justify-between items-center">
@@ -76,14 +113,9 @@ function CountryProgessItem({
         <div
           className={cn(
             "px-3 py-1 rounded-lg border text-[12px] font-bold",
-            color
-              .replace("bg-", "text-")
-              .replace("400", "500")
-              .replace("500", "500"),
-            color
-              .replace("bg-", "border-")
-              .replace("400", "200")
-              .replace("500", "200"),
+            badgeStyles.text,
+            badgeStyles.border,
+            badgeStyles.bg,
           )}
         >
           {percentage}
