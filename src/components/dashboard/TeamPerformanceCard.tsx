@@ -11,15 +11,15 @@ interface TabProps {
 
 function PerformanceTab({ label, isActive, onClick }: TabProps) {
   // r = corner radius for the rounded top, c = radius for the inverted bottom curves
-  const r = 14;
+  const r = 20;
   const c = 20;
 
   return (
-    <div className="relative isolate text-center">
+    <div className="relative isolate text-center shrink-0 min-w-[90px]">
       <button
         onClick={onClick}
         className={cn(
-          "w-full py-1 text-[10px] sm:text-[10px] md:text-[12px] font-semibold transition-all relative z-10 whitespace-nowrap",
+          "w-full py-1 px-2 text-[10px] sm:text-[10px] md:text-[12px] font-semibold transition-all relative z-10 whitespace-nowrap",
           isActive ? "text-[#1a2d42]" : "text-slate-400 hover:text-slate-500",
         )}
       >
@@ -110,7 +110,7 @@ export default function TeamPerformanceCard({
           {/* Baseline - Full width inside card padding */}
           <div className="absolute bottom-0 left-0 right-0 h-px bg-dash-border z-0" />
 
-          <div className="grid grid-cols-4 w-full items-center relative z-10">
+          <div className="flex w-full items-center relative z-10 overflow-x-auto no-scrollbar">
             {tabs.map((tab) => (
               <PerformanceTab
                 key={tab}
