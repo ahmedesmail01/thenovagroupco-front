@@ -1,6 +1,5 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import {
-  Users,
   ChevronDown,
   Facebook,
   Instagram,
@@ -14,16 +13,15 @@ import {
   ChevronRight,
   Plus,
   Minus,
-  Network,
   Wallet,
-  ArrowRight,
-  ArrowLeft,
+  Users,
   Share2,
   MapPin,
   TrendingUp,
 } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { useState } from "react";
+import { TeamSalesCard } from "../../components/dashboard/TeamSalesCard";
 
 export const Route = createLazyFileRoute("/_auth/dashboard")({
   component: RouteComponent,
@@ -45,7 +43,7 @@ function Card({
   return (
     <div
       className={cn(
-        "bg-white rounded-[2rem] p-6 border border-dash-border shadow-[0_8px_30px_rgb(0,0,0,0.04)]",
+        "bg-white rounded-[2.5rem] p-6 border border-dash-border shadow-[0_8px_30px_rgb(0,0,0,0.04)]",
         className,
       )}
     >
@@ -58,30 +56,6 @@ function Card({
         </div>
       )}
       {children}
-    </div>
-  );
-}
-
-function StatBox({
-  icon: Icon,
-  label,
-  value,
-  color,
-}: {
-  icon: React.ElementType;
-  label: string;
-  value: string;
-  color: string;
-}) {
-  return (
-    <div className="bg-white/5 rounded-xl p-3 border border-white/10 flex flex-col items-center text-center gap-1">
-      <div className={cn("p-1.5 rounded-lg mb-1", color)}>
-        <Icon size={18} />
-      </div>
-      <p className="text-[10px] text-white/60 font-medium uppercase tracking-wider">
-        {label}
-      </p>
-      <p className="text-sm font-bold text-white">{value}</p>
     </div>
   );
 }
@@ -172,100 +146,8 @@ function RouteComponent() {
     <div className="space-y-8 animate-in fade-in duration-700 pb-12">
       {/* SECTION 1: Top Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Team Sales */}
-        <Card
-          className="bg-[#0f2a4a] border-none text-white relative overflow-hidden lg:col-span-1 shadow-[0_20px_50px_rgba(15,42,74,0.3)]"
-          title="Team Sales"
-          extra={
-            <button className="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors border border-white/10">
-              Overall <ChevronDown size={14} />
-            </button>
-          }
-        >
-          {/* Donut Chart Mockup */}
-          <div className="flex justify-center mb-10 relative">
-            <svg className="w-44 h-44 transform -rotate-90 filter drop-shadow-[0_0_15px_rgba(244,63,94,0.3)]">
-              <circle
-                cx="88"
-                cy="88"
-                r="70"
-                stroke="currentColor"
-                strokeWidth="20"
-                fill="transparent"
-                className="text-white/5"
-              />
-              <circle
-                cx="88"
-                cy="88"
-                r="70"
-                stroke="#f43f5e"
-                strokeWidth="20"
-                fill="transparent"
-                strokeDasharray="440"
-                strokeDashoffset="110"
-                strokeLinecap="round"
-              />
-            </svg>
-            <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-              <div className="w-16 h-16 rounded-full bg-white/5 blur-xl animate-pulse" />
-              <div className="w-4 h-4 rounded-full bg-[#f43f5e] shadow-[0_0_10px_#f43f5e]" />
-            </div>
-          </div>
-
-          <div className="flex justify-center gap-6 mb-8 relative z-10">
-            <div className="flex items-center gap-2 text-xs font-medium bg-white/5 px-3 py-1 rounded-full border border-white/10">
-              <div className="w-2.5 h-2.5 rounded-sm bg-yellow-400 shadow-[0_0_8px_rgba(250,204,21,0.5)]" />
-              Left Sales
-            </div>
-            <div className="flex items-center gap-2 text-xs font-medium bg-white/5 px-3 py-1 rounded-full border border-white/10">
-              <div className="w-2.5 h-2.5 rounded-sm bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.5)]" />
-              Right Sales
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3 relative z-10">
-            <StatBox
-              icon={Network}
-              label="Left Sales"
-              value="0.00 CV"
-              color="text-blue-400"
-            />
-            <StatBox
-              icon={Network}
-              label="Right Sales"
-              value="0.00 CV"
-              color="text-rose-400"
-            />
-            <StatBox
-              icon={ArrowLeft}
-              label="Left Carry Forward"
-              value="0.00 CV"
-              color="text-yellow-400"
-            />
-            <StatBox
-              icon={ArrowRight}
-              label="Right Carry Forward"
-              value="0.00 CV"
-              color="text-orange-400"
-            />
-            <StatBox
-              icon={Zap}
-              label="Total Network volume"
-              value="0.00 CV"
-              color="text-purple-400"
-            />
-            <StatBox
-              icon={Users}
-              label="Total down line"
-              value="0.00 CV"
-              color="text-emerald-400"
-            />
-          </div>
-
-          {/* BG Decoration */}
-          <div className="absolute -top-16 -left-16 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-16 -right-16 w-64 h-64 bg-rose-500/10 rounded-full blur-3xl pointer-events-none" />
-        </Card>
+        {/* Team Sales Component */}
+        <TeamSalesCard className="lg:col-span-1" />
 
         {/* Next Rank Goals */}
         <Card title="Next Rank Goals" className="lg:col-span-1">
