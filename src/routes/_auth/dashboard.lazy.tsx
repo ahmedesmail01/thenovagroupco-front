@@ -5,20 +5,18 @@ import {
   Calendar,
   ChevronLeft,
   ChevronRight,
-  Plus,
-  Minus,
-  Users,
-  MapPin,
   TrendingUp,
+  Users,
 } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { useState } from "react";
 import { TeamSalesCard } from "../../components/dashboard/TeamSalesCard";
 import { RankGoalsCard } from "../../components/dashboard/RankGoalsCard";
 import { UserProfileCard } from "../../components/dashboard/UserProfileCard";
-import SummaryCard from "../../components/dashboard/SummaryCard";
-import Card from "../../components/dashboard/Card";
 import SummaryRow from "../../components/dashboard/SummaryRow";
+import Card from "../../components/dashboard/Card";
+import SummaryCard from "../../components/dashboard/SummaryCard";
+import { MemberJoiningsCard } from "../../components/dashboard/MemberJoiningsCard";
 
 export const Route = createLazyFileRoute("/_auth/dashboard")({
   component: RouteComponent,
@@ -46,74 +44,8 @@ function RouteComponent() {
 
       {/* SECTION 3: Map & News */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Member Joinings */}
-        <Card
-          className="lg:col-span-2"
-          title="Member Joinings"
-          extra={
-            <button className="text-[10px] font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full uppercase tracking-wider">
-              Show All
-            </button>
-          }
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <div className="relative h-64 bg-slate-50/50 rounded-2xl p-4 flex items-center justify-center overflow-hidden grayscale opacity-80">
-              <MapPin
-                size={48}
-                className="text-blue-200 absolute top-10 right-20"
-              />
-              <MapPin
-                size={32}
-                className="text-rose-400 absolute bottom-20 left-10"
-              />
-              <MapPin
-                size={40}
-                className="text-emerald-400 absolute top-20 left-40"
-              />
-              <MapPin
-                size={24}
-                className="text-yellow-400 absolute bottom-10 right-40"
-              />
-              <div className="absolute top-4 left-4 flex flex-col gap-1">
-                <button className="bg-white border border-dash-border p-1 rounded-md shadow-sm cursor-pointer hover:bg-slate-50">
-                  <Plus size={14} />
-                </button>
-                <button className="bg-white border border-dash-border p-1 rounded-md shadow-sm cursor-pointer hover:bg-slate-50">
-                  <Minus size={14} />
-                </button>
-              </div>
-              <div className="text-[100px] font-black text-slate-200 select-none">
-                WORLD
-              </div>
-            </div>
-
-            <div className="space-y-5">
-              {[
-                { country: "Canada", color: "bg-orange-400", p: "0.00%" },
-                { country: "Egypt", color: "bg-rose-500", p: "0.00%" },
-                { country: "Germany", color: "bg-blue-500", p: "0.00%" },
-                { country: "Lebanon", color: "bg-emerald-500", p: "0.00%" },
-                { country: "Yemen", color: "bg-purple-500", p: "0.00%" },
-              ].map((item) => (
-                <div key={item.country} className="space-y-1.5">
-                  <div className="flex justify-between items-center px-1">
-                    <span className="text-xs font-bold text-[#1a2d42]">
-                      {item.country}
-                    </span>
-                    <span className="text-[10px] font-bold text-orange-500 bg-orange-50 px-1.5 py-0.5 rounded border border-orange-100">
-                      {item.p}
-                    </span>
-                  </div>
-                  <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                    <div
-                      className={cn("h-full rounded-full w-[0%]", item.color)}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </Card>
+        {/* Member Joinings Component */}
+        <MemberJoiningsCard />
 
         {/* News & Activities */}
         <Card
