@@ -11,10 +11,13 @@ function RouteComponent() {
   return (
     <div className="p-4 md:p-8 space-y-6 flex flex-col h-[calc(100vh-100px)] overflow-hidden">
       <TransformWrapper
-        initialScale={1}
+        initialScale={0.7}
+        minScale={0.2}
+        maxScale={2}
         initialPositionX={0}
         initialPositionY={0}
         centerOnInit={true}
+        limitToBounds={false}
       >
         <div className="flex flex-col h-full gap-6">
           <GenealogyFilters />

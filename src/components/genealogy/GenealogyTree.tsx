@@ -57,7 +57,7 @@ function Node({ id, count, color }: NodeProps) {
 
 export function GenealogyTree() {
   return (
-    <div className="bg-[#f8fafc] rounded-[3rem] p-4 min-h-[700px] border border-slate-200/60 shadow-inner flex flex-col overflow-hidden">
+    <div className="bg-[#f8fafc] rounded-[3rem] p-4 h-full border border-slate-200/60 shadow-inner flex flex-col overflow-hidden">
       <TransformComponent
         wrapperStyle={{ width: "100%", height: "100%", flex: 1 }}
         contentStyle={{
@@ -69,17 +69,31 @@ export function GenealogyTree() {
           padding: "100px",
         }}
       >
-        <div className="flex flex-row gap-20 items-center justify-center relative">
+        <div className="flex flex-row gap-20 items-stretch justify-center relative">
           {/* Main Tree Layout */}
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center justify-start pt-20">
             <Node id="ID" count="400000" color="red" />
           </div>
 
-          <div className="flex flex-col items-center">
+          {/* Middle Branching Section */}
+          <div className="flex flex-col items-center gap-16 relative">
             <Node id="ID" count="400000" color="blue" />
+
+            {/* Tree Connectors */}
+            <div className="absolute top-[320px] left-1/2 -translate-x-1/2 w-[400px] h-10 border-t-2 border-l-2 border-r-2 border-blue-200/30 rounded-t-2xl z-0" />
+            <div className="absolute top-[320px] left-1/2 -translate-x-1/2 w-0.5 h-16 bg-blue-200/30 -translate-y-16 z-0" />
+
+            <div className="flex flex-row gap-20">
+              <div className="flex flex-col items-center">
+                <Node id="ID" count="400000" color="blue" />
+              </div>
+              <div className="flex flex-col items-center">
+                <Node id="ID" count="400000" color="blue" />
+              </div>
+            </div>
           </div>
 
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center justify-start pt-20">
             <Node id="ID" count="400000" color="teal" />
           </div>
         </div>
