@@ -1,10 +1,6 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import {
-  Facebook,
-  Instagram,
-  Linkedin,
-  MessageCircle,
-  Copy,
+  ChevronDown,
   Zap,
   Trophy,
   Calendar,
@@ -14,15 +10,14 @@ import {
   Minus,
   Wallet,
   Users,
-  Share2,
   MapPin,
   TrendingUp,
-  ChevronDown,
 } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { useState } from "react";
 import { TeamSalesCard } from "../../components/dashboard/TeamSalesCard";
 import { RankGoalsCard } from "../../components/dashboard/RankGoalsCard";
+import { UserProfileCard } from "../../components/dashboard/UserProfileCard";
 
 export const Route = createLazyFileRoute("/_auth/dashboard")({
   component: RouteComponent,
@@ -94,14 +89,6 @@ function SummaryCard({
   );
 }
 
-function ProfileSocial({ icon: Icon }: { icon: React.ElementType }) {
-  return (
-    <button className="w-9 h-9 flex items-center justify-center rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors active:scale-90">
-      <Icon size={18} />
-    </button>
-  );
-}
-
 function RouteComponent() {
   const [activeTab, setActiveTab] = useState("Rank Overview");
 
@@ -115,52 +102,8 @@ function RouteComponent() {
         {/* Next Rank Goals Component */}
         <RankGoalsCard className="lg:col-span-1" />
 
-        {/* User Profile Card */}
-        <Card className="lg:col-span-1 flex flex-col items-center text-center">
-          <div className="w-full flex justify-between items-center mb-4">
-            <span className="bg-blue-50 text-blue-600 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest border border-blue-100">
-              Member
-            </span>
-            <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 cursor-pointer hover:bg-blue-100 transition-colors">
-              <Share2 size={16} />
-            </div>
-          </div>
-
-          <div className="relative mb-6">
-            <div className="w-32 h-32 rounded-full border-4 border-blue-50 p-1 bg-white shadow-xl overflow-hidden group">
-              <img
-                src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Maria"
-                alt="Profile"
-                className="w-full h-full object-cover transition-transform group-hover:scale-110"
-              />
-            </div>
-            <div className="absolute -bottom-1 -right-1 bg-white p-1 rounded-full shadow-sm">
-              <div className="w-5 h-5 bg-emerald-500 rounded-full border-2 border-white" />
-            </div>
-          </div>
-
-          <h3 className="text-xl font-black text-[#1a2d42]">Maria Aldabea</h3>
-          <p className="text-sm text-dash-muted font-medium mb-4">MariaAld</p>
-
-          <span className="bg-emerald-500 text-white text-[11px] font-bold px-6 py-1.5 rounded-full mb-8 shadow-lg shadow-emerald-500/20 uppercase tracking-widest">
-            Active
-          </span>
-
-          <p className="text-xs text-dash-muted font-medium mb-4">
-            View personalized domain
-          </p>
-
-          <button className="w-full bg-blue-50 hover:bg-blue-100 text-blue-600 py-3.5 rounded-2xl text-sm font-bold transition-all border border-blue-100 flex items-center justify-center gap-2 active:scale-[0.98] mb-8">
-            Copy personalized domain <Copy size={16} />
-          </button>
-
-          <div className="flex justify-center gap-3">
-            <ProfileSocial icon={Facebook} />
-            <ProfileSocial icon={Instagram} />
-            <ProfileSocial icon={Linkedin} />
-            <ProfileSocial icon={MessageCircle} />
-          </div>
-        </Card>
+        {/* User Profile Card Component */}
+        <UserProfileCard className="lg:col-span-1" />
       </div>
 
       {/* SECTION 2: Summary Row */}

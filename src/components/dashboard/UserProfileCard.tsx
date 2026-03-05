@@ -1,0 +1,141 @@
+import {
+  Facebook,
+  Instagram,
+  Linkedin,
+  MessageCircle,
+  Copy,
+  Share2,
+} from "lucide-react";
+import { cn } from "../../lib/utils";
+
+interface SocialLinkProps {
+  icon: React.ElementType;
+  color: string;
+  bgColor: string;
+}
+
+function SocialIconButton({ icon: Icon, color, bgColor }: SocialLinkProps) {
+  return (
+    <button
+      className={cn(
+        "w-10 h-10 flex items-center justify-center rounded-lg transition-all active:scale-95",
+        bgColor,
+        color,
+      )}
+    >
+      <Icon size={20} />
+    </button>
+  );
+}
+
+export function UserProfileCard({ className }: { className?: string }) {
+  const user = {
+    firstName: "Maria",
+    lastName: "Aldabea",
+    username: "MariaAld",
+    avatarUrl: "https://api.dicebear.com/7.x/pixel-art/svg?seed=Maria",
+    status: "Active",
+  };
+
+  return (
+    <div
+      className={cn(
+        "bg-white rounded-[20px] p-8 shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-slate-100 flex flex-col items-center text-center h-full relative overflow-hidden",
+        className,
+      )}
+    >
+      {/* Top Header Actions */}
+      <div className="w-full flex justify-between items-center mb-4 relative z-10">
+        <span className="bg-[#e6f9f1] text-[#2db39b] text-[13px] font-bold px-5 py-1.5 rounded-full">
+          Member
+        </span>
+        <button className="w-9 h-9 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:text-brand-blue-btn hover:bg-blue-50 transition-colors">
+          <Share2 size={18} />
+        </button>
+      </div>
+
+      {/* Avatar Section with Decoration */}
+      <div className="relative mb-6">
+        {/* Decorative Orbit/Stars */}
+        <div className="absolute inset-[-20px] pointer-events-none opacity-20">
+          <svg
+            viewBox="0 0 140 140"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-full h-full animate-[spin_20s_linear_infinite]"
+          >
+            <circle
+              cx="70"
+              cy="70"
+              r="62"
+              stroke="#4882be"
+              strokeWidth="1"
+              strokeDasharray="4 8"
+            />
+            <circle cx="20" cy="30" r="3" fill="#4882be" />
+            <circle cx="120" cy="110" r="2" fill="#4882be" />
+            <path d="M100 20 L104 24 L100 28 L96 24 Z" fill="#4882be" />
+          </svg>
+        </div>
+
+        <div className="w-32 h-32 rounded-full p-1 bg-white shadow-lg overflow-hidden relative z-10 border border-slate-50">
+          <img
+            src={user.avatarUrl}
+            alt="Profile"
+            className="w-full h-full object-cover rounded-full"
+          />
+        </div>
+      </div>
+
+      {/* User Info */}
+      <div className="space-y-1 mb-6 relative z-10">
+        <h3 className="text-[20px] font-bold text-[#1a2d42]">
+          {user.firstName} {user.lastName}
+        </h3>
+        <p className="text-sm text-slate-400 font-medium">{user.username}</p>
+      </div>
+
+      {/* Status Badge */}
+      <div className="mb-10 relative z-10">
+        <span className="bg-[#2db39b] text-white text-[14px] font-bold px-8 py-2 rounded-full shadow-lg shadow-[#2db39b]/20">
+          {user.status}
+        </span>
+      </div>
+
+      {/* Domain Section */}
+      <div className="w-full space-y-4 mb-10 relative z-10">
+        <button className="text-[14px] text-slate-400 font-medium hover:text-brand-blue-btn transition-colors">
+          View personalized domain
+        </button>
+
+        <button className="w-full bg-[#eff1f9] hover:bg-[#e4e8f5] text-[#4882be] py-3.5 rounded-xl text-[15px] font-bold transition-all active:scale-[0.98]">
+          Copy personalized domain
+        </button>
+      </div>
+
+      {/* Social Links */}
+      <div className="flex justify-center gap-3 relative z-10">
+        <SocialIconButton
+          icon={Facebook}
+          color="text-[#1877F2]"
+          bgColor="bg-[#eff2f5]"
+        />
+        <SocialIconButton
+          icon={Instagram}
+          color="text-[#E4405F]"
+          bgColor="bg-[#fceef1]"
+        />
+        <SocialIconButton
+          icon={Linkedin}
+          color="text-[#0A66C2]"
+          bgColor="bg-[#eef4f8]"
+        />
+        <SocialIconButton
+          icon={MessageCircle}
+          color="text-[#25D366]"
+          bgColor="bg-[#e7faf0]"
+        />
+      </div>
+    </div>
+  );
+}
