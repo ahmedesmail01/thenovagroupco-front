@@ -1,9 +1,6 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import {
   Users,
-  UserPlus,
-  MapPin,
-  TrendingUp,
   ChevronDown,
   Facebook,
   Instagram,
@@ -22,6 +19,8 @@ import {
   ArrowRight,
   ArrowLeft,
   Share2,
+  MapPin,
+  TrendingUp,
 } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { useState } from "react";
@@ -69,7 +68,7 @@ function StatBox({
   value,
   color,
 }: {
-  icon: any;
+  icon: React.ElementType;
   label: string;
   value: string;
   color: string;
@@ -89,13 +88,11 @@ function StatBox({
 
 function ProgressBar({
   label,
-  target,
   achieved,
   percentage,
   color,
 }: {
   label: string;
-  target: string;
   achieved: string;
   percentage: string;
   color: string;
@@ -130,13 +127,11 @@ function ProgressBar({
 function SummaryCard({
   icon: Icon,
   title,
-  value,
   label,
   showAll,
 }: {
-  icon: any;
+  icon: React.ElementType;
   title: string;
-  value?: string;
   label: string;
   showAll?: boolean;
 }) {
@@ -162,7 +157,7 @@ function SummaryCard({
   );
 }
 
-function ProfileSocial({ icon: Icon }: { icon: any }) {
+function ProfileSocial({ icon: Icon }: { icon: React.ElementType }) {
   return (
     <button className="w-9 h-9 flex items-center justify-center rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors active:scale-90">
       <Icon size={18} />
@@ -179,7 +174,7 @@ function RouteComponent() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Team Sales */}
         <Card
-          className="bg-[#0f2a4a] border-none text-white relative overflow-hidden lg:col-span-1"
+          className="bg-[#0f2a4a] border-none text-white relative overflow-hidden lg:col-span-1 shadow-[0_20px_50px_rgba(15,42,74,0.3)]"
           title="Team Sales"
           extra={
             <button className="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors border border-white/10">
@@ -189,7 +184,7 @@ function RouteComponent() {
         >
           {/* Donut Chart Mockup */}
           <div className="flex justify-center mb-10 relative">
-            <svg className="w-44 h-44 transform -rotate-90">
+            <svg className="w-44 h-44 transform -rotate-90 filter drop-shadow-[0_0_15px_rgba(244,63,94,0.3)]">
               <circle
                 cx="88"
                 cy="88"
@@ -211,18 +206,19 @@ function RouteComponent() {
                 strokeLinecap="round"
               />
             </svg>
-            <div className="absolute inset-0 flex items-center justify-center flex-col">
-              <div className="w-4 h-4 rounded-full bg-[#f43f5e] mb-1" />
+            <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+              <div className="w-16 h-16 rounded-full bg-white/5 blur-xl animate-pulse" />
+              <div className="w-4 h-4 rounded-full bg-[#f43f5e] shadow-[0_0_10px_#f43f5e]" />
             </div>
           </div>
 
-          <div className="flex justify-center gap-6 mb-8">
-            <div className="flex items-center gap-2 text-xs font-medium">
-              <div className="w-2.5 h-2.5 rounded-sm bg-yellow-400" />
+          <div className="flex justify-center gap-6 mb-8 relative z-10">
+            <div className="flex items-center gap-2 text-xs font-medium bg-white/5 px-3 py-1 rounded-full border border-white/10">
+              <div className="w-2.5 h-2.5 rounded-sm bg-yellow-400 shadow-[0_0_8px_rgba(250,204,21,0.5)]" />
               Left Sales
             </div>
-            <div className="flex items-center gap-2 text-xs font-medium">
-              <div className="w-2.5 h-2.5 rounded-sm bg-rose-500" />
+            <div className="flex items-center gap-2 text-xs font-medium bg-white/5 px-3 py-1 rounded-full border border-white/10">
+              <div className="w-2.5 h-2.5 rounded-sm bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.5)]" />
               Right Sales
             </div>
           </div>
@@ -267,7 +263,8 @@ function RouteComponent() {
           </div>
 
           {/* BG Decoration */}
-          <div className="absolute -bottom-16 -right-16 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -top-16 -left-16 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-16 -right-16 w-64 h-64 bg-rose-500/10 rounded-full blur-3xl pointer-events-none" />
         </Card>
 
         {/* Next Rank Goals */}
@@ -315,7 +312,7 @@ function RouteComponent() {
             <span className="bg-blue-50 text-blue-600 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest border border-blue-100">
               Member
             </span>
-            <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+            <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 cursor-pointer hover:bg-blue-100 transition-colors">
               <Share2 size={16} />
             </div>
           </div>
@@ -401,10 +398,10 @@ function RouteComponent() {
                 className="text-yellow-400 absolute bottom-10 right-40"
               />
               <div className="absolute top-4 left-4 flex flex-col gap-1">
-                <button className="bg-white border border-dash-border p-1 rounded-md shadow-sm">
+                <button className="bg-white border border-dash-border p-1 rounded-md shadow-sm cursor-pointer hover:bg-slate-50">
                   <Plus size={14} />
                 </button>
-                <button className="bg-white border border-dash-border p-1 rounded-md shadow-sm">
+                <button className="bg-white border border-dash-border p-1 rounded-md shadow-sm cursor-pointer hover:bg-slate-50">
                   <Minus size={14} />
                 </button>
               </div>
