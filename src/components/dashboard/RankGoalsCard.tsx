@@ -24,7 +24,7 @@ function GoalItem({
 
       <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
         <div
-          className="h-full bg-brand-blue-btn rounded-full transition-all duration-1000"
+          className="h-full bg-[#2C5D81] rounded-full transition-all duration-1000"
           style={{ width: `${progress}%` }}
         />
       </div>

@@ -1,14 +1,12 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import {
   ChevronDown,
-  Zap,
   Trophy,
   Calendar,
   ChevronLeft,
   ChevronRight,
   Plus,
   Minus,
-  Wallet,
   Users,
   MapPin,
   TrendingUp,
@@ -18,76 +16,13 @@ import { useState } from "react";
 import { TeamSalesCard } from "../../components/dashboard/TeamSalesCard";
 import { RankGoalsCard } from "../../components/dashboard/RankGoalsCard";
 import { UserProfileCard } from "../../components/dashboard/UserProfileCard";
+import SummaryCard from "../../components/dashboard/SummaryCard";
+import Card from "../../components/dashboard/Card";
+import SummaryRow from "../../components/dashboard/SummaryRow";
 
 export const Route = createLazyFileRoute("/_auth/dashboard")({
   component: RouteComponent,
 });
-
-// --- Components ---
-
-function Card({
-  children,
-  className,
-  title,
-  extra,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  title?: string;
-  extra?: React.ReactNode;
-}) {
-  return (
-    <div
-      className={cn(
-        "bg-white rounded-[20px] p-6 border border-dash-border shadow-[0_8px_30px_rgb(0,0,0,0.04)]",
-        className,
-      )}
-    >
-      {(title || extra) && (
-        <div className="flex justify-between items-center mb-6">
-          {title && (
-            <h3 className="text-lg font-bold text-[#1a2d42]">{title}</h3>
-          )}
-          {extra}
-        </div>
-      )}
-      {children}
-    </div>
-  );
-}
-
-function SummaryCard({
-  icon: Icon,
-  title,
-  label,
-  showAll,
-}: {
-  icon: React.ElementType;
-  title: string;
-  label: string;
-  showAll?: boolean;
-}) {
-  return (
-    <div className="bg-white rounded-3xl p-6 border border-dash-border shadow-sm flex flex-col gap-4 group hover:shadow-md transition-all">
-      <div className="flex justify-between items-start">
-        <div className="p-3 rounded-2xl bg-blue-50 text-blue-600 group-hover:scale-110 transition-transform">
-          <Icon size={24} />
-        </div>
-        {showAll && (
-          <button className="text-[10px] font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full uppercase tracking-wider hover:bg-blue-100 transition-colors">
-            Show All
-          </button>
-        )}
-      </div>
-      <div>
-        <h4 className="text-2xl font-black text-[#1a2d42] mb-1">{title}</h4>
-        <p className="text-xs text-dash-muted font-medium uppercase tracking-wide">
-          {label}
-        </p>
-      </div>
-    </div>
-  );
-}
 
 function RouteComponent() {
   const [activeTab, setActiveTab] = useState("Rank Overview");
@@ -107,17 +42,7 @@ function RouteComponent() {
       </div>
 
       {/* SECTION 2: Summary Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <SummaryCard
-          icon={Wallet}
-          title="$0.00"
-          label="Total Network volume"
-          showAll
-        />
-        <SummaryCard icon={Zap} title="Free Package" label="Current Package" />
-        <SummaryCard icon={Trophy} title="Nova Rise" label="Next Package" />
-        <SummaryCard icon={Trophy} title="Bronze" label="Current Rank" />
-      </div>
+      <SummaryRow />
 
       {/* SECTION 3: Map & News */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
