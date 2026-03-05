@@ -53,27 +53,27 @@ function TankRouteComponent() {
             <TankMemberCard />
           </div>
 
-          {/* Large Pagination */}
-          <div className="flex items-center gap-4 mt-auto pb-12">
-            <button className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-slate-700 hover:bg-slate-50 transition-colors shadow-sm border border-slate-100 font-bold">
+          {/* Large Pagination aligned with Card */}
+          <div className="flex items-center justify-between w-[320px] mt-auto pb-12">
+            <button className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-slate-700 hover:bg-slate-50 transition-colors shadow-sm border border-slate-100 font-bold">
               &lt;
             </button>
-            <button className="w-12 h-12 rounded-full bg-[#335c82] flex items-center justify-center text-white shadow-md font-semibold text-lg">
+            <button className="w-10 h-10 rounded-full bg-[#335c82] flex items-center justify-center text-white shadow-md font-semibold text-base">
               1
             </button>
-            <button className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-slate-700 hover:bg-slate-50 transition-colors shadow-sm border border-slate-100 font-semibold text-lg">
+            <button className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-slate-700 hover:bg-slate-50 transition-colors shadow-sm border border-slate-100 font-semibold text-base">
               2
             </button>
-            <button className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-slate-700 hover:bg-slate-50 transition-colors shadow-sm border border-slate-100 font-semibold text-lg">
+            <button className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-slate-700 hover:bg-slate-50 transition-colors shadow-sm border border-slate-100 font-semibold text-base">
               3
             </button>
-            <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-slate-500 shadow-sm border border-slate-100 font-bold tracking-widest leading-none pb-2">
+            <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-slate-500 shadow-sm border border-slate-100 font-bold tracking-widest leading-none pb-2">
               ...
             </div>
-            <button className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-slate-700 hover:bg-slate-50 transition-colors shadow-sm border border-slate-100 font-semibold text-lg">
+            <button className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-slate-700 hover:bg-slate-50 transition-colors shadow-sm border border-slate-100 font-semibold text-base">
               10
             </button>
-            <button className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-slate-700 hover:bg-slate-50 transition-colors shadow-sm border border-slate-100 font-bold">
+            <button className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-slate-700 hover:bg-slate-50 transition-colors shadow-sm border border-slate-100 font-bold">
               &gt;
             </button>
           </div>
