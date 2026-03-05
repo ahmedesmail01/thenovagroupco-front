@@ -3,7 +3,7 @@ import {
   Instagram,
   Linkedin,
   MessageCircle,
-  Copy,
+  // Copy,
   Share2,
 } from "lucide-react";
 import { cn } from "../../lib/utils";
