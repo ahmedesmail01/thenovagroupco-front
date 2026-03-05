@@ -56,7 +56,7 @@ function RouteComponent() {
           className="lg:col-span-3"
           title="Corporate Events"
           extra={
-            <button className="text-[10px] font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full uppercase tracking-wider hover:bg-blue-100">
+            <button className="text-[14px] font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-lg uppercase tracking-wider hover:bg-blue-100">
               Show All
             </button>
           }
