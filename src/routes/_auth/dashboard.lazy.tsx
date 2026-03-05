@@ -1,12 +1,6 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
-import {
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  TrendingUp,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "../../lib/utils";
-import { useState } from "react";
 import { TeamSalesCard } from "../../components/dashboard/TeamSalesCard";
 import { RankGoalsCard } from "../../components/dashboard/RankGoalsCard";
 import { UserProfileCard } from "../../components/dashboard/UserProfileCard";
@@ -16,13 +10,13 @@ import { MemberJoiningsCard } from "../../components/dashboard/MemberJoiningsCar
 import BottomStatsRow from "../../components/dashboard/BottomStatsRow";
 import Activites from "../../components/dashboard/Activites";
 
+import TeamPerformanceCard from "../../components/dashboard/TeamPerformanceCard";
+
 export const Route = createLazyFileRoute("/_auth/dashboard")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const [activeTab, setActiveTab] = useState("Rank Overview");
-
   return (
     <div className="space-y-8 animate-in fade-in duration-700 pb-12">
       {/* SECTION 1: Top Row */}
@@ -54,41 +48,8 @@ function RouteComponent() {
 
       {/* SECTION 5: Performance & Events */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-        {/* Team Performance */}
-        <Card
-          className="lg:col-span-2"
-          title="Team Performance"
-          extra={
-            <button className="flex items-center gap-2 bg-slate-50 hover:bg-slate-100 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors border border-slate-200">
-              Overall <ChevronDown size={14} />
-            </button>
-          }
-        >
-          <div className="flex flex-wrap gap-2 mb-8 border-b border-slate-100 pb-4">
-            {[
-              "Top Earners",
-              "Rank Overview",
-              "Package Overview",
-              "New Members",
-            ].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={cn(
-                  "px-4 py-2 rounded-xl text-xs font-bold transition-all border",
-                  activeTab === tab
-                    ? "bg-white text-blue-600 border-blue-100 shadow-sm"
-                    : "bg-transparent text-slate-400 border-transparent hover:text-slate-600",
-                )}
-              >
-                {tab}
-              </button>
-            ))}
-          </div>
-          <div className="h-[300px] flex items-center justify-center bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
-            <TrendingUp size={48} className="text-blue-100" />
-          </div>
-        </Card>
+        {/* Team Performance Component */}
+        <TeamPerformanceCard />
 
         {/* Corporate Events */}
         <Card
