@@ -52,7 +52,7 @@ export function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
     <aside
       className={cn(
         "fixed left-0 top-0 h-full bg-dash-sidebar border-r border-dash-border transition-all duration-300 z-50 flex flex-col",
-        isCollapsed ? "w-20" : "w-64",
+        isCollapsed ? "w-24" : "w-64",
       )}
     >
       {/* Header */}
