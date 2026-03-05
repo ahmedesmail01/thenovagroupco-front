@@ -1,12 +1,9 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import {
   ChevronDown,
-  Trophy,
-  Calendar,
   ChevronLeft,
   ChevronRight,
   TrendingUp,
-  Users,
 } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { useState } from "react";
@@ -15,8 +12,9 @@ import { RankGoalsCard } from "../../components/dashboard/RankGoalsCard";
 import { UserProfileCard } from "../../components/dashboard/UserProfileCard";
 import SummaryRow from "../../components/dashboard/SummaryRow";
 import Card from "../../components/dashboard/Card";
-import SummaryCard from "../../components/dashboard/SummaryCard";
 import { MemberJoiningsCard } from "../../components/dashboard/MemberJoiningsCard";
+import BottomStatsRow from "../../components/dashboard/BottomStatsRow";
+import Activites from "../../components/dashboard/Activites";
 
 export const Route = createLazyFileRoute("/_auth/dashboard")({
   component: RouteComponent,
@@ -47,36 +45,12 @@ function RouteComponent() {
         {/* Member Joinings Component */}
         <MemberJoiningsCard />
 
-        {/* News & Activities */}
-        <Card
-          title="News & Activities"
-          extra={
-            <button className="text-[10px] font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full uppercase tracking-wider">
-              Show All
-            </button>
-          }
-        >
-          <div className="h-[280px] flex flex-col items-center justify-center text-center p-6 border-2 border-dashed border-slate-100 rounded-2xl">
-            <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center text-blue-300 mb-4 animate-bounce">
-              <Calendar size={32} />
-            </div>
-            <p className="text-sm font-bold text-slate-400">
-              No recent activities
-            </p>
-            <p className="text-xs text-slate-300 mt-1 uppercase tracking-widest font-medium">
-              Coming soon
-            </p>
-          </div>
-        </Card>
+        {/* Activites Component */}
+        <Activites />
       </div>
 
-      {/* SECTION 4: Bottom Stats Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <SummaryCard icon={Trophy} title="Bronze" label="Current Package" />
-        <SummaryCard icon={TrendingUp} title="Silver" label="Next Rank" />
-        <SummaryCard icon={Users} title="2" label="Referred Members" />
-        <SummaryCard icon={Calendar} title="22 Days" label="Member Since" />
-      </div>
+      {/* SECTION 4: Bottom Stats Row Component */}
+      <BottomStatsRow />
 
       {/* SECTION 5: Performance & Events */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
