@@ -86,7 +86,7 @@ function MembershipRouteComponent() {
   const [activeTab, setActiveTab] = useState("nova pro");
 
   return (
-    <div className="min-h-[calc(100vh-100px)] p-6 bg-[#f8fafc] w-full max-w-[1500px] mx-auto flex flex-col pt-12">
+    <div className="min-h-[calc(100vh-100px)] bg-[#f8fafc] w-full max-w-[1500px] mx-auto flex flex-col pt-12">
       <TabHeader activeTab={activeTab} onTabChange={setActiveTab} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 max-w-6xl mx-auto w-full px-4">
