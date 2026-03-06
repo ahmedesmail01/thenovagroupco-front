@@ -9,7 +9,7 @@ export const Route = createLazyFileRoute("/_auth/genealogy")({
 
 function RouteComponent() {
   return (
-    <div className="p-4 md:p-8 space-y-6 flex flex-col h-[calc(100vh-100px)] overflow-hidden">
+    <div className="  space-y-6 flex flex-col h-[calc(100vh-100px)] overflow-hidden">
       <TransformWrapper
         initialScale={0.7}
         minScale={0.2}
