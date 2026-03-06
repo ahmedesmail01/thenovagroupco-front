@@ -20,6 +20,7 @@ const IndexLazyRouteImport = createFileRoute('/')()
 const CoursesIndexLazyRouteImport = createFileRoute('/courses/')()
 const CoursesCourseIdLazyRouteImport = createFileRoute('/courses/$courseId')()
 const AuthWalletLazyRouteImport = createFileRoute('/_auth/wallet')()
+const AuthTransactionsLazyRouteImport = createFileRoute('/_auth/transactions')()
 const AuthTankLazyRouteImport = createFileRoute('/_auth/tank')()
 const AuthLibraryLazyRouteImport = createFileRoute('/_auth/library')()
 const AuthGenealogyLazyRouteImport = createFileRoute('/_auth/genealogy')()
@@ -66,6 +67,13 @@ const AuthWalletLazyRoute = AuthWalletLazyRouteImport.update({
   path: '/wallet',
   getParentRoute: () => AuthRoute,
 } as any).lazy(() => import('./routes/_auth/wallet.lazy').then((d) => d.Route))
+const AuthTransactionsLazyRoute = AuthTransactionsLazyRouteImport.update({
+  id: '/transactions',
+  path: '/transactions',
+  getParentRoute: () => AuthRoute,
+} as any).lazy(() =>
+  import('./routes/_auth/transactions.lazy').then((d) => d.Route),
+)
 const AuthTankLazyRoute = AuthTankLazyRouteImport.update({
   id: '/tank',
   path: '/tank',
@@ -100,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/genealogy': typeof AuthGenealogyLazyRoute
   '/library': typeof AuthLibraryLazyRoute
   '/tank': typeof AuthTankLazyRoute
+  '/transactions': typeof AuthTransactionsLazyRoute
   '/wallet': typeof AuthWalletLazyRoute
   '/courses/$courseId': typeof CoursesCourseIdLazyRoute
   '/courses/': typeof CoursesIndexLazyRoute
@@ -113,6 +122,7 @@ export interface FileRoutesByTo {
   '/genealogy': typeof AuthGenealogyLazyRoute
   '/library': typeof AuthLibraryLazyRoute
   '/tank': typeof AuthTankLazyRoute
+  '/transactions': typeof AuthTransactionsLazyRoute
   '/wallet': typeof AuthWalletLazyRoute
   '/courses/$courseId': typeof CoursesCourseIdLazyRoute
   '/courses': typeof CoursesIndexLazyRoute
@@ -128,6 +138,7 @@ export interface FileRoutesById {
   '/_auth/genealogy': typeof AuthGenealogyLazyRoute
   '/_auth/library': typeof AuthLibraryLazyRoute
   '/_auth/tank': typeof AuthTankLazyRoute
+  '/_auth/transactions': typeof AuthTransactionsLazyRoute
   '/_auth/wallet': typeof AuthWalletLazyRoute
   '/courses/$courseId': typeof CoursesCourseIdLazyRoute
   '/courses/': typeof CoursesIndexLazyRoute
@@ -143,6 +154,7 @@ export interface FileRouteTypes {
     | '/genealogy'
     | '/library'
     | '/tank'
+    | '/transactions'
     | '/wallet'
     | '/courses/$courseId'
     | '/courses/'
@@ -156,6 +168,7 @@ export interface FileRouteTypes {
     | '/genealogy'
     | '/library'
     | '/tank'
+    | '/transactions'
     | '/wallet'
     | '/courses/$courseId'
     | '/courses'
@@ -170,6 +183,7 @@ export interface FileRouteTypes {
     | '/_auth/genealogy'
     | '/_auth/library'
     | '/_auth/tank'
+    | '/_auth/transactions'
     | '/_auth/wallet'
     | '/courses/$courseId'
     | '/courses/'
@@ -243,6 +257,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthWalletLazyRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/transactions': {
+      id: '/_auth/transactions'
+      path: '/transactions'
+      fullPath: '/transactions'
+      preLoaderRoute: typeof AuthTransactionsLazyRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/tank': {
       id: '/_auth/tank'
       path: '/tank'
@@ -279,6 +300,7 @@ interface AuthRouteChildren {
   AuthGenealogyLazyRoute: typeof AuthGenealogyLazyRoute
   AuthLibraryLazyRoute: typeof AuthLibraryLazyRoute
   AuthTankLazyRoute: typeof AuthTankLazyRoute
+  AuthTransactionsLazyRoute: typeof AuthTransactionsLazyRoute
   AuthWalletLazyRoute: typeof AuthWalletLazyRoute
 }
 
@@ -287,6 +309,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthGenealogyLazyRoute: AuthGenealogyLazyRoute,
   AuthLibraryLazyRoute: AuthLibraryLazyRoute,
   AuthTankLazyRoute: AuthTankLazyRoute,
+  AuthTransactionsLazyRoute: AuthTransactionsLazyRoute,
   AuthWalletLazyRoute: AuthWalletLazyRoute,
 }
 
