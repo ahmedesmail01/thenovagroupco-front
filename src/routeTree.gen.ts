@@ -25,6 +25,7 @@ const AuthTankLazyRouteImport = createFileRoute('/_auth/tank')()
 const AuthLibraryLazyRouteImport = createFileRoute('/_auth/library')()
 const AuthGenealogyLazyRouteImport = createFileRoute('/_auth/genealogy')()
 const AuthDashboardLazyRouteImport = createFileRoute('/_auth/dashboard')()
+const AuthCommissionsLazyRouteImport = createFileRoute('/_auth/commissions')()
 
 const RegisterLazyRoute = RegisterLazyRouteImport.update({
   id: '/register',
@@ -98,12 +99,20 @@ const AuthDashboardLazyRoute = AuthDashboardLazyRouteImport.update({
 } as any).lazy(() =>
   import('./routes/_auth/dashboard.lazy').then((d) => d.Route),
 )
+const AuthCommissionsLazyRoute = AuthCommissionsLazyRouteImport.update({
+  id: '/commissions',
+  path: '/commissions',
+  getParentRoute: () => AuthRoute,
+} as any).lazy(() =>
+  import('./routes/_auth/commissions.lazy').then((d) => d.Route),
+)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/about': typeof AboutLazyRoute
   '/login': typeof LoginLazyRoute
   '/register': typeof RegisterLazyRoute
+  '/commissions': typeof AuthCommissionsLazyRoute
   '/dashboard': typeof AuthDashboardLazyRoute
   '/genealogy': typeof AuthGenealogyLazyRoute
   '/library': typeof AuthLibraryLazyRoute
@@ -118,6 +127,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutLazyRoute
   '/login': typeof LoginLazyRoute
   '/register': typeof RegisterLazyRoute
+  '/commissions': typeof AuthCommissionsLazyRoute
   '/dashboard': typeof AuthDashboardLazyRoute
   '/genealogy': typeof AuthGenealogyLazyRoute
   '/library': typeof AuthLibraryLazyRoute
@@ -134,6 +144,7 @@ export interface FileRoutesById {
   '/about': typeof AboutLazyRoute
   '/login': typeof LoginLazyRoute
   '/register': typeof RegisterLazyRoute
+  '/_auth/commissions': typeof AuthCommissionsLazyRoute
   '/_auth/dashboard': typeof AuthDashboardLazyRoute
   '/_auth/genealogy': typeof AuthGenealogyLazyRoute
   '/_auth/library': typeof AuthLibraryLazyRoute
@@ -150,6 +161,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/login'
     | '/register'
+    | '/commissions'
     | '/dashboard'
     | '/genealogy'
     | '/library'
@@ -164,6 +176,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/login'
     | '/register'
+    | '/commissions'
     | '/dashboard'
     | '/genealogy'
     | '/library'
@@ -179,6 +192,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/login'
     | '/register'
+    | '/_auth/commissions'
     | '/_auth/dashboard'
     | '/_auth/genealogy'
     | '/_auth/library'
@@ -292,10 +306,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthDashboardLazyRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/commissions': {
+      id: '/_auth/commissions'
+      path: '/commissions'
+      fullPath: '/commissions'
+      preLoaderRoute: typeof AuthCommissionsLazyRouteImport
+      parentRoute: typeof AuthRoute
+    }
   }
 }
 
 interface AuthRouteChildren {
+  AuthCommissionsLazyRoute: typeof AuthCommissionsLazyRoute
   AuthDashboardLazyRoute: typeof AuthDashboardLazyRoute
   AuthGenealogyLazyRoute: typeof AuthGenealogyLazyRoute
   AuthLibraryLazyRoute: typeof AuthLibraryLazyRoute
@@ -305,6 +327,7 @@ interface AuthRouteChildren {
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
+  AuthCommissionsLazyRoute: AuthCommissionsLazyRoute,
   AuthDashboardLazyRoute: AuthDashboardLazyRoute,
   AuthGenealogyLazyRoute: AuthGenealogyLazyRoute,
   AuthLibraryLazyRoute: AuthLibraryLazyRoute,
