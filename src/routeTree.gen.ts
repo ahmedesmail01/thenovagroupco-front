@@ -22,6 +22,7 @@ const CoursesCourseIdLazyRouteImport = createFileRoute('/courses/$courseId')()
 const AuthWalletLazyRouteImport = createFileRoute('/_auth/wallet')()
 const AuthTransactionsLazyRouteImport = createFileRoute('/_auth/transactions')()
 const AuthTankLazyRouteImport = createFileRoute('/_auth/tank')()
+const AuthMembershipLazyRouteImport = createFileRoute('/_auth/membership')()
 const AuthLibraryLazyRouteImport = createFileRoute('/_auth/library')()
 const AuthGenealogyLazyRouteImport = createFileRoute('/_auth/genealogy')()
 const AuthDashboardLazyRouteImport = createFileRoute('/_auth/dashboard')()
@@ -80,6 +81,13 @@ const AuthTankLazyRoute = AuthTankLazyRouteImport.update({
   path: '/tank',
   getParentRoute: () => AuthRoute,
 } as any).lazy(() => import('./routes/_auth/tank.lazy').then((d) => d.Route))
+const AuthMembershipLazyRoute = AuthMembershipLazyRouteImport.update({
+  id: '/membership',
+  path: '/membership',
+  getParentRoute: () => AuthRoute,
+} as any).lazy(() =>
+  import('./routes/_auth/membership.lazy').then((d) => d.Route),
+)
 const AuthLibraryLazyRoute = AuthLibraryLazyRouteImport.update({
   id: '/library',
   path: '/library',
@@ -116,6 +124,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthDashboardLazyRoute
   '/genealogy': typeof AuthGenealogyLazyRoute
   '/library': typeof AuthLibraryLazyRoute
+  '/membership': typeof AuthMembershipLazyRoute
   '/tank': typeof AuthTankLazyRoute
   '/transactions': typeof AuthTransactionsLazyRoute
   '/wallet': typeof AuthWalletLazyRoute
@@ -131,6 +140,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthDashboardLazyRoute
   '/genealogy': typeof AuthGenealogyLazyRoute
   '/library': typeof AuthLibraryLazyRoute
+  '/membership': typeof AuthMembershipLazyRoute
   '/tank': typeof AuthTankLazyRoute
   '/transactions': typeof AuthTransactionsLazyRoute
   '/wallet': typeof AuthWalletLazyRoute
@@ -148,6 +158,7 @@ export interface FileRoutesById {
   '/_auth/dashboard': typeof AuthDashboardLazyRoute
   '/_auth/genealogy': typeof AuthGenealogyLazyRoute
   '/_auth/library': typeof AuthLibraryLazyRoute
+  '/_auth/membership': typeof AuthMembershipLazyRoute
   '/_auth/tank': typeof AuthTankLazyRoute
   '/_auth/transactions': typeof AuthTransactionsLazyRoute
   '/_auth/wallet': typeof AuthWalletLazyRoute
@@ -165,6 +176,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/genealogy'
     | '/library'
+    | '/membership'
     | '/tank'
     | '/transactions'
     | '/wallet'
@@ -180,6 +192,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/genealogy'
     | '/library'
+    | '/membership'
     | '/tank'
     | '/transactions'
     | '/wallet'
@@ -196,6 +209,7 @@ export interface FileRouteTypes {
     | '/_auth/dashboard'
     | '/_auth/genealogy'
     | '/_auth/library'
+    | '/_auth/membership'
     | '/_auth/tank'
     | '/_auth/transactions'
     | '/_auth/wallet'
@@ -285,6 +299,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthTankLazyRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/membership': {
+      id: '/_auth/membership'
+      path: '/membership'
+      fullPath: '/membership'
+      preLoaderRoute: typeof AuthMembershipLazyRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/library': {
       id: '/_auth/library'
       path: '/library'
@@ -321,6 +342,7 @@ interface AuthRouteChildren {
   AuthDashboardLazyRoute: typeof AuthDashboardLazyRoute
   AuthGenealogyLazyRoute: typeof AuthGenealogyLazyRoute
   AuthLibraryLazyRoute: typeof AuthLibraryLazyRoute
+  AuthMembershipLazyRoute: typeof AuthMembershipLazyRoute
   AuthTankLazyRoute: typeof AuthTankLazyRoute
   AuthTransactionsLazyRoute: typeof AuthTransactionsLazyRoute
   AuthWalletLazyRoute: typeof AuthWalletLazyRoute
@@ -331,6 +353,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthDashboardLazyRoute: AuthDashboardLazyRoute,
   AuthGenealogyLazyRoute: AuthGenealogyLazyRoute,
   AuthLibraryLazyRoute: AuthLibraryLazyRoute,
+  AuthMembershipLazyRoute: AuthMembershipLazyRoute,
   AuthTankLazyRoute: AuthTankLazyRoute,
   AuthTransactionsLazyRoute: AuthTransactionsLazyRoute,
   AuthWalletLazyRoute: AuthWalletLazyRoute,
