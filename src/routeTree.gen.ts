@@ -22,6 +22,7 @@ const CoursesCourseIdLazyRouteImport = createFileRoute('/courses/$courseId')()
 const AuthWalletLazyRouteImport = createFileRoute('/_auth/wallet')()
 const AuthTransactionsLazyRouteImport = createFileRoute('/_auth/transactions')()
 const AuthTankLazyRouteImport = createFileRoute('/_auth/tank')()
+const AuthProfileLazyRouteImport = createFileRoute('/_auth/profile')()
 const AuthNovaProLazyRouteImport = createFileRoute('/_auth/nova-pro')()
 const AuthMembershipLazyRouteImport = createFileRoute('/_auth/membership')()
 const AuthLibraryLazyRouteImport = createFileRoute('/_auth/library')()
@@ -82,6 +83,11 @@ const AuthTankLazyRoute = AuthTankLazyRouteImport.update({
   path: '/tank',
   getParentRoute: () => AuthRoute,
 } as any).lazy(() => import('./routes/_auth/tank.lazy').then((d) => d.Route))
+const AuthProfileLazyRoute = AuthProfileLazyRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthRoute,
+} as any).lazy(() => import('./routes/_auth/profile.lazy').then((d) => d.Route))
 const AuthNovaProLazyRoute = AuthNovaProLazyRouteImport.update({
   id: '/nova-pro',
   path: '/nova-pro',
@@ -134,6 +140,7 @@ export interface FileRoutesByFullPath {
   '/library': typeof AuthLibraryLazyRoute
   '/membership': typeof AuthMembershipLazyRoute
   '/nova-pro': typeof AuthNovaProLazyRoute
+  '/profile': typeof AuthProfileLazyRoute
   '/tank': typeof AuthTankLazyRoute
   '/transactions': typeof AuthTransactionsLazyRoute
   '/wallet': typeof AuthWalletLazyRoute
@@ -151,6 +158,7 @@ export interface FileRoutesByTo {
   '/library': typeof AuthLibraryLazyRoute
   '/membership': typeof AuthMembershipLazyRoute
   '/nova-pro': typeof AuthNovaProLazyRoute
+  '/profile': typeof AuthProfileLazyRoute
   '/tank': typeof AuthTankLazyRoute
   '/transactions': typeof AuthTransactionsLazyRoute
   '/wallet': typeof AuthWalletLazyRoute
@@ -170,6 +178,7 @@ export interface FileRoutesById {
   '/_auth/library': typeof AuthLibraryLazyRoute
   '/_auth/membership': typeof AuthMembershipLazyRoute
   '/_auth/nova-pro': typeof AuthNovaProLazyRoute
+  '/_auth/profile': typeof AuthProfileLazyRoute
   '/_auth/tank': typeof AuthTankLazyRoute
   '/_auth/transactions': typeof AuthTransactionsLazyRoute
   '/_auth/wallet': typeof AuthWalletLazyRoute
@@ -189,6 +198,7 @@ export interface FileRouteTypes {
     | '/library'
     | '/membership'
     | '/nova-pro'
+    | '/profile'
     | '/tank'
     | '/transactions'
     | '/wallet'
@@ -206,6 +216,7 @@ export interface FileRouteTypes {
     | '/library'
     | '/membership'
     | '/nova-pro'
+    | '/profile'
     | '/tank'
     | '/transactions'
     | '/wallet'
@@ -224,6 +235,7 @@ export interface FileRouteTypes {
     | '/_auth/library'
     | '/_auth/membership'
     | '/_auth/nova-pro'
+    | '/_auth/profile'
     | '/_auth/tank'
     | '/_auth/transactions'
     | '/_auth/wallet'
@@ -313,6 +325,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthTankLazyRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/profile': {
+      id: '/_auth/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthProfileLazyRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/nova-pro': {
       id: '/_auth/nova-pro'
       path: '/nova-pro'
@@ -365,6 +384,7 @@ interface AuthRouteChildren {
   AuthLibraryLazyRoute: typeof AuthLibraryLazyRoute
   AuthMembershipLazyRoute: typeof AuthMembershipLazyRoute
   AuthNovaProLazyRoute: typeof AuthNovaProLazyRoute
+  AuthProfileLazyRoute: typeof AuthProfileLazyRoute
   AuthTankLazyRoute: typeof AuthTankLazyRoute
   AuthTransactionsLazyRoute: typeof AuthTransactionsLazyRoute
   AuthWalletLazyRoute: typeof AuthWalletLazyRoute
@@ -377,6 +397,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthLibraryLazyRoute: AuthLibraryLazyRoute,
   AuthMembershipLazyRoute: AuthMembershipLazyRoute,
   AuthNovaProLazyRoute: AuthNovaProLazyRoute,
+  AuthProfileLazyRoute: AuthProfileLazyRoute,
   AuthTankLazyRoute: AuthTankLazyRoute,
   AuthTransactionsLazyRoute: AuthTransactionsLazyRoute,
   AuthWalletLazyRoute: AuthWalletLazyRoute,
