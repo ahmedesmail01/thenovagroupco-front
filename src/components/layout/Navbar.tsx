@@ -1,12 +1,41 @@
-import { useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { useState, useRef, useEffect } from "react";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { Button } from "../ui/Button";
 import { useAuthStore } from "../../features/auth/useAuthStore";
+import {
+  User as UserIcon,
+  LogOut,
+  LayoutDashboard,
+  ChevronDown,
+} from "lucide-react";
 const logoImg = "/images/nova-logo.png";
 
 export function Navbar() {
-  const { setLoginModalOpen, isAuthenticated } = useAuthStore();
+  const { setLoginModalOpen, isAuthenticated, user, logout } = useAuthStore();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowUserDropdown(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleLogout = () => {
+    logout();
+    setMenuOpen(false);
+    setShowUserDropdown(false);
+    navigate({ to: "/" });
+  };
 
   // Suppress unused warning — kept for any legacy usage
   void setLoginModalOpen;
@@ -58,17 +87,52 @@ export function Navbar() {
         </div>
 
         {/* Auth CTAs — conditionally render based on login status */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden md:flex  items-center gap-3">
           {isAuthenticated ? (
-            <Link to="/dashboard">
-              <Button
-                variant="primary"
-                size="sm"
-                className="shadow-lg text-[15px] py-[10px] px-[26px] shadow-brand-blue/20"
+            <div className="relative" ref={dropdownRef}>
+              <button
+                className="flex items-center gap-2  text-[15px] py-[10px] px-[20px] bg-none"
+                onClick={() => setShowUserDropdown(!showUserDropdown)}
               >
-                Dashboard
-              </Button>
-            </Link>
+                <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                  <UserIcon className="w-4 h-4" />
+                </div>
+                <span>{user?.firstName || "Account"}</span>
+                <ChevronDown
+                  className={`w-4 h-4 transition-transform ${showUserDropdown ? "rotate-180" : ""}`}
+                />
+              </button>
+
+              {/* Desktop Dropdown Menu */}
+              {showUserDropdown && (
+                <div className="absolute right-0 mt-2 w-48 bg-brand-navy border border-brand-border rounded-xl shadow-2xl py-2 z-50 animate-in fade-in zoom-in duration-200">
+                  <Link
+                    to="/dashboard"
+                    onClick={() => setShowUserDropdown(false)}
+                    className="flex items-center gap-2 px-4 py-2.5 text-sm text-text-secondary hover:text-white hover:bg-white/5 transition-colors"
+                  >
+                    <LayoutDashboard className="w-4 h-4" />
+                    Dashboard
+                  </Link>
+                  <Link
+                    to="/profile"
+                    onClick={() => setShowUserDropdown(false)}
+                    className="flex items-center gap-2 px-4 py-2.5 text-sm text-text-secondary hover:text-white hover:bg-white/5 transition-colors"
+                  >
+                    <UserIcon className="w-4 h-4" />
+                    Profile
+                  </Link>
+                  <hr className="border-brand-border my-1 mx-2" />
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
           ) : (
             <>
               <Link to="/register">
@@ -152,9 +216,31 @@ export function Navbar() {
           <hr className="border-brand-border my-1" />
           <div className="flex flex-col gap-2">
             {isAuthenticated ? (
-              <Link to="/dashboard" onClick={() => setMenuOpen(false)}>
-                <Button className="w-full">Dashboard</Button>
-              </Link>
+              <>
+                <Link
+                  to="/dashboard"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center gap-3 text-text-secondary hover:text-brand-blue-light p-3 rounded-lg hover:bg-white/5 transition-colors"
+                >
+                  <LayoutDashboard className="w-5 h-5" />
+                  <span className="font-medium">Dashboard</span>
+                </Link>
+                <Link
+                  to="/profile"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center gap-3 text-text-secondary hover:text-brand-blue-light p-3 rounded-lg hover:bg-white/5 transition-colors"
+                >
+                  <UserIcon className="w-5 h-5" />
+                  <span className="font-medium">Profile</span>
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-3 text-red-400 hover:text-red-300 p-3 rounded-lg hover:bg-red-500/10 transition-colors text-left"
+                >
+                  <LogOut className="w-5 h-5" />
+                  <span className="font-medium">Logout</span>
+                </button>
+              </>
             ) : (
               <>
                 <Link to="/register" onClick={() => setMenuOpen(false)}>
