@@ -2,10 +2,10 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "../ui/Button";
 import { useAuthStore } from "../../features/auth/useAuthStore";
-import logoImg from "../../../public/images/nova-logo.png";
+const logoImg = "/images/nova-logo.png";
 
 export function Navbar() {
-  const { setLoginModalOpen } = useAuthStore();
+  const { setLoginModalOpen, isAuthenticated } = useAuthStore();
   const [menuOpen, setMenuOpen] = useState(false);
 
   // Suppress unused warning — kept for any legacy usage
@@ -57,26 +57,40 @@ export function Navbar() {
           </Link>
         </div>
 
-        {/* Auth CTAs — now link to pages */}
+        {/* Auth CTAs — conditionally render based on login status */}
         <div className="hidden md:flex items-center gap-3">
-          <Link to="/register">
-            <Button
-              variant="primary"
-              size="sm"
-              className="shadow-lg text-[15px] py-[10px] px-[26px] shadow-brand-blue/20"
-            >
-              Sign up
-            </Button>
-          </Link>
-          <Link to="/login">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="hover:bg-white/5 text-[15px] py-[10px] px-[26px] border border-white rounded-[8px]"
-            >
-              Login
-            </Button>
-          </Link>
+          {isAuthenticated ? (
+            <Link to="/dashboard">
+              <Button
+                variant="primary"
+                size="sm"
+                className="shadow-lg text-[15px] py-[10px] px-[26px] shadow-brand-blue/20"
+              >
+                Dashboard
+              </Button>
+            </Link>
+          ) : (
+            <>
+              <Link to="/register">
+                <Button
+                  variant="primary"
+                  size="sm"
+                  className="shadow-lg text-[15px] py-[10px] px-[26px] shadow-brand-blue/20"
+                >
+                  Sign up
+                </Button>
+              </Link>
+              <Link to="/login">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="hover:bg-white/5 text-[15px] py-[10px] px-[26px] border border-white rounded-[8px]"
+                >
+                  Login
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile hamburger */}
@@ -137,14 +151,22 @@ export function Navbar() {
           </Link>
           <hr className="border-brand-border my-1" />
           <div className="flex flex-col gap-2">
-            <Link to="/register" onClick={() => setMenuOpen(false)}>
-              <Button className="w-full">Sign up</Button>
-            </Link>
-            <Link to="/login" onClick={() => setMenuOpen(false)}>
-              <Button variant="outline" className="w-full">
-                Login
-              </Button>
-            </Link>
+            {isAuthenticated ? (
+              <Link to="/dashboard" onClick={() => setMenuOpen(false)}>
+                <Button className="w-full">Dashboard</Button>
+              </Link>
+            ) : (
+              <>
+                <Link to="/register" onClick={() => setMenuOpen(false)}>
+                  <Button className="w-full">Sign up</Button>
+                </Link>
+                <Link to="/login" onClick={() => setMenuOpen(false)}>
+                  <Button variant="outline" className="w-full">
+                    Login
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
