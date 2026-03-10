@@ -8,33 +8,46 @@ import { TransferForm } from "../../features/wallet/components/TransferForm";
 import { WithdrawForm } from "../../features/wallet/components/WithdrawForm";
 import { TransactionsForm } from "../../features/wallet/components/TransactionsForm";
 
+import { useWalletTotals } from "../../features/wallet/useWalletTotals";
+import { formatPrice } from "../../lib/utils";
+
 export const Route = createLazyFileRoute("/_auth/wallet")({
   component: WalletRouteComponent,
 });
 
 function WalletRouteComponent() {
+  const { data, isLoading } = useWalletTotals();
+
   return (
     <div className="min-h-[calc(100vh-100px)]  bg-[#f8fafc] flex flex-col gap-6 w-full max-w-[1500px] mx-auto">
       {/* Top Stats Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <TopStatCard
           title="Total Earnings"
-          value="$21,.500.00"
+          value={
+            isLoading ? "Loading..." : formatPrice(data?.total_earnings || 0)
+          }
           accentClass="bg-[#8b5cf6]"
         />
         <TopStatCard
           title="Total Bounce"
-          value="$21,.500.00"
+          value={
+            isLoading ? "Loading..." : formatPrice(data?.total_bounce || 0)
+          }
           accentClass="bg-[#f43f5e]"
         />
         <TopStatCard
           title="Total Receive"
-          value="$21,.500.00"
+          value={
+            isLoading ? "Loading..." : formatPrice(data?.total_receive || 0)
+          }
           accentClass="bg-[#10b981]"
         />
         <TopStatCard
           title="Total Transfer"
-          value="$21,.500.00"
+          value={
+            isLoading ? "Loading..." : formatPrice(data?.total_transfer || 0)
+          }
           accentClass="bg-[#3b82f6]"
         />
       </div>
