@@ -1,11 +1,34 @@
+import {
+  type UserDataResponse,
+  useDownline,
+} from "../../features/auth/useUserData";
+import { useState } from "react";
+import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import { TransformComponent } from "react-zoom-pan-pinch";
 
 interface NodeProps {
-  count: string;
+  userId: number | string;
+  idCode: number | string;
+  fullName: string;
+  subscriptionName?: string;
   color: "red" | "blue" | "teal";
+  isRoot?: boolean;
 }
 
-function Node({ count, color }: NodeProps) {
+function GenealogyNode({
+  userId,
+  idCode,
+  fullName,
+  // subscriptionName,s
+  color,
+}: NodeProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const { data: downline, isLoading } = useDownline(userId);
+
+  const hasChildren = !!(
+    downline?.members?.left_leg_member || downline?.members?.right_leg_member
+  );
+
   const colorSchemes = {
     red: {
       bg: "from-[#ec4899] to-[#ef4444]",
@@ -33,54 +56,138 @@ function Node({ count, color }: NodeProps) {
   const scheme = colorSchemes[color];
 
   return (
-    <div
-      className={`p-1.5 rounded-[2.5rem] bg-white border border-slate-200 shadow-sm transition-transform hover:scale-[1.02] duration-300`}
-    >
-      <div
-        className={`p-10 rounded-4xl border ${scheme.border} bg-linear-to-br ${scheme.bg} shadow-inner w-72 aspect-4/5 flex flex-col items-center justify-center relative overflow-hidden group`}
-      >
-        {/* Background Decorative Circular Shapes */}
+    <div className="flex flex-col items-center relative gap-8">
+      {/* Node Card */}
+      <div className="p-1.5 rounded-[2.5rem] bg-white border border-slate-200 shadow-sm transition-transform hover:scale-[1.02] duration-300 relative z-10">
         <div
-          className={`absolute -bottom-20 -left-20 w-[120%] h-[120%] rounded-full ${scheme.shape1} mix-blend-multiply pointer-events-none`}
-        />
-        <div
-          className={`absolute -top-20 -right-20 w-80 h-80 rounded-full ${scheme.shape2} mix-blend-overlay pointer-events-none`}
-        />
-
-        {/* Reflective highlight streak */}
-        <div className="absolute top-0 left-0 w-full h-1/2 bg-linear-to-b from-white/10 to-transparent pointer-events-none" />
-
-        {/* Avatar Section */}
-        <div className="relative mb-12">
-          {/* Thick semi-transparent outer ring */}
+          className={`p-6 rounded-4xl border ${scheme.border} bg-linear-to-br ${scheme.bg} shadow-inner w-56 aspect-4/5 flex flex-col items-center justify-center relative overflow-hidden group`}
+        >
+          {/* Background Decorative Circular Shapes */}
           <div
-            className={`absolute -inset-4 rounded-full border-12 ${scheme.avatarRing}`}
+            className={`absolute -bottom-20 -left-20 w-[120%] h-[120%] rounded-full ${scheme.shape1} mix-blend-multiply pointer-events-none`}
+          />
+          <div
+            className={`absolute -top-20 -right-20 w-80 h-80 rounded-full ${scheme.shape2} mix-blend-overlay pointer-events-none`}
           />
 
-          <div className="w-28 h-28 rounded-full bg-[#f1f5f9] flex items-center justify-center  shadow-md relative z-10 border-2 border-slate-200/50">
-            <img
-              src="/images/game-avatar.png"
-              alt="Avatar"
-              className="w-full h-full object-contain pixelated drop-shadow-sm"
+          {/* Avatar Section */}
+          <div className="relative mb-6">
+            <div
+              className={`absolute -inset-2 rounded-full border-8 ${scheme.avatarRing}`}
             />
+            <div className="w-20 h-20 rounded-full bg-[#f1f5f9] flex items-center justify-center shadow-md relative z-10 border-2 border-slate-200/50">
+              <img
+                src="/images/game-avatar.png"
+                alt="Avatar"
+                className="w-full h-full object-contain pixelated drop-shadow-sm"
+              />
+            </div>
+          </div>
+
+          {/* Text Section */}
+          <div className="text-center z-10">
+            <h3 className="text-white text-lg font-bold tracking-wide mb-1 drop-shadow-md truncate w-44">
+              {fullName}
+            </h3>
+            <p className="text-white font-normal text-sm opacity-90 mb-1">
+              ID: {idCode}
+            </p>
+            {/* {subscriptionName && (
+              <p className="text-white font-bold text-xs uppercase tracking-tighter bg-black/20 px-2 py-0.5 rounded-full inline-block">
+                {subscriptionName}
+              </p>
+            )} */}
           </div>
         </div>
-
-        {/* Text Section */}
-        <div className="text-center z-10">
-          <h3 className="text-white text-4xl font-normal tracking-wide mb-3 drop-shadow-md">
-            ID
-          </h3>
-          <p className="text-white font-normal text-2xl tracking-widest opacity-95 drop-shadow-sm">
-            {count}
-          </p>
-        </div>
       </div>
+
+      {/* Expand Button */}
+      {(isLoading || hasChildren) && (
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="w-10 h-10 rounded-full bg-white border border-slate-200 shadow-lg flex items-center justify-center cursor-pointer hover:bg-slate-50 transition-colors z-20"
+        >
+          {isLoading ? (
+            <Loader2 className="w-5 h-5 animate-spin text-slate-400" />
+          ) : isExpanded ? (
+            <ChevronUp className="w-6 h-6 text-slate-600" />
+          ) : (
+            <ChevronDown className="w-6 h-6 text-slate-600" />
+          )}
+        </button>
+      )}
+
+      {/* Children Section */}
+      {isExpanded && downline && (
+        <div className="relative pt-12">
+          {/* horizontal connector line */}
+          {downline.members.left_leg_member &&
+            downline.members.right_leg_member && (
+              <div className="absolute top-0 left-1/4 right-1/4 h-0.5 bg-slate-200" />
+            )}
+
+          {/* vertical connector line from parent */}
+          <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-0.5 h-8 bg-slate-200" />
+
+          <div className="flex gap-12">
+            {downline.members.left_leg_member ? (
+              <div className="relative flex flex-col items-center">
+                {/* vertical line to child */}
+                <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-0.5 h-12 bg-slate-200" />
+                <GenealogyNode
+                  userId={downline.members.left_leg_member.user_id}
+                  idCode={downline.members.left_leg_member.id_code}
+                  fullName={downline.members.left_leg_member.full_name}
+                  subscriptionName={
+                    typeof downline.members.left_leg_member.subscription ===
+                    "string"
+                      ? downline.members.left_leg_member.subscription
+                      : downline.members.left_leg_member.subscription?.name
+                  }
+                  color="blue"
+                />
+              </div>
+            ) : (
+              <div className="w-56" />
+            )}
+
+            {downline.members.right_leg_member ? (
+              <div className="relative flex flex-col items-center">
+                {/* vertical line to child */}
+                <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-0.5 h-12 bg-slate-200" />
+                <GenealogyNode
+                  userId={downline.members.right_leg_member.user_id}
+                  idCode={downline.members.right_leg_member.id_code}
+                  fullName={downline.members.right_leg_member.full_name}
+                  subscriptionName={
+                    typeof downline.members.right_leg_member.subscription ===
+                    "string"
+                      ? downline.members.right_leg_member.subscription
+                      : downline.members.right_leg_member.subscription?.name
+                  }
+                  color="teal"
+                />
+              </div>
+            ) : (
+              <div className="w-56" />
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-export function GenealogyTree() {
+interface GenealogyTreeProps {
+  userData?: UserDataResponse;
+}
+
+export function GenealogyTree({ userData }: GenealogyTreeProps) {
+  if (!userData) return null;
+
+  const root = userData["user data"];
+  const profile = userData.profile;
+
   return (
     <div className="bg-[#f8fafc] rounded-[3rem] p-4 h-full border border-slate-200/60 shadow-inner flex flex-col overflow-hidden">
       <TransformComponent
@@ -91,37 +198,16 @@ export function GenealogyTree() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          padding: "100px",
+          padding: "200px",
         }}
       >
-        <div className="flex flex-row gap-20 items-stretch justify-center relative">
-          {/* Main Tree Layout */}
-          <div className="flex flex-col items-center justify-start pt-20">
-            <Node count="400000" color="red" />
-          </div>
-
-          {/* Middle Branching Section */}
-          <div className="flex flex-col items-center gap-16 relative">
-            <Node count="400000" color="blue" />
-
-            {/* Tree Connectors */}
-            <div className="absolute top-[320px] left-1/2 -translate-x-1/2 w-[400px] h-10 border-t-2 border-l-2 border-r-2 border-blue-200/60 rounded-t-2xl z-0" />
-            <div className="absolute top-[320px] left-1/2 -translate-x-1/2 w-0.5 h-16 bg-blue-200/60 -translate-y-16 z-0" />
-
-            <div className="flex flex-row gap-20">
-              <div className="flex flex-col items-center">
-                <Node count="400000" color="blue" />
-              </div>
-              <div className="flex flex-col items-center">
-                <Node count="400000" color="blue" />
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col items-center justify-start pt-20">
-            <Node count="400000" color="teal" />
-          </div>
-        </div>
+        <GenealogyNode
+          userId={root.id}
+          idCode={root.id_code}
+          fullName={root.username}
+          subscriptionName={profile.subscription}
+          color="red"
+        />
       </TransformComponent>
     </div>
   );

@@ -1,5 +1,10 @@
-import { useState } from "react";
-import { createFileRoute, redirect, Outlet } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
+import {
+  createFileRoute,
+  redirect,
+  Outlet,
+  useNavigate,
+} from "@tanstack/react-router";
 import { useAuthStore } from "../features/auth/useAuthStore";
 import { Sidebar } from "../components/layout/Sidebar";
 import { AuthNavbar } from "../components/layout/AuthNavbar";
@@ -18,6 +23,14 @@ export const Route = createFileRoute("/_auth")({
 function AuthLayout() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate({ to: "/login" });
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <div className="min-h-screen bg-dash-bg flex">
