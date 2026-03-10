@@ -8,7 +8,12 @@ import { TransferForm } from "../../features/wallet/components/TransferForm";
 import { WithdrawForm } from "../../features/wallet/components/WithdrawForm";
 import { TransactionsForm } from "../../features/wallet/components/TransactionsForm";
 
-import { useWalletTotals } from "../../features/wallet/useWalletTotals";
+import {
+  useWalletTotals,
+  useCurrentBalance,
+  useTokenWalletBalance,
+  useWalletReports,
+} from "../../features/wallet/useWalletTotals";
 import { formatPrice } from "../../lib/utils";
 
 export const Route = createLazyFileRoute("/_auth/wallet")({
@@ -16,7 +21,12 @@ export const Route = createLazyFileRoute("/_auth/wallet")({
 });
 
 function WalletRouteComponent() {
-  const { data, isLoading } = useWalletTotals();
+  const { data: totalsData, isLoading: isTotalsLoading } = useWalletTotals();
+  const { data: currentBalanceData, isLoading: isCurrentBalanceLoading } =
+    useCurrentBalance();
+  const { data: tokenBalanceData, isLoading: isTokenBalanceLoading } =
+    useTokenWalletBalance();
+  const { data: reportsData, isLoading: isReportsLoading } = useWalletReports();
 
   return (
     <div className="min-h-[calc(100vh-100px)]  bg-[#f8fafc] flex flex-col gap-6 w-full max-w-[1500px] mx-auto">
@@ -25,28 +35,36 @@ function WalletRouteComponent() {
         <TopStatCard
           title="Total Earnings"
           value={
-            isLoading ? "Loading..." : formatPrice(data?.total_earnings || 0)
+            isTotalsLoading
+              ? "Loading..."
+              : formatPrice(totalsData?.total_earnings || 0)
           }
           accentClass="bg-[#8b5cf6]"
         />
         <TopStatCard
           title="Total Bounce"
           value={
-            isLoading ? "Loading..." : formatPrice(data?.total_bounce || 0)
+            isTotalsLoading
+              ? "Loading..."
+              : formatPrice(totalsData?.total_bounce || 0)
           }
           accentClass="bg-[#f43f5e]"
         />
         <TopStatCard
           title="Total Receive"
           value={
-            isLoading ? "Loading..." : formatPrice(data?.total_receive || 0)
+            isTotalsLoading
+              ? "Loading..."
+              : formatPrice(totalsData?.total_receive || 0)
           }
           accentClass="bg-[#10b981]"
         />
         <TopStatCard
           title="Total Transfer"
           value={
-            isLoading ? "Loading..." : formatPrice(data?.total_transfer || 0)
+            isTotalsLoading
+              ? "Loading..."
+              : formatPrice(totalsData?.total_transfer || 0)
           }
           accentClass="bg-[#3b82f6]"
         />
@@ -57,13 +75,24 @@ function WalletRouteComponent() {
         {/* Left Column (Earnings & Charts) */}
         <div className="flex-1 flex flex-col gap-6 w-full max-w-full min-w-0">
           <EarningsHero />
-          <WeeklyEarningsChart />
-          <MonthlyBounceChart />
+          <WeeklyEarningsChart
+            data={reportsData?.weekly_earnings}
+            isLoading={isReportsLoading}
+          />
+          <MonthlyBounceChart
+            data={reportsData?.monthly_bounce}
+            isLoading={isReportsLoading}
+          />
         </div>
 
         {/* Right Column (Balances & Forms) */}
         <div className="w-full xl:w-[450px] shrink-0 flex flex-col gap-6">
-          <WalletBalances />
+          <WalletBalances
+            currentBalance={currentBalanceData?.balance}
+            tokenBalance={tokenBalanceData?.token_wallet_balance}
+            isCurrentLoading={isCurrentBalanceLoading}
+            isTokenLoading={isTokenBalanceLoading}
+          />
           <TransferForm />
           <WithdrawForm />
           <TransactionsForm />

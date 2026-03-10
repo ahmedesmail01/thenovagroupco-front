@@ -1,7 +1,20 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { formatPrice } from "../../../lib/utils";
 
-export function WalletBalances() {
+interface WalletBalancesProps {
+  currentBalance?: string;
+  tokenBalance?: string;
+  isCurrentLoading?: boolean;
+  isTokenLoading?: boolean;
+}
+
+export function WalletBalances({
+  currentBalance,
+  tokenBalance,
+  isCurrentLoading,
+  isTokenLoading,
+}: WalletBalancesProps) {
   const [showCommission, setShowCommission] = useState(false);
   const [showToken, setShowToken] = useState(true);
 
@@ -17,7 +30,11 @@ export function WalletBalances() {
             Commission Wallet Balance
           </p>
           <p className="font-bold text-[18px] tracking-widest opacity-95">
-            {showCommission ? "$0.00" : "*********"}
+            {isCurrentLoading
+              ? "Loading..."
+              : showCommission
+                ? formatPrice(Number(currentBalance) || 0)
+                : "*********"}
           </p>
         </div>
         <button
@@ -42,7 +59,11 @@ export function WalletBalances() {
             Token Wallet Balance
           </p>
           <p className="font-bold text-[18px] tracking-tight">
-            {showToken ? "$21,500.00" : "*********"}
+            {isTokenLoading
+              ? "Loading..."
+              : showToken
+                ? formatPrice(Number(tokenBalance) || 0)
+                : "*********"}
           </p>
         </div>
         <button
