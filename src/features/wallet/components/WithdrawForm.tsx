@@ -68,7 +68,7 @@ export function WithdrawForm() {
                 {...register("network")}
                 className="hidden peer"
               />
-              <div className="w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center peer-checked:border-brand-blue peer-checked:bg-brand-terquaz/80 transition-colors">
+              <div className="w-5 h-5 rounded-full border-2  border-slate-300 flex items-center justify-center peer-checked:border-brand-blue peer-checked:bg-brand-terquaz/80 transition-colors">
                 <div className="w-2.5 h-2.5 rounded-full bg-brand-blue opacity-0 peer-checked:opacity-100 transition-opacity" />
               </div>
               <span className="text-sm text-slate-800 font-medium">Erc20</span>
