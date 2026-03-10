@@ -150,3 +150,39 @@ export const useWithdraw = () => {
     },
   });
 };
+
+export const useInternalTransfer = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: {
+      recipient_member_code: string;
+      amount: number;
+      pin: string;
+    }) => {
+      const response = await api.post("/internal-transfer", {
+        recipient_member_code: data.recipient_member_code,
+        amount: data.amount,
+        pin_code: data.pin,
+      });
+      return response.data;
+    },
+    onSuccess: (data) => {
+      toast.success(data.message || "Internal transfer successful!");
+      queryClient.invalidateQueries({ queryKey: ["currentBalance"] });
+      queryClient.invalidateQueries({ queryKey: ["walletTotals"] });
+      queryClient.invalidateQueries({ queryKey: ["walletReports"] });
+    },
+    onError: (error: unknown) => {
+      const axiosError = error as {
+        response?: { data?: { message?: string } };
+        message?: string;
+      };
+      toast.error(
+        axiosError.response?.data?.message ||
+          axiosError.message ||
+          "Internal transfer failed",
+      );
+    },
+  });
+};

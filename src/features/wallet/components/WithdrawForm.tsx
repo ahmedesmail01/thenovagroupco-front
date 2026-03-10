@@ -68,7 +68,7 @@ export function WithdrawForm() {
                 {...register("network")}
                 className="hidden peer"
               />
-              <div className="w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center peer-checked:border-brand-blue transition-colors">
+              <div className="w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center peer-checked:border-brand-blue peer-checked:bg-brand-terquaz/80 transition-colors">
                 <div className="w-2.5 h-2.5 rounded-full bg-brand-blue opacity-0 peer-checked:opacity-100 transition-opacity" />
               </div>
               <span className="text-sm text-slate-800 font-medium">Erc20</span>
@@ -80,7 +80,7 @@ export function WithdrawForm() {
                 {...register("network")}
                 className="hidden peer"
               />
-              <div className="w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center peer-checked:border-brand-blue transition-colors">
+              <div className="w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center peer-checked:border-brand-blue peer-checked:bg-brand-terquaz/80 transition-colors">
                 <div className="w-2.5 h-2.5 rounded-full bg-brand-blue opacity-0 peer-checked:opacity-100 transition-opacity" />
               </div>
               <span className="text-sm text-slate-800 font-medium">Trc20</span>
@@ -101,7 +101,7 @@ export function WithdrawForm() {
                 type="text"
                 placeholder="Address ..."
                 {...register("address", { required: "Address is required" })}
-                className="w-full border border-slate-200 rounded-lg px-4 py-3 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-slate-300"
+                className="w-full border text-black border-slate-200 rounded-lg px-4 py-3 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-slate-300"
               />
               {errors.address && (
                 <span className="text-[10px] text-red-500 ml-1">
@@ -128,7 +128,7 @@ export function WithdrawForm() {
                   min: { value: 0.01, message: "Minimal amount is 0.01" },
                   valueAsNumber: true,
                 })}
-                className="w-full border border-slate-200 rounded-lg px-4 py-3 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-slate-300"
+                className="w-full border text-black border-slate-200 rounded-lg px-4 py-3 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-slate-300"
               />
               {errors.amount && (
                 <span className="text-[10px] text-red-500 ml-1">
