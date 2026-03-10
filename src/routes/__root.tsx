@@ -7,6 +7,7 @@ import {
 import { Navbar } from "../components/layout/Navbar";
 import { Footer } from "../components/layout/Footer";
 import { NotFoundPage } from "../components/NotFoundPage";
+import { Toaster } from "react-hot-toast";
 // import { useAuthStore } from "../features/auth/useAuthStore";
 
 export const Route = createRootRoute({
@@ -26,6 +27,7 @@ function RootLayout() {
 
   return (
     <div className="min-h-screen bg-brand-navy text-text-primary flex flex-col font-sans">
+      <Toaster position="top-center" reverseOrder={false} />
       {/* Show Navbar only on public pages when not logged in, or if explicitly requested */}
       {isPublicPage && <Navbar />}
 
