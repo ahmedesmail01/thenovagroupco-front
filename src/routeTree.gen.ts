@@ -23,6 +23,7 @@ const AuthWalletLazyRouteImport = createFileRoute('/_auth/wallet')()
 const AuthTransactionsLazyRouteImport = createFileRoute('/_auth/transactions')()
 const AuthTankLazyRouteImport = createFileRoute('/_auth/tank')()
 const AuthSupportLazyRouteImport = createFileRoute('/_auth/support')()
+const AuthRankRewardLazyRouteImport = createFileRoute('/_auth/rank-reward')()
 const AuthProfileLazyRouteImport = createFileRoute('/_auth/profile')()
 const AuthNovaProLazyRouteImport = createFileRoute('/_auth/nova-pro')()
 const AuthMembershipLazyRouteImport = createFileRoute('/_auth/membership')()
@@ -89,6 +90,13 @@ const AuthSupportLazyRoute = AuthSupportLazyRouteImport.update({
   path: '/support',
   getParentRoute: () => AuthRoute,
 } as any).lazy(() => import('./routes/_auth/support.lazy').then((d) => d.Route))
+const AuthRankRewardLazyRoute = AuthRankRewardLazyRouteImport.update({
+  id: '/rank-reward',
+  path: '/rank-reward',
+  getParentRoute: () => AuthRoute,
+} as any).lazy(() =>
+  import('./routes/_auth/rank-reward.lazy').then((d) => d.Route),
+)
 const AuthProfileLazyRoute = AuthProfileLazyRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -147,6 +155,7 @@ export interface FileRoutesByFullPath {
   '/membership': typeof AuthMembershipLazyRoute
   '/nova-pro': typeof AuthNovaProLazyRoute
   '/profile': typeof AuthProfileLazyRoute
+  '/rank-reward': typeof AuthRankRewardLazyRoute
   '/support': typeof AuthSupportLazyRoute
   '/tank': typeof AuthTankLazyRoute
   '/transactions': typeof AuthTransactionsLazyRoute
@@ -166,6 +175,7 @@ export interface FileRoutesByTo {
   '/membership': typeof AuthMembershipLazyRoute
   '/nova-pro': typeof AuthNovaProLazyRoute
   '/profile': typeof AuthProfileLazyRoute
+  '/rank-reward': typeof AuthRankRewardLazyRoute
   '/support': typeof AuthSupportLazyRoute
   '/tank': typeof AuthTankLazyRoute
   '/transactions': typeof AuthTransactionsLazyRoute
@@ -187,6 +197,7 @@ export interface FileRoutesById {
   '/_auth/membership': typeof AuthMembershipLazyRoute
   '/_auth/nova-pro': typeof AuthNovaProLazyRoute
   '/_auth/profile': typeof AuthProfileLazyRoute
+  '/_auth/rank-reward': typeof AuthRankRewardLazyRoute
   '/_auth/support': typeof AuthSupportLazyRoute
   '/_auth/tank': typeof AuthTankLazyRoute
   '/_auth/transactions': typeof AuthTransactionsLazyRoute
@@ -208,6 +219,7 @@ export interface FileRouteTypes {
     | '/membership'
     | '/nova-pro'
     | '/profile'
+    | '/rank-reward'
     | '/support'
     | '/tank'
     | '/transactions'
@@ -227,6 +239,7 @@ export interface FileRouteTypes {
     | '/membership'
     | '/nova-pro'
     | '/profile'
+    | '/rank-reward'
     | '/support'
     | '/tank'
     | '/transactions'
@@ -247,6 +260,7 @@ export interface FileRouteTypes {
     | '/_auth/membership'
     | '/_auth/nova-pro'
     | '/_auth/profile'
+    | '/_auth/rank-reward'
     | '/_auth/support'
     | '/_auth/tank'
     | '/_auth/transactions'
@@ -344,6 +358,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSupportLazyRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/rank-reward': {
+      id: '/_auth/rank-reward'
+      path: '/rank-reward'
+      fullPath: '/rank-reward'
+      preLoaderRoute: typeof AuthRankRewardLazyRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/profile': {
       id: '/_auth/profile'
       path: '/profile'
@@ -404,6 +425,7 @@ interface AuthRouteChildren {
   AuthMembershipLazyRoute: typeof AuthMembershipLazyRoute
   AuthNovaProLazyRoute: typeof AuthNovaProLazyRoute
   AuthProfileLazyRoute: typeof AuthProfileLazyRoute
+  AuthRankRewardLazyRoute: typeof AuthRankRewardLazyRoute
   AuthSupportLazyRoute: typeof AuthSupportLazyRoute
   AuthTankLazyRoute: typeof AuthTankLazyRoute
   AuthTransactionsLazyRoute: typeof AuthTransactionsLazyRoute
@@ -418,6 +440,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthMembershipLazyRoute: AuthMembershipLazyRoute,
   AuthNovaProLazyRoute: AuthNovaProLazyRoute,
   AuthProfileLazyRoute: AuthProfileLazyRoute,
+  AuthRankRewardLazyRoute: AuthRankRewardLazyRoute,
   AuthSupportLazyRoute: AuthSupportLazyRoute,
   AuthTankLazyRoute: AuthTankLazyRoute,
   AuthTransactionsLazyRoute: AuthTransactionsLazyRoute,
