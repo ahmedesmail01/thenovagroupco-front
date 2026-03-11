@@ -97,7 +97,7 @@ export function Navbar() {
                 <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
                   <UserIcon className="w-4 h-4" />
                 </div>
-                <span>{user?.firstName || "Account"}</span>
+                <span>{user?.first_name || "Account"}</span>
                 <ChevronDown
                   className={`w-4 h-4 transition-transform ${showUserDropdown ? "rotate-180" : ""}`}
                 />

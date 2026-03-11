@@ -30,7 +30,7 @@ function LibraryPage() {
           </h1>
           <p className="text-text-secondary mt-3 max-w-2xl leading-relaxed">
             Welcome back,{" "}
-            <span className="text-white font-bold">{user?.firstName}</span>!
+            <span className="text-white font-bold">{user?.first_name}</span>!
             Continue your learning journey where you left off.
           </p>
         </header>

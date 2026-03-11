@@ -64,7 +64,7 @@ export function NavbarAuth() {
             <div className="relative">
               <img
                 src={user?.avatarUrl ?? "/images/default-avatar.png"}
-                alt={user?.firstName ?? "User"}
+                alt={user?.first_name ?? "User"}
                 className="w-9 h-9 rounded-full object-cover border-2 border-brand-border"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
@@ -75,7 +75,7 @@ export function NavbarAuth() {
               <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-brand-navy rounded-full" />
             </div>
             <span className="hidden sm:block text-sm text-white font-medium">
-              {user?.firstName}
+              {user?.first_name}
             </span>
             <span
               className={`text-text-muted text-[10px] transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`}
@@ -95,7 +95,7 @@ export function NavbarAuth() {
                 {/* Profile preview */}
                 <div className="px-4 py-3 border-b border-brand-border">
                   <p className="font-semibold text-white text-sm">
-                    {user?.firstName} {user?.lastName}
+                    {user?.first_name} {user?.last_name}
                   </p>
                   <p className="text-xs text-text-muted mt-0.5">
                     {user?.email}

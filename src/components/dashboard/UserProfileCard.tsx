@@ -1,12 +1,16 @@
+import React, { useState } from "react";
+// ... (imports remain the same)
 import {
   Facebook,
   Instagram,
   Linkedin,
   MessageCircle,
-  // Copy,
   Share2,
+  Loader2,
+  AlertCircle,
 } from "lucide-react";
 import { cn } from "../../lib/utils";
+import { useUserData } from "../../features/auth/useUserData";
 
 interface SocialLinkProps {
   icon: React.ElementType;
@@ -28,13 +32,80 @@ function SocialIconButton({ icon: Icon, color, bgColor }: SocialLinkProps) {
   );
 }
 
+function ProfileAvatar({ src, username }: { src?: string; username: string }) {
+  const [prevSrc, setPrevSrc] = useState(src);
+  const [error, setError] = useState(false);
+
+  // Adjust state if the prop changes
+  if (src !== prevSrc) {
+    setPrevSrc(src);
+    setError(false);
+  }
+
+  const fallbackSrc = `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`;
+  const isValidSrc = src && src !== "null" && src !== "";
+
+  return (
+    <div className="w-32 h-32 rounded-full p-1 bg-white shadow-lg overflow-hidden relative z-10 border border-slate-50">
+      <img
+        src={error || !isValidSrc ? fallbackSrc : src}
+        alt="Profile"
+        className="w-full h-full object-cover rounded-full"
+        onError={() => setError(true)}
+      />
+    </div>
+  );
+}
+
 export function UserProfileCard({ className }: { className?: string }) {
+  const { data, isLoading, error } = useUserData();
+
+  if (isLoading) {
+    return (
+      <div
+        className={cn(
+          "bg-white rounded-[20px] p-8 shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-slate-100 flex flex-col items-center justify-center text-center h-full min-h-[400px]",
+          className,
+        )}
+      >
+        <Loader2 className="w-8 h-8 text-brand-blue-btn animate-spin mb-4" />
+        <p className="text-slate-500 font-medium">Loading profile...</p>
+      </div>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <div
+        className={cn(
+          "bg-white rounded-[20px] p-8 shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-slate-100 flex flex-col items-center justify-center text-center h-full min-h-[400px]",
+          className,
+        )}
+      >
+        <AlertCircle className="w-8 h-8 text-red-500 mb-4" />
+        <p className="text-slate-500 font-medium mb-4">
+          Failed to load profile
+        </p>
+        <button
+          onClick={() => window.location.reload()}
+          className="text-sm text-brand-blue-btn font-bold hover:underline"
+        >
+          Try again
+        </button>
+      </div>
+    );
+  }
+
+  const userData = data["user data"];
+  const profile = data.profile;
+
   const user = {
-    firstName: "Maria",
-    lastName: "Aldabea",
-    username: "MariaAld",
-    avatarUrl: "https://api.dicebear.com/7.x/pixel-art/svg?seed=Maria",
-    status: "Active",
+    firstName: userData.first_name,
+    lastName: userData.last_name,
+    username: userData.username,
+    avatarUrl: userData.image,
+    status: userData.status || "Active",
+    subscription: profile.subscription || "Member",
   };
 
   return (
@@ -47,7 +118,7 @@ export function UserProfileCard({ className }: { className?: string }) {
       {/* Top Header Actions */}
       <div className="w-full flex justify-between items-center mb-4 relative z-10">
         <span className="bg-[#e6f9f1] text-[#2db39b] text-[13px] font-bold px-5 py-1.5 rounded-full">
-          Member
+          {user.subscription}
         </span>
         <button className="w-9 h-9 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:text-brand-blue-btn hover:bg-blue-50 transition-colors">
           <Share2 size={18} />
@@ -78,13 +149,7 @@ export function UserProfileCard({ className }: { className?: string }) {
           </svg>
         </div>
 
-        <div className="w-32 h-32 rounded-full p-1 bg-white shadow-lg overflow-hidden relative z-10 border border-slate-50">
-          <img
-            src={user.avatarUrl}
-            alt="Profile"
-            className="w-full h-full object-cover rounded-full"
-          />
-        </div>
+        <ProfileAvatar src={user.avatarUrl} username={user.username} />
       </div>
 
       {/* User Info */}
@@ -108,7 +173,7 @@ export function UserProfileCard({ className }: { className?: string }) {
           View personalized domain
         </button>
 
-        <button className="w-full bg-[#eff1f9] hover:bg-[#e4e8f5] text-[#4882be] py-3.5 rounded-xl text-[15px] font-bold transition-all active:scale-[0.98]">
+        <button className="w-full bg-[#eff1f9] hover:bg-[#e4e8f5] text-brand-blue-btn py-3.5 rounded-xl text-[15px] font-bold transition-all active:scale-[0.98]">
           Copy personalized domain
         </button>
       </div>

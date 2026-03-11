@@ -14,6 +14,8 @@ export function AuthNavbar({ onMenuClick }: AuthNavbarProps) {
   const navigate = useNavigate();
   const { location } = useRouterState();
 
+  console.log("user is ", user);
+
   const getTitle = (path: string) => {
     const parts = path.split("/").filter(Boolean);
     if (parts.length === 0 || parts[0] === "dashboard") return "Dashboard";
@@ -57,7 +59,7 @@ export function AuthNavbar({ onMenuClick }: AuthNavbarProps) {
             <div className="w-9 h-9 rounded-lg overflow-hidden border border-dash-border">
               <img
                 src={user?.avatarUrl ?? "/images/default-avatar.png"}
-                alt={user?.firstName}
+                alt={user?.first_name}
                 className="w-full h-full object-cover"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
@@ -68,9 +70,8 @@ export function AuthNavbar({ onMenuClick }: AuthNavbarProps) {
             </div>
             <div className="hidden sm:block text-left">
               <p className="text-sm font-semibold text-dash-text leading-tight">
-                {user?.firstName} {user?.lastName}
+                {user?.first_name} {user?.last_name}
               </p>
-              <p className="text-xs text-dash-muted leading-tight">Member</p>
             </div>
             <ChevronDown
               size={16}

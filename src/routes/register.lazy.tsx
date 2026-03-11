@@ -578,8 +578,8 @@ function StepReview({
       const { user, token } = response.data;
       const completeUser: User = {
         id: user.id || Math.random().toString(36).substr(2, 9),
-        firstName: user.firstName || data.firstName || "",
-        lastName: user.lastName || data.lastName || "",
+        first_name: user.first_name || data.firstName || "",
+        last_name: user.last_name || data.lastName || "",
         username: user.username || data.username || "",
         email: user.email || data.email || "",
         phone: user.phone || data.phone || "",
