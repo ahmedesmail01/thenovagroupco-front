@@ -116,14 +116,24 @@ export const useUserData = (userId?: string | number) => {
  * Custom hook to fetch direct downline members
  */
 export interface DownlineMember {
-  user_id: number;
-  id_code: number;
-  full_name: string;
-  subscription: { name: string } | string | null;
+  id: number;
+  rank_id: number | null;
+  rank_name: string | null;
+  user_name: string;
+  user_id_code: number;
+  user_first_name: string;
+  user_last_name: string;
+  user_image: string | null;
+  // keep old type properties optional to not break existing usage
+  user_id?: number;
+  id_code?: number;
+  full_name?: string;
+  subscription?: { name: string } | string | null;
 }
 
 export interface DownlineResponse {
   status: boolean;
+  message?: string;
   members: {
     left_leg_member: DownlineMember | null;
     right_leg_member: DownlineMember | null;
