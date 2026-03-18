@@ -1,5 +1,5 @@
 import { createPortal } from "react-dom";
-import { Loader2, AlertCircle, X, ChevronRight } from "lucide-react";
+import { Loader2, AlertCircle, X } from "lucide-react";
 import { useUserByIdData } from "../../features/auth/useUserData";
 
 interface UserInfoModalProps {
@@ -47,7 +47,7 @@ export function UserInfoModal({ isOpen, onClose, userId }: UserInfoModalProps) {
     }
 
     const usr = data.user;
-    const initial = usr.first_name ? usr.first_name[0] : usr.username[0];
+    // const initial = usr.first_name ? usr.first_name[0] : usr.username[0];
     const fallbackSrc = `https://api.dicebear.com/7.x/avataaars/svg?seed=${usr.username}`;
     const isValidSrc =
       usr.image &&
