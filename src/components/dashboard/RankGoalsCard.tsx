@@ -93,61 +93,61 @@ export function RankGoalsCard({ className, data }: Props) {
         <GoalItem
           label="Team Volume in LEFT"
           percentage={getPercentageString(
-            nextRank?.user_left_volume || 0,
-            nextRank?.left_volume || 0,
+            Number(nextRank?.user_left_volume) || 0,
+            Number(nextRank?.left_volume) || 0,
           )}
           achieved={getAchievedString(
-            nextRank?.user_left_volume || 0,
-            nextRank?.left_volume || 0,
+            Number(nextRank?.user_left_volume) || 0,
+            Number(nextRank?.left_volume) || 0,
           )}
           progress={calculateProgress(
-            nextRank?.user_left_volume || 0,
-            nextRank?.left_volume || 0,
+            Number(nextRank?.user_left_volume) || 0,
+            Number(nextRank?.left_volume) || 0,
           )}
         />
         <GoalItem
           label="Team Volume in RIGHT"
           percentage={getPercentageString(
-            nextRank?.user_right_volume || 0,
-            nextRank?.right_volume || 0,
+            Number(nextRank?.user_right_volume) || 0,
+            Number(nextRank?.right_volume) || 0,
           )}
           achieved={getAchievedString(
-            nextRank?.user_right_volume || 0,
-            nextRank?.right_volume || 0,
+            Number(nextRank?.user_right_volume) || 0,
+            Number(nextRank?.right_volume) || 0,
           )}
           progress={calculateProgress(
-            nextRank?.user_right_volume || 0,
-            nextRank?.right_volume || 0,
+            Number(nextRank?.user_right_volume) || 0,
+            Number(nextRank?.right_volume) || 0,
           )}
         />
         <GoalItem
           label="Direct Recruits in LEFT"
           percentage={getPercentageString(
-            nextRank?.user_left_referrals || 0,
-            nextRank?.left_referrals || 0,
+            Number(nextRank?.user_left_referrals) || 0,
+            Number(nextRank?.left_referrals) || 0,
           )}
           achieved={getAchievedString(
-            nextRank?.user_left_referrals || 0,
-            nextRank?.left_referrals || 0,
+            Number(nextRank?.user_left_referrals) || 0,
+            Number(nextRank?.left_referrals) || 0,
           )}
           progress={calculateProgress(
-            nextRank?.user_left_referrals || 0,
-            nextRank?.left_referrals || 0,
+            Number(nextRank?.user_left_referrals) || 0,
+            Number(nextRank?.left_referrals) || 0,
           )}
         />
         <GoalItem
           label="Direct Recruits in RIGHT"
           percentage={getPercentageString(
-            nextRank?.user_right_referrals || 0,
-            nextRank?.right_referrals || 0,
+            Number(nextRank?.user_right_referrals) || 0,
+            Number(nextRank?.right_referrals) || 0,
           )}
           achieved={getAchievedString(
-            nextRank?.user_right_referrals || 0,
-            nextRank?.right_referrals || 0,
+            Number(nextRank?.user_right_referrals) || 0,
+            Number(nextRank?.right_referrals) || 0,
           )}
           progress={calculateProgress(
-            nextRank?.user_right_referrals || 0,
-            nextRank?.right_referrals || 0,
+            Number(nextRank?.user_right_referrals) || 0,
+            Number(nextRank?.right_referrals) || 0,
           )}
         />
       </div>

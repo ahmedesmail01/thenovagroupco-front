@@ -52,7 +52,8 @@ export function TimePeriodDropdown({
           {PERIODS.map((period) => (
             <button
               key={period}
-              onClick={() => {
+              onMouseDown={(e) => {
+                e.stopPropagation();
                 onPeriodChange(period);
                 setIsDropdownOpen(false);
               }}

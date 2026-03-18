@@ -20,7 +20,7 @@ const SummaryRow = ({ data }: SummaryRowProps) => {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       <SummaryCard
         iconSrc={dollarIcon}
-        title={`${totalVolume.toFixed(2)} CV`}
+        title={`${Number(totalVolume).toFixed(2)} CV`}
         label="Total Network volume"
         showAll
       />

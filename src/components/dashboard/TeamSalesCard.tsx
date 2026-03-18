@@ -31,6 +31,27 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
 
   const activeCv = getActiveCvCounts();
 
+  // Calculate rank goal progress: each of the 4 goals contributes 25% when fully achieved (>=100%)
+  const isGoalAchieved = (
+    userVal: number | null | undefined,
+    targetVal: number | null | undefined,
+  ) => {
+    const user = Number(userVal) || 0;
+    const target = Number(targetVal) || 0;
+    if (target === 0) return false;
+    return user >= target;
+  };
+
+  const nextRank = data?.next_rank;
+  const achievedGoals = [
+    isGoalAchieved(nextRank?.user_left_volume, nextRank?.left_volume),
+    isGoalAchieved(nextRank?.user_right_volume, nextRank?.right_volume),
+    isGoalAchieved(nextRank?.user_left_referrals, nextRank?.left_referrals),
+    isGoalAchieved(nextRank?.user_right_referrals, nextRank?.right_referrals),
+  ].filter(Boolean).length;
+
+  const rankProgress = achievedGoals * 25; // 0 | 25 | 50 | 75 | 100
+
   return (
     <div
       className={cn(
@@ -63,11 +84,8 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
           />
         </div>
 
-        {/* Donut Chart */}
-        <SalesDonutChart
-          leftCv={Number(activeCv?.left_cv_count) || 0}
-          rightCv={Number(activeCv?.right_cv_count) || 0}
-        />
+        {/* Donut Chart — progress in 25% steps based on next rank goals */}
+        <SalesDonutChart progress={rankProgress} />
 
         {/* Binary Info Text Overlay */}
         <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-12 text-white/40 text-[10px] font-bold uppercase tracking-[0.2em] z-10">
@@ -83,7 +101,7 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
       </div>
 
       {/* Bottom Half: Stats Grid */}
-      <div className="p-6 -mt-14 relative z-20 flex-1">
+      <div className="p-6 -mt-10 relative z-20 flex-1">
         <div className="grid grid-cols-2 gap-4">
           <StatItem
             icon={Network}
@@ -127,13 +145,12 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
           <StatItem
             icon={Users}
             value={(
-              (data?.downline_counts?.left_downlines_count || 0) +
-              (data?.downline_counts?.right_downlines_count || 0)
+              (Number(data?.downline_counts?.left_downlines_count) || 0) +
+              (Number(data?.downline_counts?.right_downlines_count) || 0)
             ).toString()}
             label="Total down line"
             iconColor="text-[#3b82f6]"
             iconSrc="/icons/total-downline-icon.png"
-            // iconBg="bg-[#3b82f6]/10"
           />
         </div>
       </div>
