@@ -14,7 +14,7 @@ export function AuthNavbar({ onMenuClick }: AuthNavbarProps) {
   const navigate = useNavigate();
   const { location } = useRouterState();
 
-  console.log("user is ", user);
+  // console.log("user is ", user);
 
   const getTitle = (path: string) => {
     const parts = path.split("/").filter(Boolean);

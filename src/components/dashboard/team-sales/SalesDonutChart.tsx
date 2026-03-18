@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 
 interface SalesDonutChartProps {
   progress: number; // 0 to 100, in 25% steps

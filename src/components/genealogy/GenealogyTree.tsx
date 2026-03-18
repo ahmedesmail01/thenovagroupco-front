@@ -1,16 +1,41 @@
-import { type UserDataResponse } from "../../features/auth/useUserData";
+import {
+  type UserDataResponse,
+  type UserByIdResponse,
+} from "../../features/auth/useUserData";
 import { TransformComponent } from "react-zoom-pan-pinch";
 import { GenealogyNode } from "./GenealogyNode";
 
 interface GenealogyTreeProps {
-  userData?: UserDataResponse;
+  userData?: UserDataResponse | UserByIdResponse;
 }
 
 export function GenealogyTree({ userData }: GenealogyTreeProps) {
   if (!userData) return null;
 
-  const root = userData["user data"];
-  const profile = userData.profile;
+  let userId, idCode, fullName, userImage, subscriptionName;
+
+  if ("user data" in userData) {
+    const root = userData["user data"];
+    const profile = userData.profile;
+    userId = root.id;
+    idCode = root.id_code;
+    fullName = root.first_name
+      ? `${root.first_name} ${root.last_name || ""}`.trim()
+      : root.username;
+    userImage = root.image;
+    subscriptionName = profile.subscription;
+  } else if ("user" in userData) {
+    const root = userData.user;
+    userId = root.id;
+    idCode = root.id_code;
+    fullName = root.first_name
+      ? `${root.first_name} ${root.last_name || ""}`.trim()
+      : root.username;
+    userImage = root.image;
+    subscriptionName = null;
+  } else {
+    return null;
+  }
 
   return (
     <div className="bg-[#f8fafc] rounded-[3rem] p-4 h-full border border-slate-200/60 shadow-inner flex flex-col overflow-auto">
@@ -26,16 +51,12 @@ export function GenealogyTree({ userData }: GenealogyTreeProps) {
         }}
       >
         <GenealogyNode
-          userId={root.id}
-          idCode={root.id_code}
-          fullName={
-            root.first_name
-              ? `${root.first_name} ${root.last_name || ""}`.trim()
-              : root.username
-          }
-          userImage={root.image}
+          userId={userId}
+          idCode={idCode}
+          fullName={fullName}
+          userImage={userImage}
           rankName={null} // Rank isn't available in root profile response directly in same format
-          subscriptionName={profile.subscription}
+          subscriptionName={subscriptionName}
           color="red"
           isRoot={true}
         />

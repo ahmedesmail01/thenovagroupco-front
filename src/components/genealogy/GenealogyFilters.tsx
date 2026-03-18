@@ -4,9 +4,17 @@ import { useState } from "react";
 
 interface GenealogyFiltersProps {
   onSearch: (id: string) => void;
+  onReset?: () => void;
+  onOpenInfo?: () => void;
+  hasSearch: boolean;
 }
 
-export function GenealogyFilters({ onSearch }: GenealogyFiltersProps) {
+export function GenealogyFilters({
+  onSearch,
+  onReset,
+  // onOpenInfo,
+  hasSearch,
+}: GenealogyFiltersProps) {
   const { zoomIn, zoomOut, resetTransform } = useControls();
   const [searchId, setSearchId] = useState("");
 
@@ -15,6 +23,11 @@ export function GenealogyFilters({ onSearch }: GenealogyFiltersProps) {
     if (searchId.trim()) {
       onSearch(searchId.trim());
     }
+  };
+
+  const handleReset = () => {
+    setSearchId("");
+    if (onReset) onReset();
   };
 
   return (
@@ -37,12 +50,33 @@ export function GenealogyFilters({ onSearch }: GenealogyFiltersProps) {
             size={18}
           />
         </div>
-        <button
-          type="submit"
-          className="bg-[#1a365d] text-white px-8 py-2.5 rounded-lg font-semibold text-sm hover:bg-brand-navy transition-colors shadow-sm cursor-pointer"
-        >
-          GET
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="submit"
+            className="bg-[#1a365d] text-white px-8 py-2.5 rounded-lg font-semibold text-sm hover:bg-brand-navy transition-colors shadow-sm cursor-pointer"
+          >
+            GET
+          </button>
+          {/* 
+          <button
+            type="button"
+            onClick={onOpenInfo}
+            className="bg-[#f1f5f9] text-[#1a365d] p-2.5 rounded-lg hover:bg-slate-200 transition-colors shadow-sm cursor-pointer"
+            title="View Profile Details"
+          >
+            <Info size={20} />
+          </button> */}
+
+          {hasSearch && (
+            <button
+              type="button"
+              onClick={handleReset}
+              className="bg-slate-100 text-slate-600 px-6 py-2.5 rounded-lg font-semibold text-sm hover:bg-slate-200 transition-colors shadow-sm cursor-pointer border border-slate-200"
+            >
+              RESET
+            </button>
+          )}
+        </div>
       </form>
 
       {/* Controls */}

@@ -22,6 +22,16 @@ export function GenealogyNode({
   const rightLeg = downline ? getLeg(downline.members?.right_leg_member) : null;
   const hasChildren = !!(leftLeg || rightLeg);
 
+  // Use the detailed user data for this node if available from the downline fetch
+  const nodeUser = downline?.members?.user;
+  const displayFullName = nodeUser
+    ? nodeUser.first_name
+      ? `${nodeUser.first_name} ${nodeUser.last_name || ""}`.trim()
+      : nodeUser.username
+    : fullName;
+  const displayImage = nodeUser?.image || userImage;
+  const displayIdCode = nodeUser?.id_code || idCode;
+
   if (!userId) {
     return null;
   }
@@ -29,9 +39,9 @@ export function GenealogyNode({
   return (
     <div className="flex flex-col items-center relative gap-8">
       <NodeCard
-        fullName={fullName}
-        idCode={idCode}
-        userImage={userImage}
+        fullName={displayFullName}
+        idCode={displayIdCode}
+        userImage={displayImage}
         rankName={rankName}
         color={color}
         onClick={() => setIsModalOpen(true)}
@@ -40,9 +50,10 @@ export function GenealogyNode({
       <UserModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        idCode={idCode}
-        fullName={fullName}
-        userImage={userImage}
+        userData={nodeUser}
+        idCode={displayIdCode}
+        fullName={displayFullName}
+        userImage={displayImage}
         rankName={rankName}
         subscriptionName={subscriptionName}
         color={color}

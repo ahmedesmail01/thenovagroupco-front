@@ -96,19 +96,111 @@ export interface UserDataResponse {
 }
 
 /**
- * Custom hook to fetch user data using React Query
+ * Custom hook to fetch current user data using React Query
  */
-export const useUserData = (userId?: string | number) => {
+export const useUserData = () => {
   return useQuery<UserDataResponse>({
-    queryKey: ["userData", userId],
+    queryKey: ["userData"],
     queryFn: async () => {
-      const url = userId ? `/user/data/${userId}` : "/user/data";
-      const response = await api.get(url);
+      const response = await api.get("/user/data");
       return response.data;
     },
     // Cache for 5 minutes, consider it stale after 1 minute
     staleTime: 1000 * 60,
     gcTime: 1000 * 60 * 5,
+  });
+};
+
+// -- STRICT TYPES FOR USER BY ID FETCH -- //
+export interface MemberSponsorUser {
+  id: number;
+  id_code: number;
+  username: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  country: string | null;
+  email_verified_at: string | null;
+  created_at: string;
+  updated_at: string;
+  phone: string | null;
+  status: string;
+  image: string;
+}
+
+export interface MemberSponsor {
+  id: number;
+  user_id: number;
+  sponsor_id: number | null;
+  left_leg_id: number | null;
+  right_leg_id: number | null;
+  current_cv: number;
+  totla_left_volume: number;
+  totla_right_volume: number;
+  total_commision: string;
+  is_first: string;
+  created_at: string;
+  updated_at: string;
+  rank_id: number | null;
+  user?: MemberSponsorUser;
+}
+
+export interface StrictMember {
+  id: number;
+  user_id: number;
+  sponsor_id: number | null;
+  left_leg_id: number | null;
+  right_leg_id: number | null;
+  current_cv: number;
+  totla_left_volume: number;
+  totla_right_volume: number;
+  total_commision: string;
+  is_first: string;
+  created_at: string;
+  updated_at: string;
+  rank_id: number | null;
+  sponsor?: MemberSponsor;
+}
+
+export interface StrictUserData {
+  id: number;
+  id_code: number;
+  username: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  country: string | null;
+  email_verified_at: string | null;
+  created_at: string;
+  updated_at: string;
+  phone: string | null;
+  status: string;
+  image: string;
+  member: StrictMember;
+}
+
+export interface UserByIdResponse {
+  status: boolean;
+  message: string;
+  user: StrictUserData;
+}
+
+/**
+ * Custom hook to strictly fetch a specific user's data by ID / ID Code
+ */
+export const useUserByIdData = (userId: string | number | null | undefined) => {
+  return useQuery<UserByIdResponse>({
+    queryKey: ["userByIdData", userId],
+    queryFn: async () => {
+      if (!userId) throw new Error("User ID is required");
+      const response = await api.get(`/user/data/${userId}`);
+      if (response.data.status === false) {
+        throw new Error(response.data.message || "User not found");
+      }
+      return response.data;
+    },
+    enabled: !!userId,
+    staleTime: 1000 * 60,
   });
 };
 
@@ -137,6 +229,7 @@ export interface DownlineResponse {
   members: {
     left_leg_member: DownlineMember | null;
     right_leg_member: DownlineMember | null;
+    user?: StrictUserData;
   };
 }
 
@@ -147,10 +240,10 @@ export const useDownline = (userId?: number | string) => {
       if (!userId) throw new Error("User ID is required");
       const response = await api.get(`/get-direct-downline-members/${userId}`);
 
-      // Handle the case where the API returns a string message instead of an object
-      if (typeof response.data === "string") {
+      if (response.data.status === false) {
         return {
           status: false,
+          message: response.data.message,
           members: {
             left_leg_member: null,
             right_leg_member: null,
@@ -161,6 +254,6 @@ export const useDownline = (userId?: number | string) => {
       return response.data;
     },
     enabled: !!userId,
-    staleTime: 1000 * 60 * 5, // Cache downlines for longer
+    staleTime: 1000 * 60 * 5,
   });
 };
