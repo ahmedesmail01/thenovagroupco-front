@@ -1,15 +1,13 @@
-import React, { useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "../../../lib/utils";
-
-export type TimePeriod = "now" | "7days" | "30days" | "year";
+import { PERIOD_LABELS, PERIODS, type TimePeriod } from "./constants";
 
 interface TimePeriodDropdownProps {
   selectedPeriod: TimePeriod;
   onPeriodChange: (period: TimePeriod) => void;
   isDropdownOpen: boolean;
   setIsDropdownOpen: (open: boolean) => void;
-  periodLabels: Record<TimePeriod, string>;
 }
 
 export function TimePeriodDropdown({
@@ -17,7 +15,6 @@ export function TimePeriodDropdown({
   onPeriodChange,
   isDropdownOpen,
   setIsDropdownOpen,
-  periodLabels,
 }: TimePeriodDropdownProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -40,7 +37,7 @@ export function TimePeriodDropdown({
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         className="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl text-xs font-bold text-white transition-all border border-white/10 backdrop-blur-md"
       >
-        <span>{periodLabels[selectedPeriod]}</span>
+        <span>{PERIOD_LABELS[selectedPeriod]}</span>
         <ChevronDown
           size={14}
           className={cn(
@@ -52,7 +49,7 @@ export function TimePeriodDropdown({
 
       {isDropdownOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-slate-800 border border-white/10 rounded-xl overflow-hidden shadow-2xl z-100 ring-1 ring-black/5">
-          {(Object.keys(periodLabels) as TimePeriod[]).map((period) => (
+          {PERIODS.map((period) => (
             <button
               key={period}
               onClick={() => {
@@ -66,7 +63,7 @@ export function TimePeriodDropdown({
                   : "text-white/70 hover:bg-white/10",
               )}
             >
-              {periodLabels[period]}
+              {PERIOD_LABELS[period]}
               {selectedPeriod === period && (
                 <div className="w-1.5 h-1.5 rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.6)]" />
               )}

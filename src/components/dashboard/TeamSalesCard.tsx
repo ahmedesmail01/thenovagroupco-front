@@ -3,10 +3,8 @@ import { Network, ArrowLeft, ArrowRight, Globe, Users } from "lucide-react";
 import { cn } from "../../lib/utils";
 import type { DashboardData } from "../../hooks/dashboard/useDashboardData";
 import { StatItem } from "./team-sales/StatItem";
-import {
-  TimePeriodDropdown,
-  type TimePeriod,
-} from "./team-sales/TimePeriodDropdown";
+import { TimePeriodDropdown } from "./team-sales/TimePeriodDropdown";
+import { type TimePeriod } from "./team-sales/constants";
 import { SalesDonutChart } from "./team-sales/SalesDonutChart";
 
 interface TeamSalesCardProps {
@@ -32,13 +30,6 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
   };
 
   const activeCv = getActiveCvCounts();
-
-  const periodLabels: Record<TimePeriod, string> = {
-    now: "Now",
-    "7days": "Last 7 Days",
-    "30days": "Last 30 Days",
-    year: "Last Year",
-  };
 
   return (
     <div
@@ -69,7 +60,6 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
             onPeriodChange={setSelectedPeriod}
             isDropdownOpen={isDropdownOpen}
             setIsDropdownOpen={setIsDropdownOpen}
-            periodLabels={periodLabels}
           />
         </div>
 
@@ -80,7 +70,7 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
         />
 
         {/* Binary Info Text Overlay */}
-        <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-12 text-white/40 text-[10px] font-bold uppercase tracking-[0.2em] relative z-10">
+        <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-12 text-white/40 text-[10px] font-bold uppercase tracking-[0.2em] z-10">
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-white/20" />
             Binary Analysis
