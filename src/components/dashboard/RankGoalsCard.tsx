@@ -1,3 +1,4 @@
+import type { DashboardData } from "../../hooks/dashboard/useDashboardData";
 import { cn } from "../../lib/utils";
 
 interface RankGoalItemProps {
@@ -5,6 +6,11 @@ interface RankGoalItemProps {
   percentage: string;
   achieved: string;
   progress: number; // 0 to 100
+}
+
+interface Props {
+  data: DashboardData | undefined;
+  className?: string;
 }
 
 function GoalItem({
@@ -37,8 +43,35 @@ function GoalItem({
   );
 }
 
-export function RankGoalsCard({ className }: { className?: string }) {
+export function RankGoalsCard({ className, data }: Props) {
   const bgPattern = "/images/union.png";
+
+  const nextRank = data?.next_rank;
+
+  const calculateProgress = (
+    userVal: number | null,
+    targetVal: number | null,
+  ) => {
+    if (!targetVal || targetVal === 0) return 0;
+    const progress = ((userVal || 0) / targetVal) * 100;
+    return Math.min(Math.round(progress), 100);
+  };
+
+  const getPercentageString = (
+    userVal: number | null,
+    targetVal: number | null,
+  ) => {
+    const progress = calculateProgress(userVal, targetVal);
+    return `${progress}.00%`;
+  };
+
+  const getAchievedString = (
+    userVal: number | null,
+    targetVal: number | null,
+  ) => {
+    return `${userVal || 0}/${targetVal || 0}`;
+  };
+
   return (
     <div
       className={cn(
@@ -59,27 +92,63 @@ export function RankGoalsCard({ className }: { className?: string }) {
       <div className="space-y-2 flex-1 flex flex-col justify-between">
         <GoalItem
           label="Team Volume in LEFT"
-          percentage="0.00%"
-          achieved="0/200"
-          progress={0}
+          percentage={getPercentageString(
+            nextRank?.user_left_volume || 0,
+            nextRank?.left_volume || 0,
+          )}
+          achieved={getAchievedString(
+            nextRank?.user_left_volume || 0,
+            nextRank?.left_volume || 0,
+          )}
+          progress={calculateProgress(
+            nextRank?.user_left_volume || 0,
+            nextRank?.left_volume || 0,
+          )}
         />
         <GoalItem
           label="Team Volume in RIGHT"
-          percentage="0.00%"
-          achieved="0/200"
-          progress={0}
+          percentage={getPercentageString(
+            nextRank?.user_right_volume || 0,
+            nextRank?.right_volume || 0,
+          )}
+          achieved={getAchievedString(
+            nextRank?.user_right_volume || 0,
+            nextRank?.right_volume || 0,
+          )}
+          progress={calculateProgress(
+            nextRank?.user_right_volume || 0,
+            nextRank?.right_volume || 0,
+          )}
         />
         <GoalItem
           label="Direct Recruits in LEFT"
-          percentage="100%"
-          achieved="0/200"
-          progress={100}
+          percentage={getPercentageString(
+            nextRank?.user_left_referrals || 0,
+            nextRank?.left_referrals || 0,
+          )}
+          achieved={getAchievedString(
+            nextRank?.user_left_referrals || 0,
+            nextRank?.left_referrals || 0,
+          )}
+          progress={calculateProgress(
+            nextRank?.user_left_referrals || 0,
+            nextRank?.left_referrals || 0,
+          )}
         />
         <GoalItem
           label="Direct Recruits in RIGHT"
-          percentage="100%"
-          achieved="0/200"
-          progress={100}
+          percentage={getPercentageString(
+            nextRank?.user_right_referrals || 0,
+            nextRank?.right_referrals || 0,
+          )}
+          achieved={getAchievedString(
+            nextRank?.user_right_referrals || 0,
+            nextRank?.right_referrals || 0,
+          )}
+          progress={calculateProgress(
+            nextRank?.user_right_referrals || 0,
+            nextRank?.right_referrals || 0,
+          )}
         />
       </div>
     </div>

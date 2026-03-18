@@ -1,27 +1,44 @@
-// import React from "react";
+import type { DashboardData } from "../../hooks/dashboard/useDashboardData";
 import SummaryCard from "./SummaryCard";
 // import { Trophy, Wallet, Zap } from "lucide-react";
 
-const SummaryRow = () => {
+interface SummaryRowProps {
+  data: DashboardData | undefined;
+}
+
+const SummaryRow = ({ data }: SummaryRowProps) => {
   const dollarIcon = "/icons/dollar.png";
   const trophyIcon = "/icons/free-pack.png";
   const zapIcon = "/icons/nova-rise-pack.png";
   const walletIcon = "/icons/bronze-pack.png";
+
+  const totalVolume =
+    (data?.nowCvCounts?.left_cv_count || 0) +
+    (data?.nowCvCounts?.right_cv_count || 0);
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       <SummaryCard
         iconSrc={dollarIcon}
-        title="$0.00"
+        title={`${totalVolume.toFixed(2)} CV`}
         label="Total Network volume"
         showAll
       />
       <SummaryCard
         iconSrc={trophyIcon}
-        title="Free Package"
+        title={data?.user_package?.name || "Member"}
         label="Current Package"
       />
-      <SummaryCard iconSrc={zapIcon} title="Nova Rise" label="Next Package" />
-      <SummaryCard iconSrc={walletIcon} title="Bronze" label="Current Rank" />
+      <SummaryCard
+        iconSrc={zapIcon}
+        title={data?.next_rank?.name || "Next Rank"}
+        label="Next Rank"
+      />
+      <SummaryCard
+        iconSrc={walletIcon}
+        title={data?.rank?.name || "Executive"}
+        label="Current Rank"
+      />
     </div>
   );
 };

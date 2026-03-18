@@ -29,6 +29,7 @@ export interface RankInfo {
 }
 
 export interface NextRankInfo {
+  name: string;
   left_volume: number;
   user_left_volume: number | null;
   right_volume: number;
@@ -64,6 +65,7 @@ export interface DashboardData {
   weekly_earnings: WeeklyEarning[];
   monthly_earnings: MonthlyEarning[];
   targets: number;
+  total_cv_counts: number;
 }
 
 export interface DashboardResponse {

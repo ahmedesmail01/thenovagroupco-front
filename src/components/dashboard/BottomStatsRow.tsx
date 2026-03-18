@@ -1,3 +1,4 @@
+import type { DashboardData } from "../../hooks/dashboard/useDashboardData";
 import { cn } from "../../lib/utils";
 
 interface StatCardProps {
@@ -20,7 +21,7 @@ function StatCardHorizontal({
         className,
       )}
     >
-      <div className="w-14 h-14 flex-shrink-0 flex items-center justify-center group-hover:scale-110 transition-transform">
+      <div className="w-14 h-14 shrink-0 flex items-center justify-center group-hover:scale-110 transition-transform">
         <img
           src={iconSrc}
           alt={title}
@@ -37,27 +38,34 @@ function StatCardHorizontal({
   );
 }
 
-export default function BottomStatsRow() {
+interface BottomStatsRowProps {
+  data: DashboardData | undefined;
+}
+
+export default function BottomStatsRow({ data }: BottomStatsRowProps) {
   const stats = [
     {
-      iconSrc: "/icons/bronze-pack.png",
-      title: "Bronze",
+      iconSrc: "/icons/bronze-pack.png", // Using bronze icon as placeholder for package
+      title: data?.user_package?.name || "Member",
       label: "Current Package",
     },
     {
       iconSrc: "/icons/silver-pack-icon.png",
-      title: "Silver",
+      title: data?.rank?.package || "Executive",
       label: "Next Rank",
     },
     {
       iconSrc: "/icons/referred-members-icon.png",
-      title: "2",
+      title: (
+        (data?.next_rank?.user_left_referrals || 0) +
+        (data?.next_rank?.user_right_referrals || 0)
+      ).toString(),
       label: "Referred Members",
     },
     {
       iconSrc: "/icons/member-since-icon.png",
-      title: "22 Days",
-      label: "Member Since",
+      title: `${data?.remaining_days || 0} Days`,
+      label: "Remaining Days",
     },
   ];
 

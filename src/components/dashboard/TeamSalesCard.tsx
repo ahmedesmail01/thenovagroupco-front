@@ -131,7 +131,7 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
           <StatItem
             icon={Network}
             value={
-              data?.downline_counts?.left_downlines_count?.toString() || "0"
+              data?.downline_counts?.left_downlines_count?.toString() ?? "0"
             }
             label="Left Downline Members"
             iconColor="text-[#6366f1]"
@@ -141,7 +141,7 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
           <StatItem
             icon={Network}
             value={
-              data?.downline_counts?.right_downlines_count?.toString() || "0"
+              data?.downline_counts?.right_downlines_count?.toString() ?? "0"
             }
             label="Right Downline Members"
             iconColor="text-[#10b981]"
@@ -150,7 +150,7 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
           />
           <StatItem
             icon={ArrowLeft}
-            value={`${data?.nowCvCounts?.left_cv_count || "0.00"} CV`}
+            value={`${data?.nowCvCounts?.left_cv_count ?? "0.00"} CV`}
             label="Left Sales"
             iconColor="text-[#f59e0b]"
             iconSrc="/icons/left-carry-icon.png"
@@ -158,7 +158,7 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
           />
           <StatItem
             icon={ArrowRight}
-            value={`${data?.nowCvCounts?.right_cv_count || "0.00"} CV`}
+            value={`${data?.nowCvCounts?.right_cv_count ?? "0.00"} CV`}
             label="Right Sales"
             iconColor="text-[#ef4444]"
             iconSrc="/icons/right-carry-icon.png"
@@ -166,7 +166,7 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
           />
           <StatItem
             icon={Globe}
-            value={`${(data?.nowCvCounts?.left_cv_count || 0) + (data?.nowCvCounts?.right_cv_count || 0)} CV`}
+            value={`${data?.total_cv_counts ?? "0.00"} CV`}
             label="Total Network volume"
             iconColor="text-[#a855f7]"
             iconSrc="/icons/total-network-volume-icon.png"

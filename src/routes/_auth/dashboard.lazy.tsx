@@ -42,14 +42,14 @@ function RouteComponent() {
         <TeamSalesCard data={data?.data} className="lg:col-span-1" />
 
         {/* Next Rank Goals Component */}
-        <RankGoalsCard className="lg:col-span-1" />
+        <RankGoalsCard data={data?.data} className="lg:col-span-1" />
 
         {/* User Profile Card Component */}
-        <UserProfileCard className="lg:col-span-1" />
+        <UserProfileCard data={data?.data} className="lg:col-span-1" />
       </div>
 
       {/* SECTION 2: Summary Row */}
-      <SummaryRow />
+      <SummaryRow data={data?.data} />
 
       {/* SECTION 3: Map & News */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -61,7 +61,7 @@ function RouteComponent() {
       </div>
 
       {/* SECTION 4: Bottom Stats Row Component */}
-      <BottomStatsRow />
+      <BottomStatsRow data={data?.data} />
 
       {/* SECTION 5: Performance & Events */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">

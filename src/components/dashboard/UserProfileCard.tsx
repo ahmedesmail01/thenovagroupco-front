@@ -57,7 +57,17 @@ function ProfileAvatar({ src, username }: { src?: string; username: string }) {
   );
 }
 
-export function UserProfileCard({ className }: { className?: string }) {
+import type { DashboardData } from "../../hooks/dashboard/useDashboardData";
+
+interface UserProfileCardProps {
+  className?: string;
+  data: DashboardData | undefined;
+}
+
+export function UserProfileCard({
+  className,
+  data: dashboardData,
+}: UserProfileCardProps) {
   const { data, isLoading, error } = useUserData();
 
   if (isLoading) {
@@ -163,7 +173,7 @@ export function UserProfileCard({ className }: { className?: string }) {
       {/* Status Badge */}
       <div className="mb-10 relative z-10">
         <span className="bg-[#2db39b] text-white text-[14px] font-bold px-8 py-2 rounded-full shadow-lg shadow-[#2db39b]/20">
-          {user.status}
+          {dashboardData?.rank?.name || user.status}
         </span>
       </div>
 
