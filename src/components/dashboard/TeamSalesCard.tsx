@@ -7,9 +7,11 @@ import {
   Globe,
 } from "lucide-react";
 import { cn } from "../../lib/utils";
+import type { DashboardData } from "../../hooks/dashboard/useDashboardData";
 
 interface TeamSalesCardProps {
   className?: string;
+  data: DashboardData | undefined;
 }
 
 function StatItem({
@@ -47,7 +49,7 @@ function StatItem({
   );
 }
 
-export function TeamSalesCard({ className }: TeamSalesCardProps) {
+export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
   return (
     <div
       className={cn(
@@ -128,39 +130,43 @@ export function TeamSalesCard({ className }: TeamSalesCardProps) {
         <div className="grid grid-cols-2 gap-4">
           <StatItem
             icon={Network}
-            value="0.00 CV"
-            label="Left Sales"
+            value={
+              data?.downline_counts?.left_downlines_count?.toString() || "0"
+            }
+            label="Left Downline Members"
             iconColor="text-[#6366f1]"
             iconSrc="/icons/left-sales-icon.png"
             // iconBg="bg-[#6366f1]/10"
           />
           <StatItem
             icon={Network}
-            value="0.00 CV"
-            label="Right Sales"
+            value={
+              data?.downline_counts?.right_downlines_count?.toString() || "0"
+            }
+            label="Right Downline Members"
             iconColor="text-[#10b981]"
             iconSrc="/icons/right-sales-icon.png"
             // iconBg="bg-[#10b981]/10"
           />
           <StatItem
             icon={ArrowLeft}
-            value="0.00 CV"
-            label="Left Carry Forward"
+            value={`${data?.nowCvCounts?.left_cv_count || "0.00"} CV`}
+            label="Left Sales"
             iconColor="text-[#f59e0b]"
             iconSrc="/icons/left-carry-icon.png"
             // iconBg="bg-[#f59e0b]/10"
           />
           <StatItem
             icon={ArrowRight}
-            value="0.00 CV"
-            label="Right Carry Forward"
+            value={`${data?.nowCvCounts?.right_cv_count || "0.00"} CV`}
+            label="Right Sales"
             iconColor="text-[#ef4444]"
             iconSrc="/icons/right-carry-icon.png"
             // iconBg="bg-[#ef4444]/10"
           />
           <StatItem
             icon={Globe}
-            value="0.00 CV"
+            value={`${(data?.nowCvCounts?.left_cv_count || 0) + (data?.nowCvCounts?.right_cv_count || 0)} CV`}
             label="Total Network volume"
             iconColor="text-[#a855f7]"
             iconSrc="/icons/total-network-volume-icon.png"
@@ -168,7 +174,10 @@ export function TeamSalesCard({ className }: TeamSalesCardProps) {
           />
           <StatItem
             icon={Users}
-            value="0.00 CV"
+            value={(
+              (data?.downline_counts?.left_downlines_count || 0) +
+              (data?.downline_counts?.right_downlines_count || 0)
+            ).toString()}
             label="Total down line"
             iconColor="text-[#3b82f6]"
             iconSrc="/icons/total-downline-icon.png"

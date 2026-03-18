@@ -11,18 +11,35 @@ import BottomStatsRow from "../../components/dashboard/BottomStatsRow";
 import Activites from "../../components/dashboard/Activites";
 
 import TeamPerformanceCard from "../../components/dashboard/TeamPerformanceCard";
+import { useDashboardData } from "../../hooks/dashboard/useDashboardData";
 
 export const Route = createLazyFileRoute("/_auth/dashboard")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const { data, isLoading } = useDashboardData();
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-[60vh] animate-pulse">
+        <img
+          src="/images/nova-logo.png"
+          alt="Loading..."
+          className="w-24 h-24 object-contain animate-bounce"
+        />
+      </div>
+    );
+  }
+
+  console.log("Dashboard Data:", data);
+
   return (
     <div className="space-y-8 animate-in fade-in duration-700 pb-12">
       {/* SECTION 1: Top Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Team Sales Component */}
-        <TeamSalesCard className="lg:col-span-1" />
+        <TeamSalesCard data={data?.data} className="lg:col-span-1" />
 
         {/* Next Rank Goals Component */}
         <RankGoalsCard className="lg:col-span-1" />
