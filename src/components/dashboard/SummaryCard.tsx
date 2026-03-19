@@ -1,15 +1,19 @@
+import { Link } from "@tanstack/react-router";
+
 export default function SummaryCard({
   icon: Icon,
   title,
   label,
   showAll,
   iconSrc,
+  link,
 }: {
   icon?: React.ElementType;
   title: string;
   label: string;
   showAll?: boolean;
   iconSrc?: string;
+  link?: string;
 }) {
   return (
     <div className="bg-white rounded-[20px] p-6 border border-dash-border shadow-sm flex flex-col gap-4 group hover:shadow-md transition-all">
@@ -22,9 +26,12 @@ export default function SummaryCard({
           )}
         </div>
         {showAll && (
-          <button className="text-[14px] font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-lg uppercase tracking-wider hover:bg-blue-100 transition-colors">
+          <Link
+            to={link}
+            className="text-[14px] font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-lg uppercase tracking-wider hover:bg-blue-100 transition-colors"
+          >
             Show All
-          </button>
+          </Link>
         )}
       </div>
       <div>

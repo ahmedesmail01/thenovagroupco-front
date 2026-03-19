@@ -66,6 +66,7 @@ export interface DashboardData {
   monthly_earnings: MonthlyEarning[];
   targets: number;
   total_cv_counts: number;
+  total_commissions: number;
 }
 
 export interface DashboardResponse {

@@ -12,17 +12,20 @@ const SummaryRow = ({ data }: SummaryRowProps) => {
   const zapIcon = "/icons/nova-rise-pack.png";
   const walletIcon = "/icons/bronze-pack.png";
 
-  const totalVolume =
-    (data?.nowCvCounts?.left_cv_count || 0) +
-    (data?.nowCvCounts?.right_cv_count || 0);
+  // const totalVolume =
+  //   (data?.nowCvCounts?.left_cv_count || 0) +
+  //   (data?.nowCvCounts?.right_cv_count || 0);
+
+  const totalCommissions = data?.total_commissions || 0;
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       <SummaryCard
         iconSrc={dollarIcon}
-        title={`${Number(totalVolume).toFixed(2)} CV`}
-        label="Total Network volume"
+        title={`${Number(totalCommissions).toFixed(2)}`}
+        label="Total Commissions"
         showAll
+        link="/commissions"
       />
       <SummaryCard
         iconSrc={trophyIcon}
