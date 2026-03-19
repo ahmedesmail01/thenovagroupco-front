@@ -36,6 +36,7 @@ export function StepAccountDetails({
     defaultValues: {
       sponsorId: data.sponsorId,
       countryCode: "+20",
+      country: data.country || "Egypt",
     },
   });
 
@@ -129,7 +130,10 @@ export function StepAccountDetails({
           <PhoneInput
             defaultCountry="eg"
             value={watch("phone")}
-            onChange={(phone) => setValue("phone", phone)}
+            onChange={(phone, meta) => {
+              setValue("phone", phone);
+              setValue("country", meta.country.name);
+            }}
             className="w-full"
             forceDialCode
             inputClassName="!w-full !h-[48px] !rounded-lg !border-0 !bg-white !text-gray-900 !px-4 !py-3 !outline-none !ring-2 !ring-transparent focus:!ring-brand-blue"

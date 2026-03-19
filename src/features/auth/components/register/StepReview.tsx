@@ -27,6 +27,7 @@ export function StepReview({
       formData.append("last_name", data.lastName ?? "");
       formData.append("email", data.email ?? "");
       formData.append("mobile", data.phone ?? "");
+      formData.append("country", data.country ?? "");
       formData.append("password", data.password ?? "");
       formData.append("password_confirmation", data.confirmPassword ?? "");
       formData.append("sponsor_id", data.sponsorId ?? "");
@@ -81,6 +82,7 @@ export function StepReview({
       label: "Phone Number",
       value: `${data.phone ?? ""}`.trim(),
     },
+    { label: "Country", value: data.country },
     { label: "Email", value: data.email },
     { label: "Sponsor ID", value: `${data.sponsorId} ()` },
   ];

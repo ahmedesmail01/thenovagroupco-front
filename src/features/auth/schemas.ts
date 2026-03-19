@@ -26,6 +26,7 @@ export const accountDetailsSchema = z
     sponsorId: z.string().min(1),
     countryCode: z.string().min(1),
     phone: z.string().min(7, "Invalid phone number"),
+    country: z.string().min(1),
     email: z.string().email("Invalid email address"),
     password: z
       .string()
