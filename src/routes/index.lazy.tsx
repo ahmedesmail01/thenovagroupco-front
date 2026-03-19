@@ -6,6 +6,7 @@ import {
   PackagesSection,
   EventsSection,
 } from "../components/sections/OtherSections";
+import OurScannersSection from "../components/sections/OurScannersSection";
 
 export const Route = createLazyFileRoute("/")({
   component: Index,
@@ -18,6 +19,7 @@ function Index() {
       <FocusSection />
       <StorySection />
       <PackagesSection />
+      <OurScannersSection />
       <EventsSection />
     </div>
   );
