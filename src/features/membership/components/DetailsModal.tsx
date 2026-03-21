@@ -18,52 +18,52 @@ export function DetailsModal({
     <Modal
       open={open}
       onClose={onClose}
-      className="max-w-[400px]! p-0 overflow-hidden bg-white! max-h-[90vh] flex flex-col"
+      className="max-w-[400px]! p-6! overflow-hidden bg-white! max-h-[90vh] flex flex-col"
     >
       {selectedPackage && (
         <div className="flex flex-col h-full overflow-hidden">
           {/* Dark Slanted Header - FIXED */}
-          <div className="relative rounded-lg bg-[#1e3a5f] pt-12 pb-16 px-8 overflow-hidden shrink-0">
+          <div className="relative rounded-lg bg-[#1e3a5f] pt-8 pb-12 px-6 overflow-hidden shrink-0">
             <div
-              className="absolute bottom-0 left-0 w-full h-12 bg-white"
+              className="absolute bottom-0 left-0 w-full h-10 bg-white"
               style={{ clipPath: "polygon(0 100%, 100% 100%, 100% 0)" }}
             />
-            <h2 className="relative z-10 text-3xl font-bold text-white text-center capitalize tracking-tight">
+            <h2 className="relative z-10 text-2xl font-bold text-white text-center capitalize tracking-tight">
               {selectedPackage.name}
             </h2>
           </div>
 
           {/* Scrollable Content Area */}
-          <div className="flex-1 overflow-y-auto px-8 pb-4 flex flex-col items-center no-scrollbar">
+          <div className="flex-1 overflow-y-auto px-6 pb-4 flex flex-col items-center no-scrollbar">
             {/* Price and CV */}
-            <div className="text-center mb-8 -mt-4 relative z-10 shrink-0">
-              <div className="flex items-baseline justify-center gap-2">
-                <span className="text-[42px] font-bold text-[#1a1a1a]">
+            <div className="text-center mb-6 -mt-2 relative z-10 shrink-0">
+              <div className="flex items-baseline justify-center gap-1.5">
+                <span className="text-[32px] font-bold text-[#1a1a1a]">
                   {Number(selectedPackage.price).toFixed(0)}
                 </span>
-                <span className="text-[20px] font-medium text-[#4a4a4a]">
+                <span className="text-[16px] font-medium text-[#4a4a4a]">
                   /{" "}
                   {selectedPackage.billing_period === "annually"
                     ? "Annually"
                     : selectedPackage.billing_period}
                 </span>
               </div>
-              <p className="text-[18px] font-medium text-[#4a4a4a] mt-1">
+              <p className="text-[14px] font-medium text-[#4a4a4a] mt-0.5">
                 {selectedPackage.cv} CV
               </p>
             </div>
 
             {/* Features List */}
-            <ul className="w-full space-y-2 mb-6 ">
+            <ul className="w-full space-y-2 mb-6">
               {Object.entries(selectedPackage.features).map(
                 ([feature, enabled]) => (
                   <li
                     key={feature}
-                    className="flex items-start gap-4 text-[15px] font-medium text-[#333]"
+                    className="flex items-start gap-3 text-[13.5px] font-medium text-[#333]"
                   >
                     {enabled ? (
                       <svg
-                        className="w-5 h-5 mt-0.5 shrink-0 text-black"
+                        className="w-4 h-4 mt-0.5 shrink-0 text-black"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
@@ -75,7 +75,7 @@ export function DetailsModal({
                       </svg>
                     ) : (
                       <svg
-                        className="w-5 h-5 mt-0.5 shrink-0 text-red-500"
+                        className="w-4 h-4 mt-0.5 shrink-0 text-red-500"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
@@ -97,10 +97,10 @@ export function DetailsModal({
           </div>
 
           {/* Footer with Button - FIXED */}
-          <div className="px-8 pb-10 pt-4 bg-white border-t border-slate-50 shrink-0">
+          <div className="px-6 pb-6 pt-3 bg-white border-t border-slate-50 shrink-0">
             <button
               onClick={onSubscribe}
-              className="w-full py-4 rounded-lg text-white font-bold text-lg transition-all active:scale-[0.98] shadow-lg bg-linear-to-r from-[#4d90cd] to-[#12243d]"
+              className="w-full py-3 rounded-lg text-white font-bold text-base transition-all active:scale-[0.98] shadow-lg bg-linear-to-r from-[#4d90cd] to-[#12243d]"
             >
               Get Started
             </button>
