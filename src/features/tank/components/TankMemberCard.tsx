@@ -12,32 +12,60 @@ export function TankMemberCard({ member }: TankMemberCardProps) {
     placeMember({ referralId: member.member_id, placement });
   };
 
-  return (
-    <div className="bg-[#1a365d] rounded-2xl overflow-hidden shadow-xl w-[320px] relative mt-10">
-      {/* Complex Background overlay */}
-      <div className="absolute inset-0 bg-linear-to-tl from-transparent via-[#1e3a8a]/40 to-[#0f172a]/60 pointer-events-none" />
-      <div className="absolute top-0 right-0 w-full h-[150%] bg-white/5 rounded-[100%] -translate-y-[40%] translate-x-[20%] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-full h-full bg-black/10 rounded-[100%] translate-y-[50%] -translate-x-[20%] pointer-events-none" />
+  const fullName = `${member.member_firstname} ${member.member_lastname}`;
 
-      <div className="p-8 pb-6 relative z-10 flex flex-col h-full text-center">
-        <div className="mb-8 space-y-4">
-          <p className="text-white text-xl font-bold tracking-wide">
-            {member.member_username}
-          </p>
-          <p className="text-white text-lg tracking-wide opacity-90">
-            ID : {member.member_id}
-          </p>
-          <p className="text-white/70 text-base">
-            {member.member_firstname} {member.member_lastname}
-          </p>
+  return (
+    <div className="bg-linear-to-br from-[#264157] to-[#1b3145] rounded-xl overflow-hidden shadow-lg mx-auto md:mx-0 w-full max-w-[384px] md:max-w-3/4 relative">
+      {/* Background Styling / Geometric Slices */}
+      <div className="absolute top-0 right-[35%] bottom-0 w-px bg-white/5 rotate-12 transform origin-bottom pointer-events-none" />
+      <div className="absolute top-0 left-[20%] bottom-0 w-[100px] bg-black/5 -rotate-12 transform origin-top pointer-events-none" />
+      <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/5 rounded-full pointer-events-none" />
+
+      {/* Header */}
+      <div className="py-4 sm:py-5 border-b border-white/10 text-center relative z-10 px-4">
+        <h3 className="text-white text-base sm:text-lg font-medium tracking-wide">
+          {fullName}
+        </h3>
+      </div>
+
+      {/* Content */}
+      <div className="p-5 sm:p-8 relative z-10">
+        <div className="flex flex-col md:flex-row justify-between gap-4 sm:gap-6 mb-8 sm:mb-10 text-white/90">
+          {/* Left Column */}
+          <div className="space-y-3 sm:space-y-4 text-[14px] sm:text-[15px]">
+            <p>
+              Full Name: <span className="font-light">{fullName}</span>
+            </p>
+            <p>
+              ID: <span className="font-light">{member.member_id}</span>
+            </p>
+            <p className="break-all">
+              Username:{" "}
+              <span className="font-light">{member.member_username}</span>
+            </p>
+          </div>
+
+          {/* Right Column */}
+          <div className="space-y-3 sm:space-y-4 text-[14px] sm:text-[15px] md:text-right">
+            <p>
+              Package:{" "}
+              <span className="font-light">
+                {member.member_package || "None"}
+              </span>
+            </p>
+            <p>
+              Package CV: <span className="font-light">0 CVs</span>
+            </p>
+          </div>
         </div>
 
+        {/* Buttons */}
         {member.member_package ? (
-          <div className="flex gap-4 w-full mt-auto">
+          <div className="flex items-center justify-center gap-3 w-full mt-2">
             <button
               onClick={() => handlePlace("left")}
               disabled={isPending}
-              className="flex-1 bg-[#ef4444] hover:bg-red-600 disabled:bg-red-400 text-white font-medium px-4 py-3 rounded-md transition-colors text-base shadow-sm cursor-pointer flex items-center justify-center gap-2"
+              className="flex-1 sm:flex-none bg-[#fb4f66] hover:bg-[#e03d50] disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium px-2 sm:px-8 py-2.5 sm:py-2 rounded-[4px] transition-colors text-[13px] sm:text-sm cursor-pointer shadow-sm flex items-center justify-center gap-1 sm:gap-2"
             >
               {isPending ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -48,7 +76,7 @@ export function TankMemberCard({ member }: TankMemberCardProps) {
             <button
               onClick={() => handlePlace("right")}
               disabled={isPending}
-              className="flex-1 bg-[#10b981] hover:bg-emerald-600 disabled:bg-emerald-400 text-white font-medium px-4 py-3 rounded-md transition-colors text-base shadow-sm cursor-pointer flex items-center justify-center gap-2"
+              className="flex-1 sm:flex-none bg-[#10b981] hover:bg-[#0c9c6d] disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium px-2 sm:px-8 py-2.5 sm:py-2 rounded-[4px] transition-colors text-[13px] sm:text-sm cursor-pointer shadow-sm flex items-center justify-center gap-1 sm:gap-2"
             >
               {isPending ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -58,12 +86,9 @@ export function TankMemberCard({ member }: TankMemberCardProps) {
             </button>
           </div>
         ) : (
-          <button
-            disabled
-            className="w-full bg-white/10 text-white/80 border border-white/20 font-medium px-4 py-3 rounded-md text-sm mt-auto cursor-not-allowed"
-          >
-            Must Subscribe to add to tank
-          </button>
+          <div className="w-full bg-white/5 text-white/50 border border-white/10 font-medium px-4 py-3 rounded-[4px] text-[13px] sm:text-sm text-center mt-2">
+            User Must be Subscribed to Package
+          </div>
         )}
       </div>
     </div>

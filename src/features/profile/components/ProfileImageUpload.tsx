@@ -22,7 +22,7 @@ export function ProfileImageUpload({ image }: ProfileImageUploadProps) {
       const formData = new FormData();
       formData.append("image", file);
 
-      return api.patch("user/change-profile-image", formData, {
+      return api.post("user/change-profile-image", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
     },

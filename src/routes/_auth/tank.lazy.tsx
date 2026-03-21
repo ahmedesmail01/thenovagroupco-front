@@ -50,7 +50,6 @@ function TankRouteComponent() {
   }
 
   const tank = tankData?.tank;
-  const currentMember = tank?.data[0];
 
   return (
     <div className="min-h-[calc(100vh-100px)] flex flex-col">
@@ -58,13 +57,17 @@ function TankRouteComponent() {
 
       {/* Main Content Area */}
       <div className="flex-1 bg-[#f8fafc] border border-slate-100 rounded-b-lg flex flex-col relative shadow-sm">
-        <div className="flex-1 m-8 bg-[#f8fafc] rounded-2xl flex flex-col items-center justify-center relative">
-          {/* Main Card Container */}
-          <div className="flex-1 flex items-center justify-center">
-            {currentMember ? (
-              <TankMemberCard member={currentMember} />
+        <div className="flex-1  bg-[#f8fafc] rounded-2xl flex flex-col relative">
+          {/* Members Grid Container */}
+          <div className="flex-1 flex flex-col w-full max-w-6xl mx-auto px-4">
+            {tank?.data && tank.data.length > 0 ? (
+              <div className="flex flex-col gap-8 items-center justify-center  w-full py-8">
+                {tank.data.map((member) => (
+                  <TankMemberCard key={member.id} member={member} />
+                ))}
+              </div>
             ) : (
-              <div className="text-slate-400 font-medium italic">
+              <div className="flex-1 flex items-center justify-center text-slate-400 font-medium italic">
                 No members in tank
               </div>
             )}
