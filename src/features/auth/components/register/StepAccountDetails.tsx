@@ -109,7 +109,7 @@ export function StepAccountDetails({
         />
         <Input
           label="Last Name *"
-          placeholder="Enter your Email"
+          placeholder="Enter your last name"
           error={errors.lastName?.message}
           {...register("lastName")}
           className="bg-white"

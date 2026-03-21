@@ -11,7 +11,15 @@ import "./index.css";
 import "./lib/api"; // Added import for api.ts
 
 // Create a new query client
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: true,
+      refetchOnReconnect: true,
+      staleTime: 1000 * 30, // 30 seconds — data is considered fresh for 30s, then refetched
+    },
+  },
+});
 
 // Create a new router instance
 const router = createRouter({
