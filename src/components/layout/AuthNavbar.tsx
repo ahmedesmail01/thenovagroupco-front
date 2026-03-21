@@ -1,15 +1,17 @@
-import { Bell, ChevronDown, LogOut, User, Settings, Menu } from "lucide-react";
+import { Bell, ChevronDown, LogOut, User, Menu } from "lucide-react";
 import { useAuthStore } from "../../features/auth/useAuthStore";
 import { useState } from "react";
-import { useNavigate, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { cn } from "../../lib/utils";
+import { useUserData } from "../../features/auth/useUserData";
 
 interface AuthNavbarProps {
   onMenuClick?: () => void;
 }
 
 export function AuthNavbar({ onMenuClick }: AuthNavbarProps) {
-  const { user, logout } = useAuthStore();
+  const { logout } = useAuthStore();
+  const { data: user, isLoading } = useUserData();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const { location } = useRouterState();
@@ -30,6 +32,10 @@ export function AuthNavbar({ onMenuClick }: AuthNavbarProps) {
     logout();
     navigate({ to: "/" });
   };
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <header className="h-16 bg-dash-sidebar border-b border-dash-border px-4 lg:px-8 flex items-center justify-between sticky top-0 z-40">
@@ -58,8 +64,8 @@ export function AuthNavbar({ onMenuClick }: AuthNavbarProps) {
           >
             <div className="w-9 h-9 rounded-lg overflow-hidden border border-dash-border">
               <img
-                src={user?.avatarUrl ?? "/images/default-avatar.png"}
-                alt={user?.first_name}
+                src={user?.["user data"].image ?? "/images/default-avatar.png"}
+                alt={user?.["user data"].first_name}
                 className="w-full h-full object-cover"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
@@ -70,7 +76,7 @@ export function AuthNavbar({ onMenuClick }: AuthNavbarProps) {
             </div>
             <div className="hidden sm:block text-left">
               <p className="text-sm font-semibold text-dash-text leading-tight">
-                {user?.first_name} {user?.last_name}
+                {user?.["user data"].first_name} {user?.["user data"].last_name}
               </p>
             </div>
             <ChevronDown
@@ -90,12 +96,13 @@ export function AuthNavbar({ onMenuClick }: AuthNavbarProps) {
                 onClick={() => setIsDropdownOpen(false)}
               />
               <div className="absolute right-0 mt-2 w-48 bg-dash-sidebar border border-dash-border rounded-xl shadow-lg py-2 z-20">
-                <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-dash-text hover:bg-dash-bg transition-colors">
+                <Link
+                  to="/profile"
+                  onClick={() => setIsDropdownOpen(false)}
+                  className="w-full flex items-center gap-3 px-4 py-2 text-sm text-dash-text hover:bg-dash-bg transition-colors"
+                >
                   <User size={16} className="text-dash-muted" /> Profile
-                </button>
-                <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-dash-text hover:bg-dash-bg transition-colors">
-                  <Settings size={16} className="text-dash-muted" /> Settings
-                </button>
+                </Link>
                 <hr className="my-1 border-dash-border" />
                 <button
                   onClick={handleLogout}
