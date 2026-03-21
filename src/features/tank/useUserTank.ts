@@ -12,6 +12,8 @@ export interface TankMember {
   member_firstname: string;
   member_lastname: string;
   member_package: string | null;
+  member_id_code: string;
+  member_package_cv: number;
 }
 
 export interface TankPaginationLink {

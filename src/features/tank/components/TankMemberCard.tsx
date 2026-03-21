@@ -37,7 +37,7 @@ export function TankMemberCard({ member }: TankMemberCardProps) {
               Full Name: <span className="font-light">{fullName}</span>
             </p>
             <p>
-              ID: <span className="font-light">{member.member_id}</span>
+              ID: <span className="font-light">{member.member_id_code}</span>
             </p>
             <p className="break-all">
               Username:{" "}
@@ -46,17 +46,22 @@ export function TankMemberCard({ member }: TankMemberCardProps) {
           </div>
 
           {/* Right Column */}
-          <div className="space-y-3 sm:space-y-4 text-[14px] sm:text-[15px] md:text-right">
-            <p>
-              Package:{" "}
-              <span className="font-light">
-                {member.member_package || "None"}
-              </span>
-            </p>
-            <p>
-              Package CV: <span className="font-light">0 CVs</span>
-            </p>
-          </div>
+          {member.member_package && (
+            <div className="space-y-3 sm:space-y-4 text-[14px] sm:text-[15px] md:text-right">
+              <p>
+                Package:{" "}
+                <span className="font-light">
+                  {member.member_package || "None"}
+                </span>
+              </p>
+              <p>
+                Package CV:{" "}
+                <span className="font-light">
+                  {member.member_package_cv || "0"}
+                </span>
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Buttons */}
