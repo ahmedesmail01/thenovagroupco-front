@@ -1,89 +1,26 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
 import { usePackages, type Package } from "../../features/wallet/usePackages";
+import api from "../../lib/api";
+import { toast } from "react-hot-toast";
+
+// Extracted Components
+import { TabHeader } from "../../features/membership/components/TabHeader";
+import { MembershipCard } from "../../features/membership/components/MembershipCard";
+import { DetailsModal } from "../../features/membership/components/DetailsModal";
+import { PaymentChoiceModal } from "../../features/membership/components/PaymentChoiceModal";
 
 export const Route = createLazyFileRoute("/_auth/membership")({
   component: MembershipRouteComponent,
 });
 
-function TabHeader({
-  activeTab,
-  onTabChange,
-}: {
-  activeTab: string;
-  onTabChange: (tab: string) => void;
-}) {
-  return (
-    <div className="flex items-center justify-center gap-6 mb-16">
-      <button
-        onClick={() => onTabChange("normal")}
-        className={`pb-2 text-[13px] font-semibold transition-all uppercase tracking-wide ${
-          activeTab === "normal"
-            ? "text-[#335c82] border-b-2 border-[#335c82]"
-            : "text-slate-400 border-b-2 border-transparent hover:text-slate-600"
-        }`}
-      >
-        Normal
-      </button>
-      <button
-        onClick={() => onTabChange("nova pro")}
-        className={`pb-2 text-[13px] font-semibold transition-all uppercase tracking-wide ${
-          activeTab === "nova pro"
-            ? "text-[#335c82] border-b-2 border-[#335c82]"
-            : "text-slate-400 border-b-2 border-transparent hover:text-slate-600"
-        }`}
-      >
-        Nova Pro
-      </button>
-    </div>
-  );
-}
-
-function MembershipCard({ pkg }: { pkg: Package }) {
-  return (
-    <div className="relative overflow-hidden rounded-[20px] bg-linear-to-br from-[#2f4b7c] to-[#1e3a5f] text-white p-8 aspect-[4/2.5] flex flex-col items-center justify-center shadow-md cursor-pointer hover:shadow-lg transition-transform hover:-translate-y-1 group">
-      {/* Background Wavy Elements */}
-      <div className="absolute inset-0 pointer-events-none opacity-40">
-        <div className="absolute -top-[40%] -left-[20%] w-[80%] h-[120%] bg-white/10 rounded-full blur-[2px]" />
-        <svg
-          className="absolute bottom-0 left-0 w-full h-full object-cover"
-          preserveAspectRatio="none"
-          viewBox="0 0 100 100"
-        >
-          <path
-            d="M0,60 C30,70 60,40 100,50 L100,100 L0,100 Z"
-            fill="rgba(255,255,255,0.05)"
-          />
-          <path
-            d="M0,80 C40,90 70,50 100,60 L100,100 L0,100 Z"
-            fill="rgba(255,255,255,0.08)"
-          />
-        </svg>
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10 flex flex-col items-center text-center space-y-2">
-        <h3 className="text-xl font-bold tracking-wide capitalize">
-          {pkg.name}
-        </h3>
-        <p className="text-[15px] font-bold text-white/90">
-          ${Number(pkg.price).toFixed(2)}
-          <span className="text-[12px] font-normal opacity-70 ml-1">
-            / {pkg.billing_period}
-          </span>
-        </p>
-        <div className="pt-2">
-          <p className="text-[11px] font-semibold text-white/80 group-hover:text-white transition-colors">
-            Tap to view details
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function MembershipRouteComponent() {
   const [activeTab, setActiveTab] = useState("nova pro");
+  const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [isSubscribing, setIsSubscribing] = useState(false);
+
   const { data: packages, isLoading } = usePackages();
 
   const filteredMemberships = useMemo(() => {
@@ -94,6 +31,32 @@ function MembershipRouteComponent() {
       return activeTab === "nova pro" ? isNovaPro : !isNovaPro;
     });
   }, [packages, activeTab]);
+
+  const handleSubscribe = async (payBy: "token" | "stripe") => {
+    if (!selectedPackage) return;
+
+    setIsSubscribing(true);
+    const loadingToast = toast.loading("Processing subscription...");
+
+    try {
+      await api.post("/subscribe", {
+        package_id: selectedPackage.id,
+        pay_by: payBy,
+      });
+      toast.success("Subscribed successfully!", { id: loadingToast });
+      setShowPaymentModal(false);
+      setSelectedPackage(null);
+    } catch (error: unknown) {
+      let errorMessage = "Failed to subscribe. Please try again.";
+      if (typeof error === "object" && error !== null && "response" in error) {
+        const err = error as { response: { data?: { message?: string } } };
+        errorMessage = err.response.data?.message || errorMessage;
+      }
+      toast.error(errorMessage, { id: loadingToast });
+    } finally {
+      setIsSubscribing(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -111,7 +74,14 @@ function MembershipRouteComponent() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto w-full px-4 mb-20">
         {filteredMemberships.map((pkg) => (
-          <MembershipCard key={pkg.id} pkg={pkg} />
+          <MembershipCard
+            key={pkg.id}
+            pkg={pkg}
+            onClick={() => {
+              setSelectedPackage(pkg);
+              setShowDetailsModal(true);
+            }}
+          />
         ))}
 
         {filteredMemberships.length === 0 && (
@@ -120,6 +90,23 @@ function MembershipRouteComponent() {
           </div>
         )}
       </div>
+
+      <DetailsModal
+        open={showDetailsModal}
+        onClose={() => setShowDetailsModal(false)}
+        selectedPackage={selectedPackage}
+        onSubscribe={() => {
+          setShowDetailsModal(false);
+          setShowPaymentModal(true);
+        }}
+      />
+
+      <PaymentChoiceModal
+        open={showPaymentModal}
+        onClose={() => setShowPaymentModal(false)}
+        onPaymentChoice={handleSubscribe}
+        isSubscribing={isSubscribing}
+      />
     </div>
   );
 }
