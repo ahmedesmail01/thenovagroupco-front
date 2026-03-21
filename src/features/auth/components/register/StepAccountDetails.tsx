@@ -168,27 +168,79 @@ export function StepAccountDetails({
         className="bg-white"
       />
 
-      <Input
-        label="Password *"
-        type={showPassword ? "text" : "password"}
-        placeholder="Enter your Password"
-        error={errors.password?.message}
-        className="bg-white"
-        {...register("password")}
-        rightElement={
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="text-gray-400 hover:text-gray-600 focus:outline-none"
-          >
-            {showPassword ? (
-              <EyeOff className="h-5 w-5" />
-            ) : (
-              <Eye className="h-5 w-5" />
-            )}
-          </button>
-        }
-      />
+      <div className="space-y-2">
+        <Input
+          label="Password *"
+          type={showPassword ? "text" : "password"}
+          placeholder="Enter your Password"
+          error={errors.password?.message}
+          className="bg-white"
+          {...register("password")}
+          rightElement={
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="text-gray-400 hover:text-gray-600 focus:outline-none"
+            >
+              {showPassword ? (
+                <EyeOff className="h-5 w-5" />
+              ) : (
+                <Eye className="h-5 w-5" />
+              )}
+            </button>
+          }
+        />
+
+        {/* Password Criteria */}
+        <div className="flex flex-wrap gap-2">
+          {[
+            {
+              label: "6+ characters",
+              met: (watch("password") || "").length >= 6,
+            },
+            {
+              label: "Uppercase",
+              met: /[A-Z]/.test(watch("password") || ""),
+            },
+            {
+              label: "Number",
+              met: /[0-9]/.test(watch("password") || ""),
+            },
+          ].map((criterion) => (
+            <div
+              key={criterion.label}
+              className={`flex items-center gap-1.5 transition-colors ${
+                criterion.met ? "text-emerald-400" : "text-gray-400"
+              }`}
+            >
+              <div
+                className={`shrink-0 w-3.5 h-3.5 rounded-full flex items-center justify-center border ${
+                  criterion.met
+                    ? "bg-emerald-400 border-emerald-400 text-white"
+                    : "border-gray-500"
+                }`}
+              >
+                {criterion.met && (
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="w-2.5 h-2.5"
+                  >
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                )}
+              </div>
+              <span className="text-[11px] font-medium whitespace-nowrap">
+                {criterion.label}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
 
       <Input
         label="Confirm Password *"
