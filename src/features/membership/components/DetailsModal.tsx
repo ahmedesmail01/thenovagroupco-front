@@ -18,7 +18,7 @@ export function DetailsModal({
     <Modal
       open={open}
       onClose={onClose}
-      className="max-w-[400px]! p-6! overflow-hidden bg-white! max-h-[90vh] flex flex-col"
+      className="max-w-[400px]! p-4! overflow-hidden bg-white! max-h-[90vh] flex flex-col"
     >
       {selectedPackage && (
         <div className="flex flex-col h-full overflow-hidden">
