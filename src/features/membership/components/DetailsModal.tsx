@@ -18,12 +18,12 @@ export function DetailsModal({
     <Modal
       open={open}
       onClose={onClose}
-      className="max-w-[400px] p-0 overflow-hidden bg-white! max-h-[90vh] flex flex-col"
+      className="max-w-[400px]! p-0 overflow-hidden bg-white! max-h-[90vh] flex flex-col"
     >
       {selectedPackage && (
         <div className="flex flex-col h-full overflow-hidden">
           {/* Dark Slanted Header - FIXED */}
-          <div className="relative bg-[#1e3a5f] pt-12 pb-16 px-8 overflow-hidden shrink-0">
+          <div className="relative rounded-lg bg-[#1e3a5f] pt-12 pb-16 px-8 overflow-hidden shrink-0">
             <div
               className="absolute bottom-0 left-0 w-full h-12 bg-white"
               style={{ clipPath: "polygon(0 100%, 100% 100%, 100% 0)" }}
@@ -34,7 +34,7 @@ export function DetailsModal({
           </div>
 
           {/* Scrollable Content Area */}
-          <div className="flex-1 overflow-y-auto px-8 pb-4 flex flex-col items-center custom-scrollbar">
+          <div className="flex-1 overflow-y-auto px-8 pb-4 flex flex-col items-center no-scrollbar">
             {/* Price and CV */}
             <div className="text-center mb-8 -mt-4 relative z-10 shrink-0">
               <div className="flex items-baseline justify-center gap-2">
@@ -54,7 +54,7 @@ export function DetailsModal({
             </div>
 
             {/* Features List */}
-            <ul className="w-full space-y-4 mb-6 px-4">
+            <ul className="w-full space-y-2 mb-6 ">
               {Object.entries(selectedPackage.features).map(
                 ([feature, enabled]) => (
                   <li
