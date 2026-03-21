@@ -18,7 +18,7 @@ export function PaymentChoiceModal({
     <Modal
       open={open}
       onClose={() => !isSubscribing && onClose()}
-      className="max-w-md"
+      className="max-w-md bg-white! p-6!"
     >
       <div className="space-y-6">
         <div className="text-center">
