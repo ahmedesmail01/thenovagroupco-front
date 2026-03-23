@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { Loader2, Eye, EyeOff } from "lucide-react";
+import { Loader2, Eye, X } from "lucide-react";
 import { Modal } from "../../../components/ui/Modal";
 import api from "../../../lib/api";
 
@@ -80,112 +80,120 @@ export function PasswordResetModal({
   };
 
   return (
-    <Modal open={open} onClose={onClose} className="max-w-md">
-      <div>
-        <h2 className="text-xl font-bold text-slate-800 mb-2">
-          Reset Password
-        </h2>
-        <p className="text-slate-500 text-sm mb-6">
-          Enter your current password and your new password below.
-        </p>
+    <Modal open={open} onClose={onClose} className="max-w-xl bg-white">
+      <div className="flex flex-col ">
+        {/* Header */}
+        <div className="flex justify-between items-center pb-6 border-b border-slate-50">
+          <h2 className="text-[20px] font-bold text-slate-700">
+            Change Password
+          </h2>
+          <button
+            onClick={onClose}
+            className="text-slate-900 hover:text-slate-600 transition-colors"
+          >
+            <X className="w-6 h-6" strokeWidth={3} />
+          </button>
+        </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div className="flex flex-col gap-1.5">
-            <label className="text-slate-500 text-[11px] font-semibold tracking-wide">
-              Old Password
-            </label>
-            <div className="relative">
-              <input
-                type={showOldPass ? "text" : "password"}
-                {...register("old_password")}
-                placeholder="Enter old password"
-                className="w-full border border-slate-200 rounded-lg px-4 py-2.5 text-[14px] text-slate-700 focus:outline-none focus:border-[#295175] transition-all"
-              />
+        {/* Content */}
+        <div className="p-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-[20px]">
+            <div className="flex flex-col gap-3">
+              <label className="text-slate-600 text-[14px] font-semibold">
+                Current Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showOldPass ? "text" : "password"}
+                  {...register("old_password")}
+                  placeholder="Password"
+                  className="w-full border border-slate-100 rounded-md px-6 py-4 text-[16px] text-slate-700 placeholder:text-slate-300 focus:outline-none focus:border-[#295175] transition-all"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowOldPass(!showOldPass)}
+                  className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                >
+                  <Eye className="w-6 h-6" />
+                </button>
+              </div>
+              {errors.old_password && (
+                <span className="text-red-500 text-[12px]">
+                  {errors.old_password.message}
+                </span>
+              )}
+            </div>
+
+            <div className="flex flex-col gap-3">
+              <label className="text-slate-600 text-[14px] font-semibold">
+                New Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showNewPass ? "text" : "password"}
+                  {...register("password")}
+                  placeholder="Password"
+                  className="w-full border border-slate-100 rounded-md px-6 py-4 text-[16px] text-slate-700 placeholder:text-slate-300 focus:outline-none focus:border-[#295175] transition-all"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowNewPass(!showNewPass)}
+                  className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                >
+                  <Eye className="w-6 h-6" />
+                </button>
+              </div>
+              {errors.password && (
+                <span className="text-red-500 text-[12px]">
+                  {errors.password.message}
+                </span>
+              )}
+            </div>
+
+            <div className="flex flex-col gap-3">
+              <label className="text-slate-600 text-[14px] font-semibold">
+                Confirm Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showConfirmPass ? "text" : "password"}
+                  {...register("password_confirmation")}
+                  placeholder="Confirm new password"
+                  className="w-full border border-slate-100 rounded-md px-6 py-4 text-[16px] text-slate-700 placeholder:text-slate-300 focus:outline-none focus:border-[#295175] transition-all"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPass(!showConfirmPass)}
+                  className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                >
+                  <Eye className="w-6 h-6" />
+                </button>
+              </div>
+              {errors.password_confirmation && (
+                <span className="text-red-500 text-[12px]">
+                  {errors.password_confirmation.message}
+                </span>
+              )}
+            </div>
+
+            <div className="pt-4">
               <button
-                type="button"
-                onClick={() => setShowOldPass(!showOldPass)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                type="submit"
+                disabled={isPending}
+                className="w-full bg-gradient-to-r from-brand-terquaz to-brand-navy hover:bg-[#15283b] text-white font-bold py-3 rounded-lg transition-colors text-[16px] flex items-center justify-center gap-2 disabled:opacity-50 shadow-md"
               >
-                {showOldPass ? <EyeOff size={18} /> : <Eye size={18} />}
+                {isPending ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Updating...
+                  </>
+                ) : (
+                  "Update Password"
+                )}
               </button>
             </div>
-            {errors.old_password && (
-              <span className="text-red-500 text-[10px]">
-                {errors.old_password.message}
-              </span>
-            )}
-          </div>
-
-          <div className="flex flex-col gap-1.5">
-            <label className="text-slate-500 text-[11px] font-semibold tracking-wide">
-              New Password
-            </label>
-            <div className="relative">
-              <input
-                type={showNewPass ? "text" : "password"}
-                {...register("password")}
-                placeholder="Enter new password"
-                className="w-full border border-slate-200 rounded-lg px-4 py-2.5 text-[14px] text-slate-700 focus:outline-none focus:border-[#295175] transition-all"
-              />
-              <button
-                type="button"
-                onClick={() => setShowNewPass(!showNewPass)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-              >
-                {showNewPass ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
-            </div>
-            {errors.password && (
-              <span className="text-red-500 text-[10px]">
-                {errors.password.message}
-              </span>
-            )}
-          </div>
-
-          <div className="flex flex-col gap-1.5">
-            <label className="text-slate-500 text-[11px] font-semibold tracking-wide">
-              Confirm New Password
-            </label>
-            <div className="relative">
-              <input
-                type={showConfirmPass ? "text" : "password"}
-                {...register("password_confirmation")}
-                placeholder="Confirm new password"
-                className="w-full border border-slate-200 rounded-lg px-4 py-2.5 text-[14px] text-slate-700 focus:outline-none focus:border-[#295175] transition-all"
-              />
-              <button
-                type="button"
-                onClick={() => setShowConfirmPass(!showConfirmPass)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-              >
-                {showConfirmPass ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
-            </div>
-            {errors.password_confirmation && (
-              <span className="text-red-500 text-[10px]">
-                {errors.password_confirmation.message}
-              </span>
-            )}
-          </div>
-
-          <div className="flex gap-3 pt-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-600 font-semibold py-2.5 rounded-lg transition-colors text-sm"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={isPending}
-              className="flex-1 bg-[#295175] hover:bg-[#1f3d58] text-white font-semibold py-2.5 rounded-lg transition-colors text-sm flex items-center justify-center gap-2 disabled:opacity-50"
-            >
-              {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
-              Request Reset
-            </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </Modal>
   );

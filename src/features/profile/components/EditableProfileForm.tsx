@@ -10,6 +10,7 @@ import "react-international-phone/style.css";
 import { type UserData } from "../../auth/useUserData";
 import api from "../../../lib/api";
 import { OtpModal } from "./OtpModal";
+import { PasswordResetModal } from "./PasswordResetModal";
 
 const profileSchema = z.object({
   username: z.string().max(100).optional().nullable(),
@@ -27,6 +28,7 @@ interface EditableProfileFormProps {
 
 export function EditableProfileForm({ userData }: EditableProfileFormProps) {
   const [showOtpModal, setShowOtpModal] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [operationId, setOperationId] = useState("");
 
   const {
@@ -87,11 +89,20 @@ export function EditableProfileForm({ userData }: EditableProfileFormProps) {
     requestUpdate(data);
   };
 
+  const handlePasswordResetSuccess = (opId: string) => {
+    setOperationId(opId);
+    setShowOtpModal(true);
+  };
+
   return (
     <div className="flex flex-col items-center lg:items-start lg:flex-row-reverse justify-between relative gap-10">
       {/* Action Buttons - Top Right Stacked */}
       <div className=" flex flex-col gap-3">
-        <button className="bg-[#e4ebf3] hover:bg-[#d5e0ec] text-[#3b6082] text-[12px] font-bold px-6 py-2.5 rounded-md transition-colors border border-[#c5d6e6] whitespace-nowrap min-w-[140px]">
+        <button
+          type="button"
+          onClick={() => setShowPasswordModal(true)}
+          className="bg-[#e4ebf3] hover:bg-[#d5e0ec] text-[#3b6082] text-[12px] font-bold px-6 py-2.5 rounded-md transition-colors border border-[#c5d6e6] whitespace-nowrap min-w-[140px]"
+        >
           Reset Password
         </button>
         <button className="bg-[#d7e4f1] hover:bg-[#c9daea] text-[#3b6082] text-[12px] font-bold px-6 py-2.5 rounded-md transition-colors border border-[#c5d6e6] whitespace-nowrap min-w-[140px]">
@@ -211,6 +222,12 @@ export function EditableProfileForm({ userData }: EditableProfileFormProps) {
           operation_id={operationId}
         />
       )}
+
+      <PasswordResetModal
+        open={showPasswordModal}
+        onClose={() => setShowPasswordModal(false)}
+        onSuccess={handlePasswordResetSuccess}
+      />
     </div>
   );
 }
