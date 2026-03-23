@@ -88,15 +88,19 @@ export function EditableProfileForm({ userData }: EditableProfileFormProps) {
   };
 
   return (
-    <div className="flex-1 relative">
-      <div className="absolute top-0 right-0">
-        <button className="bg-[#e4ebf3] hover:bg-[#d5e0ec] text-[#3b6082] text-[13px] font-semibold px-6 py-2.5 rounded-md transition-colors border border-[#c5d6e6]">
+    <div className="flex flex-col items-center lg:items-start lg:flex-row-reverse justify-between relative gap-10">
+      {/* Action Buttons - Top Right Stacked */}
+      <div className=" flex flex-col gap-3">
+        <button className="bg-[#e4ebf3] hover:bg-[#d5e0ec] text-[#3b6082] text-[12px] font-bold px-6 py-2.5 rounded-md transition-colors border border-[#c5d6e6] whitespace-nowrap min-w-[140px]">
           Reset Password
+        </button>
+        <button className="bg-[#d7e4f1] hover:bg-[#c9daea] text-[#3b6082] text-[12px] font-bold px-6 py-2.5 rounded-md transition-colors border border-[#c5d6e6] whitespace-nowrap min-w-[140px]">
+          Reset PIN
         </button>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-16 max-w-3xl">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
           <div className="flex flex-col gap-2">
             <label className="text-slate-500 text-[11px] font-semibold tracking-wide">
               First Name
@@ -104,7 +108,8 @@ export function EditableProfileForm({ userData }: EditableProfileFormProps) {
             <input
               type="text"
               {...register("first_name")}
-              className="w-full border border-slate-200 rounded-md px-4 py-2.5 text-[14px] text-slate-700 focus:outline-none focus:border-[#295175] focus:ring-1 focus:ring-[#295175]"
+              placeholder="First Name"
+              className="w-full border border-slate-100 rounded-lg px-4 py-3 text-[14px] text-slate-400 placeholder:text-slate-300 focus:outline-none focus:border-[#295175] transition-all"
             />
             {errors.first_name && (
               <span className="text-red-500 text-[10px]">
@@ -120,7 +125,8 @@ export function EditableProfileForm({ userData }: EditableProfileFormProps) {
             <input
               type="text"
               {...register("last_name")}
-              className="w-full border border-slate-200 rounded-md px-4 py-2.5 text-[14px] text-slate-700 focus:outline-none focus:border-[#295175] focus:ring-1 focus:ring-[#295175]"
+              placeholder="Last Name"
+              className="w-full border border-slate-100 rounded-lg px-4 py-3 text-[14px] text-slate-400 placeholder:text-slate-300 focus:outline-none focus:border-[#295175] transition-all"
             />
             {errors.last_name && (
               <span className="text-red-500 text-[10px]">
@@ -130,38 +136,6 @@ export function EditableProfileForm({ userData }: EditableProfileFormProps) {
           </div>
 
           <div className="flex flex-col gap-2">
-            <label className="text-slate-500 text-[11px] font-semibold tracking-wide">
-              User Name
-            </label>
-            <input
-              type="text"
-              {...register("username")}
-              className="w-full border border-slate-200 rounded-md px-4 py-2.5 text-[14px] text-slate-700 focus:outline-none focus:border-[#295175] focus:ring-1 focus:ring-[#295175]"
-            />
-            {errors.username && (
-              <span className="text-red-500 text-[10px]">
-                {errors.username.message}
-              </span>
-            )}
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label className="text-slate-500 text-[11px] font-semibold tracking-wide">
-              Email
-            </label>
-            <input
-              type="text"
-              {...register("email")}
-              className="w-full border border-slate-200 rounded-md px-4 py-2.5 text-[14px] text-slate-700 focus:outline-none focus:border-[#295175] focus:ring-1 focus:ring-[#295175]"
-            />
-            {errors.email && (
-              <span className="text-red-500 text-[10px]">
-                {errors.email.message}
-              </span>
-            )}
-          </div>
-
-          <div className="flex flex-col gap-2 md:col-span-2">
             <label className="text-slate-500 text-[11px] font-semibold tracking-wide">
               Phone Number
             </label>
@@ -176,10 +150,10 @@ export function EditableProfileForm({ userData }: EditableProfileFormProps) {
                 }}
                 className="w-full"
                 forceDialCode
-                inputClassName="!flex-1 !w-full !px-4 !py-2.5 !text-[14px] !text-slate-600 !placeholder:text-slate-300 !focus:outline-none !border !border-slate-200 !rounded-r-md !h-[42px]"
+                inputClassName="!flex-1 !w-full !px-4 !py-3 !text-[14px] !text-slate-400 !placeholder:text-slate-300 !focus:outline-none !border !border-slate-100 !rounded-r-lg !h-[46px]"
                 countrySelectorStyleProps={{
                   buttonClassName:
-                    "!h-[42px] !bg-white !border !border-slate-200 !rounded-l-md !px-3",
+                    "!h-[46px] !bg-white !border !border-slate-100 !rounded-l-lg !px-3",
                   dropdownStyleProps: {
                     style: {
                       left: 0,
@@ -199,13 +173,30 @@ export function EditableProfileForm({ userData }: EditableProfileFormProps) {
               </span>
             )}
           </div>
+
+          <div className="flex flex-col gap-2">
+            <label className="text-slate-500 text-[11px] font-semibold tracking-wide">
+              Email
+            </label>
+            <input
+              type="text"
+              {...register("email")}
+              placeholder="Email"
+              className="w-full border border-slate-100 rounded-lg px-4 py-3 text-[14px] text-slate-400 placeholder:text-slate-300 focus:outline-none focus:border-[#295175] transition-all overflow-hidden text-ellipsis"
+            />
+            {errors.email && (
+              <span className="text-red-500 text-[10px]">
+                {errors.email.message}
+              </span>
+            )}
+          </div>
         </div>
 
         <div className="mt-8">
           <button
             type="submit"
             disabled={isPending || !isDirty}
-            className="bg-[#1f3a53] hover:bg-[#15283b] text-white text-[13px] font-semibold px-6 py-2.5 rounded-md transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            className="bg-[#1f3a53] hover:bg-[#15283b] text-white text-[13px] font-semibold px-8 py-3 rounded-lg transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
             {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
             Save Changes

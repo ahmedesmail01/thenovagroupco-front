@@ -51,21 +51,22 @@ function ProfileRouteComponent() {
 
   return (
     <div className="min-h-[calc(100vh-100px)] bg-[#f8fafc] w-full max-w-[1500px] mx-auto ">
-      <div className="bg-white rounded-[32px] shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-slate-100 p-10 min-h-[85vh] flex flex-col">
-        {/* Top Section */}
-        <div className="flex flex-col lg:flex-row gap-12 pb-12 w-full">
-          <ProfileImageUpload image={userData.image} />
-          <EditableProfileForm userData={userData} />
+      <div className="bg-white rounded-[26px] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.02)] border border-slate-50 p-4 lg:p-8 min-h-[80vh] flex flex-col">
+        {/* Top Section: Photo | Form | Actions */}
+        <div className="flex flex-col xl:flex-row gap-16 pb-16 w-full items-center">
+          <div className="shrink-0">
+            <ProfileImageUpload image={userData.image} />
+          </div>
+          <div className="flex-1 w-full max-w-4xl">
+            <EditableProfileForm userData={userData} />
+          </div>
         </div>
 
         {/* Separator */}
-        <hr className="border-t border-slate-100 -mx-10 w-[calc(100%+80px)]" />
+        <div className="h-px bg-slate-100 -mx-12 mb-12" />
 
-        {/* Bottom Section */}
-        <div className="pt-8">
-          <h2 className="text-slate-800 font-bold text-lg mb-6">
-            Network Information
-          </h2>
+        {/* Bottom Section: Network Info */}
+        <div className="w-full max-w-4xl self-center xl:self-start xl:ml-[300px]">
           <ReadonlyNetworkInfo profile={profile} />
         </div>
       </div>

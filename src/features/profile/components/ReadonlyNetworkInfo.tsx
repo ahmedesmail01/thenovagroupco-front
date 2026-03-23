@@ -17,7 +17,7 @@ export function ReadonlyNetworkInfo({ profile }: ReadonlyNetworkInfoProps) {
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-6 w-full mt-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 w-full">
       {fields.map((field) => (
         <div key={field.label} className="flex flex-col gap-2">
           <label className="text-slate-500 text-[11px] font-semibold tracking-wide">
@@ -27,7 +27,7 @@ export function ReadonlyNetworkInfo({ profile }: ReadonlyNetworkInfoProps) {
             type="text"
             readOnly
             defaultValue={field.value}
-            className="w-full border border-slate-100 bg-[#fefefe]/50 rounded-md px-4 py-2.5 text-[14px] text-slate-400 focus:outline-none"
+            className="w-full border border-slate-100 bg-white rounded-lg px-4 py-3 text-[14px] text-slate-400 focus:outline-none transition-all"
           />
         </div>
       ))}

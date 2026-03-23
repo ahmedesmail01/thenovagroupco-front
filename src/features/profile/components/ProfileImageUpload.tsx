@@ -82,71 +82,73 @@ export function ProfileImageUpload({ image }: ProfileImageUploadProps) {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="bg-dash-bg rounded-lg mb-4 mt-2 w-full max-w-[280px] flex flex-col items-center justify-center relative overflow-hidden h-[300px] border border-slate-100">
-        <img
-          src={displayImage}
-          alt="Profile"
-          className="w-full h-full object-cover"
-        />
+      <div className="bg-[#f2f5f8] rounded-2xl mb-4 w-[240px] flex flex-col items-center p-6 border border-slate-50">
+        <div className="relative w-full aspect-square rounded-xl overflow-hidden group shadow-sm">
+          <img
+            src={displayImage}
+            alt="Profile"
+            className="w-full h-full object-cover"
+          />
 
-        {/* Bottom Overlay */}
-        {selectedFile && !isPending ? (
-          /* Save / Cancel buttons when previewing */
-          <div className="absolute bottom-0 left-0 right-0 bg-black/70 backdrop-blur-sm px-4 py-2.5 flex items-center justify-center gap-3 z-10">
+          {/* Bottom Overlay - simpler as per screenshot */}
+          {selectedFile && !isPending ? (
+            <div className="absolute inset-0 bg-black/40 flex items-center justify-center gap-3 z-10">
+              <button
+                type="button"
+                onClick={handleCancelPreview}
+                className="p-2 bg-white/20 hover:bg-white/40 text-white rounded-full transition-colors"
+                title="Cancel"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmUpload}
+                className="p-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full transition-colors"
+                title="Save"
+              >
+                <Check className="w-5 h-5" />
+              </button>
+            </div>
+          ) : (
             <button
               type="button"
-              onClick={handleCancelPreview}
-              className="flex items-center gap-1.5 bg-white/15 hover:bg-white/25 text-white text-[13px] font-medium px-4 py-2 rounded-md transition-colors"
+              onClick={triggerFileSelect}
+              disabled={isPending}
+              className="absolute bottom-0 left-0 right-0 bg-black/60 backdrop-blur-sm px-4 py-2.5 flex items-center justify-center gap-2 cursor-pointer hover:bg-black/70 transition-colors z-10 disabled:cursor-not-allowed"
             >
-              <X className="w-4 h-4 shrink-0" />
-              Cancel
+              {isPending ? (
+                <>
+                  <Loader2 className="w-4 h-4 text-white animate-spin shrink-0" />
+                  <span className="text-white text-[12px] font-medium">
+                    Uploading...
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Upload className="w-4 h-4 text-white shrink-0" />
+                  <span className="text-white text-[12px] font-medium">
+                    Upload Photo
+                  </span>
+                </>
+              )}
             </button>
-            <button
-              type="button"
-              onClick={handleConfirmUpload}
-              className="flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 text-white text-[13px] font-medium px-4 py-2 rounded-md transition-colors"
-            >
-              <Check className="w-4 h-4 shrink-0" />
-              Save
-            </button>
-          </div>
-        ) : (
-          /* Upload / Uploading overlay */
-          <button
-            type="button"
-            onClick={triggerFileSelect}
-            disabled={isPending}
-            className="absolute bottom-0 left-0 right-0 bg-black/70 backdrop-blur-sm px-4 py-3 flex items-center justify-center gap-2 cursor-pointer hover:bg-black/80 transition-colors z-10 disabled:cursor-not-allowed"
-          >
-            {isPending ? (
-              <>
-                <Loader2 className="w-4 h-4 text-white animate-spin shrink-0" />
-                <span className="text-white text-[13px] font-medium">
-                  Uploading...
-                </span>
-              </>
-            ) : (
-              <>
-                <Upload className="w-4 h-4 text-white shrink-0" />
-                <span className="text-white text-[13px] font-medium">
-                  Upload Photo
-                </span>
-              </>
-            )}
-          </button>
-        )}
+          )}
 
-        <input
-          type="file"
-          ref={fileInputRef}
-          onChange={handleFileChange}
-          accept="image/*"
-          className="hidden"
-        />
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            accept="image/*"
+            className="hidden"
+          />
+        </div>
+        <div className="mt-6 text-center">
+          <p className="text-slate-400 text-[10px] leading-relaxed max-w-[180px]">
+            Image size should be under 1MB and image ratio needs to be 1:1
+          </p>
+        </div>
       </div>
-      <p className="text-slate-400 text-[11px] leading-relaxed max-w-[220px] text-center">
-        Image size should be under 20MB and image ratio needs to be 1:1
-      </p>
     </div>
   );
 }
