@@ -67,6 +67,7 @@ export interface UserData {
   created_at: string;
   updated_at: string;
   phone: string | null;
+  country: string | null;
   status: string;
   image: string;
   member: Member;

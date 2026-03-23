@@ -5,6 +5,8 @@ import * as z from "zod";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { Loader2 } from "lucide-react";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
 import { type UserData } from "../../auth/useUserData";
 import api from "../../../lib/api";
 import { OtpModal } from "./OtpModal";
@@ -30,6 +32,8 @@ export function EditableProfileForm({ userData }: EditableProfileFormProps) {
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors, isDirty },
   } = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
@@ -38,7 +42,11 @@ export function EditableProfileForm({ userData }: EditableProfileFormProps) {
       first_name: userData.first_name,
       last_name: userData.last_name,
       email: userData.email,
-      phone: userData.phone,
+      phone: userData.phone
+        ? userData.phone.startsWith("+")
+          ? userData.phone
+          : `+20${userData.phone}`
+        : "+20",
     },
   });
 
@@ -157,12 +165,32 @@ export function EditableProfileForm({ userData }: EditableProfileFormProps) {
             <label className="text-slate-500 text-[11px] font-semibold tracking-wide">
               Phone Number
             </label>
-            <div className="flex border border-slate-200 rounded-md overflow-hidden focus-within:border-[#295175] focus-within:ring-1 focus-within:ring-[#295175]">
-              <input
-                type="text"
-                {...register("phone")}
-                placeholder="Your Phone number..."
-                className="flex-1 w-full px-4 py-2.5 text-[14px] text-slate-600 placeholder:text-slate-300 focus:outline-none"
+            <div className="phone-input-container">
+              <PhoneInput
+                defaultCountry={
+                  userData.country?.toLowerCase() === "egypt" ? "eg" : "eg"
+                }
+                value={watch("phone") || ""}
+                onChange={(phone) => {
+                  setValue("phone", phone, { shouldDirty: true });
+                }}
+                className="w-full"
+                forceDialCode
+                inputClassName="!flex-1 !w-full !px-4 !py-2.5 !text-[14px] !text-slate-600 !placeholder:text-slate-300 !focus:outline-none !border !border-slate-200 !rounded-r-md !h-[42px]"
+                countrySelectorStyleProps={{
+                  buttonClassName:
+                    "!h-[42px] !bg-white !border !border-slate-200 !rounded-l-md !px-3",
+                  dropdownStyleProps: {
+                    style: {
+                      left: 0,
+                      right: "auto",
+                    },
+                  },
+                }}
+                style={{
+                  display: "flex",
+                  width: "100%",
+                }}
               />
             </div>
             {errors.phone && (
