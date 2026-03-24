@@ -52,7 +52,7 @@ export default function BottomStatsRow({ data }: BottomStatsRowProps) {
     {
       iconSrc: "/icons/silver-pack-icon.png",
       title: data?.rank?.package || "No Rank",
-      label: "Next Rank",
+      label: data?.rank?.package || "No Rank",
     },
     {
       iconSrc: "/icons/referred-members-icon.png",
