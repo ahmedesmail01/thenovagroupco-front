@@ -39,8 +39,8 @@ const SummaryRow = ({ data }: SummaryRowProps) => {
       />
       <SummaryCard
         iconSrc={walletIcon}
-        title={data?.rank?.name || "Executive"}
-        label="Current Rank"
+        title={data?.rank?.name || "No Rank"}
+        label={data?.rank?.name || ""}
       />
     </div>
   );
