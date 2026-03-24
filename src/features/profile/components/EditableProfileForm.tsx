@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { Loader2 } from "lucide-react";
 import { PhoneInput } from "react-international-phone";
@@ -11,6 +11,7 @@ import { type UserData } from "../../auth/useUserData";
 import api from "../../../lib/api";
 import { OtpModal } from "./OtpModal";
 import { PasswordResetModal } from "./PasswordResetModal";
+import { PinResetModal } from "./PinResetModal";
 
 const profileSchema = z.object({
   username: z.string().max(100).optional().nullable(),
@@ -27,9 +28,13 @@ interface EditableProfileFormProps {
 }
 
 export function EditableProfileForm({ userData }: EditableProfileFormProps) {
+  const queryClient = useQueryClient();
   const [showOtpModal, setShowOtpModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
-  const [operationId, setOperationId] = useState("");
+  const [showPinModal, setShowPinModal] = useState(false);
+  const [currentOperationId, setCurrentOperationId] = useState<string | null>(
+    null,
+  );
 
   const {
     register,
@@ -67,7 +72,7 @@ export function EditableProfileForm({ userData }: EditableProfileFormProps) {
     },
     onSuccess: (data) => {
       if (data.operation_id) {
-        setOperationId(data.operation_id);
+        setCurrentOperationId(data.operation_id);
         setShowOtpModal(true);
       } else {
         toast.error("Failed to get operation ID from server");
@@ -89,9 +94,21 @@ export function EditableProfileForm({ userData }: EditableProfileFormProps) {
     requestUpdate(data);
   };
 
-  const handlePasswordResetSuccess = (opId: string) => {
-    setOperationId(opId);
+  const handlePasswordResetSuccess = (operationId: string) => {
+    setCurrentOperationId(operationId);
     setShowOtpModal(true);
+  };
+
+  const handlePinResetSuccess = (operationId: string) => {
+    setCurrentOperationId(operationId);
+    setShowOtpModal(true);
+  };
+
+  const handleOtpSuccess = () => {
+    queryClient.invalidateQueries({ queryKey: ["userData"] });
+    setShowOtpModal(false);
+    setCurrentOperationId(null);
+    toast.success("Verification successful!");
   };
 
   return (
@@ -105,7 +122,11 @@ export function EditableProfileForm({ userData }: EditableProfileFormProps) {
         >
           Reset Password
         </button>
-        <button className="bg-[#d7e4f1] hover:bg-[#c9daea] text-[#3b6082] text-[12px] font-bold px-6 py-2.5 rounded-md transition-colors border border-[#c5d6e6] whitespace-nowrap min-w-[140px]">
+        <button
+          type="button"
+          onClick={() => setShowPinModal(true)}
+          className="bg-[#d7e4f1] hover:bg-[#c9daea] text-[#3b6082] text-[12px] font-bold px-6 py-2.5 rounded-md transition-colors border border-[#c5d6e6] whitespace-nowrap min-w-[140px]"
+        >
           Reset PIN
         </button>
       </div>
@@ -215,11 +236,21 @@ export function EditableProfileForm({ userData }: EditableProfileFormProps) {
         </div>
       </form>
 
-      {operationId && (
+      <PinResetModal
+        open={showPinModal}
+        onClose={() => setShowPinModal(false)}
+        onSuccess={handlePinResetSuccess}
+      />
+
+      {currentOperationId && (
         <OtpModal
           open={showOtpModal}
-          onClose={() => setShowOtpModal(false)}
-          operation_id={operationId}
+          onClose={() => {
+            setShowOtpModal(false);
+            setCurrentOperationId(null);
+          }}
+          operation_id={currentOperationId}
+          onSuccess={handleOtpSuccess}
         />
       )}
 

@@ -107,7 +107,7 @@ export function PasswordResetModal({
                   type={showOldPass ? "text" : "password"}
                   {...register("old_password")}
                   placeholder="Password"
-                  className="w-full border border-slate-100 rounded-md px-6 py-4 text-[16px] text-slate-700 placeholder:text-slate-300 focus:outline-none focus:border-[#295175] transition-all"
+                  className="w-full border border-slate-100 rounded-md px-6 py-3 text-[16px] text-slate-700 placeholder:text-slate-300 focus:outline-none focus:border-[#295175] transition-all"
                 />
                 <button
                   type="button"
@@ -133,7 +133,7 @@ export function PasswordResetModal({
                   type={showNewPass ? "text" : "password"}
                   {...register("password")}
                   placeholder="Password"
-                  className="w-full border border-slate-100 rounded-md px-6 py-4 text-[16px] text-slate-700 placeholder:text-slate-300 focus:outline-none focus:border-[#295175] transition-all"
+                  className="w-full border border-slate-100 rounded-md px-6 py-3 text-[16px] text-slate-700 placeholder:text-slate-300 focus:outline-none focus:border-[#295175] transition-all"
                 />
                 <button
                   type="button"
@@ -159,7 +159,7 @@ export function PasswordResetModal({
                   type={showConfirmPass ? "text" : "password"}
                   {...register("password_confirmation")}
                   placeholder="Confirm new password"
-                  className="w-full border border-slate-100 rounded-md px-6 py-4 text-[16px] text-slate-700 placeholder:text-slate-300 focus:outline-none focus:border-[#295175] transition-all"
+                  className="w-full border border-slate-100 rounded-md px-6 py-3 text-[16px] text-slate-700 placeholder:text-slate-300 focus:outline-none focus:border-[#295175] transition-all"
                 />
                 <button
                   type="button"

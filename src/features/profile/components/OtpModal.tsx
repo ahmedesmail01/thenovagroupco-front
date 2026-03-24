@@ -9,9 +9,19 @@ interface OtpModalProps {
   open: boolean;
   onClose: () => void;
   operation_id: string;
+  onSuccess?: () => void;
+  title?: string;
+  description?: string;
 }
 
-export function OtpModal({ open, onClose, operation_id }: OtpModalProps) {
+export function OtpModal({
+  open,
+  onClose,
+  operation_id,
+  onSuccess,
+  title = "Verify Update",
+  description = "A 6-digit verification code has been sent to your email. Please enter it below to confirm your changes.",
+}: OtpModalProps) {
   const [otp, setOtp] = useState("");
   const queryClient = useQueryClient();
 
@@ -20,9 +30,13 @@ export function OtpModal({ open, onClose, operation_id }: OtpModalProps) {
       return api.post("user/verify-otp-and-update", data);
     },
     onSuccess: () => {
-      toast.success("Profile updated successfully!");
-      queryClient.invalidateQueries({ queryKey: ["userData"] });
-      onClose();
+      if (onSuccess) {
+        onSuccess();
+      } else {
+        toast.success("Verification successful!");
+        queryClient.invalidateQueries({ queryKey: ["userData"] });
+        onClose();
+      }
     },
     onError: (error: unknown) => {
       let message = "Failed to verify OTP";
@@ -47,12 +61,9 @@ export function OtpModal({ open, onClose, operation_id }: OtpModalProps) {
 
   return (
     <Modal open={open} onClose={onClose} className="max-w-md">
-      <div className="text-center">
-        <h2 className="text-xl font-bold text-white mb-2">Verify Update</h2>
-        <p className="text-slate-400 text-sm mb-6">
-          A 6-digit verification code has been sent to your email. Please enter
-          it below to confirm your changes.
-        </p>
+      <div className="text-center p-6 bg-[#0f172a] rounded-2xl border border-white/10">
+        <h2 className="text-xl font-bold text-white mb-2">{title}</h2>
+        <p className="text-slate-400 text-sm mb-6">{description}</p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="flex justify-center">
