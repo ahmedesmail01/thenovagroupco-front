@@ -51,7 +51,7 @@ export function Sidebar({
     { icon: CircleDollarSign, label: "Commissions", to: "/commissions" },
     { icon: Trophy, label: "Rank Reward", to: "/rank-reward" },
     { icon: Users, label: "Membership", to: "/membership" },
-    { icon: Zap, label: "NOVA PRO+", to: "/nova-pro" },
+    // { icon: Zap, label: "NOVA PRO+", to: "/nova-pro" },
     { icon: UserCircle, label: "Profile", to: "/profile" },
     { icon: LifeBuoy, label: "Support", to: "/support" },
     { icon: GraduationCap, label: "NOVA School", to: "/school" },
