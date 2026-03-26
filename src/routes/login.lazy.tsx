@@ -1,5 +1,5 @@
 import { createLazyFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -11,6 +11,7 @@ import { loginSchema } from "../features/auth/schemas";
 import type { LoginSchema } from "../features/auth/schemas";
 import logo from "../../public/images/nova-logo.png";
 import { Eye, EyeClosed } from "lucide-react";
+import { getCookie } from "../lib/getCookie";
 
 export const Route = createLazyFileRoute("/login")({
   component: LoginPage,
@@ -18,7 +19,7 @@ export const Route = createLazyFileRoute("/login")({
 
 function LoginPage() {
   const navigate = useNavigate();
-  const { login } = useAuthStore();
+  const setUser = useAuthStore((s) => s.setUser);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -35,19 +36,41 @@ function LoginPage() {
     isPending,
     isError,
   } = useMutation({
-    mutationFn: (data: LoginSchema) => api.post("/login", data),
-    onSuccess: (response) => {
-      const { user, token } = response.data;
-      login(user, token);
-      navigate({ to: "/dashboard" });
+    mutationFn: async (data: LoginSchema) => {
+      await getCookie();
+      return api.post("/login", {
+        email: data.email,
+        password: data.password,
+        remember: data.rememberMe,
+      });
+    },
+
+    onSuccess: async (response) => {
+      try {
+        // if backend returns user directly
+        if (response.data?.user) {
+          setUser(response.data.user);
+        } else {
+          // otherwise fetch current authenticated user from cookie session
+          const meResponse = await api.get("/user/data");
+          setUser(meResponse.data.user ?? meResponse.data);
+        }
+
+        navigate({ to: "/dashboard" });
+      } catch (error) {
+        console.error("Failed to load authenticated user after login:", error);
+      }
+    },
+    onError: (error) => {
+      console.error("Login failed:", error);
     },
   });
 
-  // Redirect if already logged in - called AFTER hooks
-  if (isAuthenticated) {
-    navigate({ to: "/dashboard" });
-    return null;
-  }
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate({ to: "/dashboard" });
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <div
@@ -55,17 +78,18 @@ function LoginPage() {
       style={{ backgroundImage: 'url("/images/Login-bg.png")' }}
     >
       <div className="relative z-10 w-full max-w-md">
-        {/* Card */}
-        <div className="rounded-[12px] font-poppins p-8 pt-2 pb-10 shadow-[0_24px_60px_rgba(0,0,0,0.6)] bg-gradient-to-b from-brand-terquaz to-brand-navy  ">
+        <div className="rounded-[12px] font-poppins p-8 pt-2 pb-10 shadow-[0_24px_60px_rgba(0,0,0,0.6)] bg-gradient-to-b from-brand-terquaz to-brand-navy">
           <div className="flex items-center justify-end">
             <img src={logo} alt="logo" />
           </div>
+
           <div className="text-center mb-8">
             <h1 className="text-3xl font-semibold text-white">Login</h1>
-            <p className="  text-sm mt-2    tracking-wider">
+            <p className="text-sm mt-2 tracking-wider">
               Welcome back! Please log in to access your account.
             </p>
           </div>
+
           {isError && (
             <div className="mb-5 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">
               Invalid email or password. Please try again.
@@ -95,7 +119,7 @@ function LoginPage() {
               <button
                 type="button"
                 className="absolute right-3 top-[38px] text-text-secondary hover:text-white transition-colors text-sm"
-                onClick={() => setShowPassword(!showPassword)}
+                onClick={() => setShowPassword((prev) => !prev)}
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? <EyeClosed /> : <Eye />}
@@ -138,17 +162,6 @@ function LoginPage() {
             </Button>
           </form>
 
-          {/* <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-brand-border" />
-            </div>
-            <div className="relative text-center">
-              <span className="bg-brand-surface px-4 text-xs text-text-muted uppercase tracking-widest">
-                Or
-              </span>
-            </div>
-          </div> */}
-
           <p className="text-center text-sm text-text-secondary">
             Don't have an account?{" "}
             <Link
@@ -159,12 +172,6 @@ function LoginPage() {
             </Link>
           </p>
         </div>
-
-        {/* <p className="text-center mt-6 text-xs text-text-muted">
-          <Link to="/" className="hover:text-white transition-colors">
-            ← Back to Home
-          </Link>
-        </p> */}
       </div>
     </div>
   );

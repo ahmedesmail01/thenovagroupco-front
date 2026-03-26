@@ -1,31 +1,15 @@
 import axios from "axios";
-import { useAuthStore } from "../features/auth/useAuthStore";
+import Cookies from "js-cookie";
 
-export const api = axios.create({
-  baseURL:
-    import.meta.env.VITE_API_URL ||
-    "https://production.thenovagroupco.com/api/v1",
-  headers: { "Content-Type": "application/json" },
-});
-
-// Attach token on every request
-api.interceptors.request.use((config) => {
-  const token = useAuthStore.getState().token;
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
-// Auto-logout on 401
-api.interceptors.response.use(
-  (res) => res,
-  (err) => {
-    if (err.response?.status === 401) {
-      useAuthStore.getState().logout();
-    }
-    return Promise.reject(err);
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    "X-XSRF-TOKEN": Cookies.get("XSRF-TOKEN"),
   },
-);
+  withCredentials: true,
+  withXSRFToken: true,
+});
 
 export default api;

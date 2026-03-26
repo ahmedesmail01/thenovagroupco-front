@@ -11,9 +11,23 @@ import api from "../../lib/api";
 import { loginSchema } from "./schemas";
 import type { LoginSchema } from "./schemas";
 
+type LoginResponse = {
+  user?: {
+    id: string;
+    first_name: string;
+    last_name: string;
+    username: string;
+    email: string;
+    phone: string;
+    avatarUrl?: string;
+    sponsorId: string;
+  };
+};
+
 export function LoginModal() {
-  const { loginModalOpen, setLoginModalOpen, setSignupModalOpen, login } =
+  const { loginModalOpen, setLoginModalOpen, setSignupModalOpen, setUser } =
     useAuthStore();
+
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -26,11 +40,24 @@ export function LoginModal() {
 
   const { mutate: loginMutation, isPending } = useMutation({
     mutationFn: (data: LoginSchema) => api.post("/auth/login", data),
-    onSuccess: (response: AxiosResponse) => {
-      const { user, token } = response.data;
-      login(user, token);
-      setLoginModalOpen(false);
+
+    onSuccess: async (response: AxiosResponse<LoginResponse>) => {
+      try {
+        // Option 1: backend already returns the user in login response
+        if (response.data?.user) {
+          setUser(response.data.user);
+        } else {
+          // Option 2: fetch current user after cookie login succeeds
+          const meResponse = await api.get("/user/data");
+          setUser(meResponse.data.user ?? meResponse.data);
+        }
+
+        setLoginModalOpen(false);
+      } catch (error) {
+        console.error("Failed to fetch authenticated user after login:", error);
+      }
     },
+
     onError: (error: Error) => {
       console.error("Login failed:", error);
     },
@@ -47,6 +74,7 @@ export function LoginModal() {
       className="max-w-md"
     >
       <button
+        type="button"
         className="absolute top-4 left-4 text-text-secondary hover:text-white transition-colors"
         onClick={() => setLoginModalOpen(false)}
       >
@@ -83,7 +111,7 @@ export function LoginModal() {
             <button
               type="button"
               className="absolute right-3 top-[38px] text-text-secondary hover:text-white transition-colors"
-              onClick={() => setShowPassword(!showPassword)}
+              onClick={() => setShowPassword((prev) => !prev)}
             >
               {showPassword ? "👁️" : "👁️‍🗨️"}
             </button>
@@ -98,6 +126,7 @@ export function LoginModal() {
               />
               <span>Remember me</span>
             </label>
+
             <button
               type="button"
               className="text-brand-blue-light hover:underline font-medium"
@@ -118,6 +147,7 @@ export function LoginModal() {
         <p className="text-center text-sm text-text-secondary mt-8">
           Don't have an account?{" "}
           <button
+            type="button"
             className="text-white underline font-semibold hover:text-brand-blue transition-colors"
             onClick={() => {
               setLoginModalOpen(false);

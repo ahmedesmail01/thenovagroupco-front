@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 
 export interface User {
   id: string;
@@ -14,40 +13,39 @@ export interface User {
 
 interface AuthState {
   user: User | null;
-  token: string | null;
   isAuthenticated: boolean;
-  // Modal control
+  isBootstrapping: boolean;
   loginModalOpen: boolean;
   signupModalOpen: boolean;
   setLoginModalOpen: (v: boolean) => void;
   setSignupModalOpen: (v: boolean) => void;
-  // Auth actions
-  login: (user: User, token: string) => void;
-  logout: () => void;
+  setUser: (user: User | null) => void;
+  setBootstrapping: (v: boolean) => void;
+  logoutLocal: () => void;
 }
 
-export const useAuthStore = create<AuthState>()(
-  persist(
-    (set) => ({
-      user: null,
-      token: null,
-      isAuthenticated: false,
-      loginModalOpen: false,
-      signupModalOpen: false,
-      setLoginModalOpen: (v) =>
-        set({ loginModalOpen: v, signupModalOpen: false }),
-      setSignupModalOpen: (v) =>
-        set({ signupModalOpen: v, loginModalOpen: false }),
-      login: (user, token) => set({ user, token, isAuthenticated: true }),
-      logout: () => set({ user: null, token: null, isAuthenticated: false }),
+export const useAuthStore = create<AuthState>((set) => ({
+  user: null,
+  isAuthenticated: false,
+  isBootstrapping: true,
+  loginModalOpen: false,
+  signupModalOpen: false,
+
+  setLoginModalOpen: (v) => set({ loginModalOpen: v, signupModalOpen: false }),
+
+  setSignupModalOpen: (v) => set({ signupModalOpen: v, loginModalOpen: false }),
+
+  setUser: (user) =>
+    set({
+      user,
+      isAuthenticated: !!user,
     }),
-    {
-      name: "nova-auth",
-      partialize: (s) => ({
-        user: s.user,
-        token: s.token,
-        isAuthenticated: s.isAuthenticated,
-      }),
-    },
-  ),
-);
+
+  setBootstrapping: (v) => set({ isBootstrapping: v }),
+
+  logoutLocal: () =>
+    set({
+      user: null,
+      isAuthenticated: false,
+    }),
+}));
