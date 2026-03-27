@@ -6,7 +6,7 @@ import { TanStackRouterVite } from "@tanstack/router-vite-plugin";
 // https://vite.dev/config/
 const rewriteCookies = {
   cookieDomainRewrite: {
-    "thenovagroupco.com": "thenovagroupco.netlify.app",
+    "thenovagroupco.com": "localhost",
   },
   configure: (proxy: any) => {
     proxy.on("proxyRes", (proxyRes: any) => {
