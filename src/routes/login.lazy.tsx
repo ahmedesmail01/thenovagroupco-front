@@ -37,7 +37,7 @@ function LoginPage() {
     isError,
   } = useMutation({
     mutationFn: async (data: LoginSchema) => {
-      await getCookie();
+      // await getCookie();
       return api.post("/login", {
         email: data.email,
         password: data.password,
