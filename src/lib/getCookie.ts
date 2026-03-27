@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "./api";
 
 export const getCookie = () =>
-  axios.get("/sanctum/csrf-cookie", { withCredentials: true });
+  api.get("/sanctum/csrf-cookie", { withCredentials: true });
