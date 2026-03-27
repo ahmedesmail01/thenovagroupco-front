@@ -6,14 +6,14 @@ import { TanStackRouterVite } from "@tanstack/router-vite-plugin";
 // https://vite.dev/config/
 const rewriteCookies = {
   cookieDomainRewrite: {
-    "thenovagroupco.com": "localhost",
+    "thenovagroupco.com": "thenovagroupco.netlify.app",
   },
   configure: (proxy: any) => {
     proxy.on("proxyRes", (proxyRes: any) => {
       const sc = proxyRes.headers["set-cookie"];
       if (sc) {
         proxyRes.headers["set-cookie"] = sc.map((cookie: string) =>
-          cookie.replace(/;\s*secure/gi, "").replace(/;\s*samesite=\w+/gi, "")
+          cookie.replace(/;\s*secure/gi, "").replace(/;\s*samesite=\w+/gi, ""),
         );
       }
     });
