@@ -11,7 +11,14 @@ import { AuthNavbar } from "../components/layout/AuthNavbar";
 import { cn } from "../lib/utils";
 
 export const Route = createFileRoute("/_auth")({
-  beforeLoad: () => {
+  beforeLoad: async () => {
+    const state = useAuthStore.getState();
+
+    // If still bootstrapping, wait for it to finish
+    if (state.isBootstrapping) {
+      await state.bootstrap();
+    }
+
     const { isAuthenticated } = useAuthStore.getState();
     if (!isAuthenticated) {
       throw redirect({ to: "/login" });

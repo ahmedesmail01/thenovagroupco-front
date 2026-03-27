@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import api from "../../lib/api";
 
 export interface User {
   id: string;
@@ -22,6 +23,7 @@ interface AuthState {
   setUser: (user: User | null) => void;
   setBootstrapping: (v: boolean) => void;
   logoutLocal: () => void;
+  bootstrap: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -48,4 +50,26 @@ export const useAuthStore = create<AuthState>((set) => ({
       user: null,
       isAuthenticated: false,
     }),
+
+  bootstrap: async () => {
+    try {
+      // Try to fetch the authenticated user — the browser sends
+      // the httpOnly session cookie automatically with the request
+      const res = await api.get("/user/data");
+      const user = res.data?.user ?? res.data;
+      set({
+        user,
+        isAuthenticated: true,
+        isBootstrapping: false,
+      });
+    } catch {
+      // No valid session
+      set({
+        user: null,
+        isAuthenticated: false,
+        isBootstrapping: false,
+      });
+    }
+  },
 }));
+
