@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import Cookies from "js-cookie";
 import api from "../../lib/api";
 
 export interface User {
@@ -22,7 +23,7 @@ interface AuthState {
   setSignupModalOpen: (v: boolean) => void;
   setUser: (user: User | null) => void;
   setBootstrapping: (v: boolean) => void;
-  logoutLocal: () => void;
+  logout: () => Promise<void>;
   bootstrap: () => Promise<void>;
 }
 
@@ -45,16 +46,31 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   setBootstrapping: (v) => set({ isBootstrapping: v }),
 
-  logoutLocal: () =>
+  logout: async () => {
+    try {
+      // Tell the backend to invalidate the session
+      await api.post("/logout");
+    } catch {
+      // Even if the API call fails, still clear local state
+      console.error("Logout failed");
+    }
+
+    // Clear any JS-readable cookies
+    Cookies.remove("XSRF-TOKEN");
+    Cookies.remove("laravel_session");
+
+    // Clear local state
     set({
       user: null,
       isAuthenticated: false,
-    }),
+    });
+
+    // Redirect to login
+    window.location.href = "/login";
+  },
 
   bootstrap: async () => {
     try {
-      // Try to fetch the authenticated user — the browser sends
-      // the httpOnly session cookie automatically with the request
       const res = await api.get("/user/data");
       const user = res.data?.user ?? res.data;
       set({
@@ -63,7 +79,6 @@ export const useAuthStore = create<AuthState>((set) => ({
         isBootstrapping: false,
       });
     } catch {
-      // No valid session
       set({
         user: null,
         isAuthenticated: false,
@@ -72,4 +87,3 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
   },
 }));
-
