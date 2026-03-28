@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { useUserData } from "../../features/auth/useUserData";
+import toast from "react-hot-toast";
 
 interface SocialLinkProps {
   icon: React.ElementType;
@@ -69,6 +70,17 @@ export function UserProfileCard({
   data: dashboardData,
 }: UserProfileCardProps) {
   const { data, isLoading, error } = useUserData();
+  const sponserCode = data?.profile.sponsor_id_code;
+  // console.log("user data is ", data);
+  const handleCopyDomain = () => {
+    if (!sponserCode) {
+      toast.error("Sponsor code not found");
+      return;
+    }
+    const url = `${window.location.origin}/register?sponsorId=${sponserCode}`;
+    navigator.clipboard.writeText(url);
+    toast.success("Registration link copied to clipboard!");
+  };
 
   if (isLoading) {
     return (
@@ -130,9 +142,9 @@ export function UserProfileCard({
         <span className="bg-[#e6f9f1] text-[#2db39b] text-[13px] font-bold px-5 py-1.5 rounded-full">
           {user.subscription}
         </span>
-        <button className="w-9 h-9 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:text-brand-blue-btn hover:bg-blue-50 transition-colors">
+        {/* <button className="w-9 h-9 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:text-brand-blue-btn hover:bg-blue-50 transition-colors">
           <Share2 size={18} />
-        </button>
+        </button> */}
       </div>
 
       {/* Avatar Section with Decoration */}
@@ -183,7 +195,10 @@ export function UserProfileCard({
           View personalized domain
         </button>
 
-        <button className="w-full bg-[#eff1f9] hover:bg-[#e4e8f5] text-brand-blue-btn py-3.5 rounded-xl text-[15px] font-bold transition-all active:scale-[0.98]">
+        <button
+          onClick={handleCopyDomain}
+          className="w-full bg-[#eff1f9] hover:bg-[#e4e8f5] text-brand-blue-btn py-3.5 rounded-xl text-[15px] font-bold transition-all active:scale-[0.98]"
+        >
           Copy personalized domain
         </button>
       </div>

@@ -1,4 +1,4 @@
-import { createLazyFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createLazyFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { useState } from "react";
 import { Stepper } from "../components/ui/Stepper";
 import { useAuthStore } from "../features/auth/useAuthStore";
@@ -24,20 +24,24 @@ const STEPS = [
 
 function RegisterPage() {
   const navigate = useNavigate();
-  const { login, isAuthenticated } = useAuthStore();
-  const [step, setStep] = useState(0);
-  const [formData, setFormData] = useState<SignUpData>({});
-
-  if (isAuthenticated) {
-    navigate({ to: "/dashboard" });
-    return null;
-  }
+  const search = useSearch({ from: "/register" }) as { sponsorId?: string };
+  const setUser = useAuthStore((s) => s.setUser);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const [step, setStep] = useState(search.sponsorId ? 1 : 0);
+  const [formData, setFormData] = useState<SignUpData>({
+    sponsorId: search.sponsorId,
+  });
 
   const next = (data: Partial<SignUpData>) => {
     setFormData((prev) => ({ ...prev, ...data }));
     setStep((s) => s + 1);
   };
   const back = () => setStep((s) => s - 1);
+
+  if (isAuthenticated) {
+    navigate({ to: "/dashboard" });
+    return null;
+  }
 
   return (
     <div
@@ -98,8 +102,8 @@ function RegisterPage() {
               <StepReview
                 data={formData}
                 onBack={back}
-                onSuccess={(user, token) => {
-                  login(user, token);
+                onSuccess={(user) => {
+                  setUser(user);
                   navigate({ to: "/dashboard" });
                 }}
               />
