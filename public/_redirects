@@ -1,3 +1,1 @@
-/api/*  https://dev.thenovagroupco.com/api/:splat  200
-/sanctum/* https://dev.thenovagroupco.com/sanctum/:splat 200
 /* /index.html 200
