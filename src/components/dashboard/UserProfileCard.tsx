@@ -70,7 +70,7 @@ export function UserProfileCard({
   data: dashboardData,
 }: UserProfileCardProps) {
   const { data, isLoading, error } = useUserData();
-  const sponserCode = data?.profile.sponsor_id_code;
+  const sponserCode = data?.profile.id_code;
   // console.log("user data is ", data);
   const handleCopyDomain = () => {
     if (!sponserCode) {
