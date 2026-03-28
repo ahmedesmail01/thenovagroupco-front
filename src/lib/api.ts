@@ -12,14 +12,14 @@ const api = axios.create({
   withXSRFToken: true,
 });
 
-// api.interceptors.request.use((config) => {
-//   const token = Cookies.get("XSRF-TOKEN");
-//   console.log("🔑 XSRF-TOKEN:", token);
-//   console.log("🍪 All cookies:", document.cookie);
-//   if (token) {
-//     config.headers["X-XSRF-TOKEN"] = token;
-//   }
-//   return config;
-// });
+api.interceptors.request.use((config) => {
+  const token = Cookies.get("XSRF-TOKEN");
+  console.log("🔑 XSRF-TOKEN:", token);
+  console.log("🍪 All cookies:", document.cookie);
+  if (token) {
+    config.headers["X-XSRF-TOKEN"] = token;
+  }
+  return config;
+});
 
 export default api;
