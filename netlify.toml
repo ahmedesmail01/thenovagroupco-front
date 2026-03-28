@@ -1,0 +1,7 @@
+[[edge_functions]]
+  path = "/api/*"
+  function = "rewrite-cookies"
+
+[[edge_functions]]
+  path = "/sanctum/*"
+  function = "rewrite-cookies"
