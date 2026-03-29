@@ -22,10 +22,10 @@ export function NodeCard({
   return (
     <div
       onClick={onClick}
-      className="p-1.5 rounded-[2.5rem] bg-white border border-slate-200 shadow-sm transition-transform hover:scale-[1.02] duration-300 relative z-10 cursor-pointer"
+      className={`p-1.5 rounded-[24px] bg-white border ${scheme.border} shadow-sm transition-transform hover:scale-[1.02] duration-300 relative z-10 cursor-pointer`}
     >
       <div
-        className={`p-6 rounded-4xl border ${scheme.border} bg-linear-to-br ${scheme.bg} shadow-inner w-56 aspect-4/5 flex flex-col items-center justify-center relative overflow-hidden group`}
+        className={`p-6 rounded-[22px] border ${scheme.border} bg-linear-to-br ${scheme.bg} shadow-inner w-56 aspect-4/5 flex flex-col items-center justify-center relative overflow-hidden group`}
       >
         {/* Background Decorative Circular Shapes */}
         <div
