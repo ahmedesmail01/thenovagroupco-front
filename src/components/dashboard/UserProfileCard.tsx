@@ -43,7 +43,8 @@ function ProfileAvatar({ src, username }: { src?: string; username: string }) {
     setError(false);
   }
 
-  const fallbackSrc = `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`;
+  // const fallbackSrc = `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`;
+  const fallbackSrc = `/images/game-avatar.png`;
   const isValidSrc = src && src !== "null" && src !== "";
 
   return (
