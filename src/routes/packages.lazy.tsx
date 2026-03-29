@@ -1,4 +1,4 @@
-import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
+import { createLazyFileRoute } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
 import { usePackages, type Package } from "../features/wallet/usePackages";
 import api from "../lib/api";
