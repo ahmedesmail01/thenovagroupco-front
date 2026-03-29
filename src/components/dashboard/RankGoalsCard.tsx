@@ -142,42 +142,55 @@ export function RankGoalsCard({ className, data }: Props) {
             Number(nextRank?.direct_referrals) || 0,
           )}
         />
-        <GoalItem
-          label="Direct Recruits Rank in RIGHT"
-          requiredRankName={
-            nextRank?.user_downline_progress.right.required_rank.name
-          }
-          percentage={getPercentageString(
-            Number(nextRank?.user_downline_progress.right.current_count) || 0,
-            Number(nextRank?.user_downline_progress.right.required_count) || 0,
-          )}
-          achieved={getAchievedString(
-            Number(nextRank?.user_downline_progress.right.current_count) || 0,
-            Number(nextRank?.user_downline_progress.right.required_count) || 0,
-          )}
-          progress={calculateProgress(
-            Number(nextRank?.user_downline_progress.right.current_count) || 0,
-            Number(nextRank?.user_downline_progress.right.required_count) || 0,
-          )}
-        />
-        <GoalItem
-          label="Direct Recruits Rank in LEFT"
-          requiredRankName={
-            nextRank?.user_downline_progress.left.required_rank.name
-          }
-          percentage={getPercentageString(
-            Number(nextRank?.user_downline_progress.left.current_count) || 0,
-            Number(nextRank?.user_downline_progress.left.required_count) || 0,
-          )}
-          achieved={getAchievedString(
-            Number(nextRank?.user_downline_progress.left.current_count) || 0,
-            Number(nextRank?.user_downline_progress.left.required_count) || 0,
-          )}
-          progress={calculateProgress(
-            Number(nextRank?.user_downline_progress.left.current_count) || 0,
-            Number(nextRank?.user_downline_progress.left.required_count) || 0,
-          )}
-        />
+        {nextRank?.user_downline_progress && (
+          <>
+            <GoalItem
+              label="Direct Recruits Rank in RIGHT"
+              requiredRankName={
+                nextRank?.user_downline_progress.right.required_rank.name
+              }
+              percentage={getPercentageString(
+                Number(nextRank?.user_downline_progress.right.current_count) ||
+                  0,
+                Number(nextRank?.user_downline_progress.right.required_count) ||
+                  0,
+              )}
+              achieved={getAchievedString(
+                Number(nextRank?.user_downline_progress.right.current_count) ||
+                  0,
+                Number(nextRank?.user_downline_progress.right.required_count) ||
+                  0,
+              )}
+              progress={calculateProgress(
+                Number(nextRank?.user_downline_progress.right.current_count) ||
+                  0,
+                Number(nextRank?.user_downline_progress.right.required_count) ||
+                  0,
+              )}
+            />
+            <GoalItem
+              label="Direct Recruits Rank in LEFT"
+              requiredRankName={
+                nextRank?.user_downline_progress.left.required_rank.name
+              }
+              percentage={getPercentageString(
+                Number(nextRank?.user_downline_progress.left.current_count) || 0,
+                Number(nextRank?.user_downline_progress.left.required_count) ||
+                  0,
+              )}
+              achieved={getAchievedString(
+                Number(nextRank?.user_downline_progress.left.current_count) || 0,
+                Number(nextRank?.user_downline_progress.left.required_count) ||
+                  0,
+              )}
+              progress={calculateProgress(
+                Number(nextRank?.user_downline_progress.left.current_count) || 0,
+                Number(nextRank?.user_downline_progress.left.required_count) ||
+                  0,
+              )}
+            />
+          </>
+        )}
       </div>
     </div>
   );

@@ -43,21 +43,28 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
   };
 
   const nextRank = data?.next_rank;
-  const achievedGoals = [
+  const goalResults = [
     isGoalAchieved(nextRank?.user_left_volume, nextRank?.left_volume),
     isGoalAchieved(nextRank?.user_right_volume, nextRank?.right_volume),
     isGoalAchieved(nextRank?.user_direct_referrals, nextRank?.direct_referrals),
-    isGoalAchieved(
-      nextRank?.user_downline_progress.left.current_count,
-      nextRank?.user_downline_progress.left.required_count,
-    ),
-    isGoalAchieved(
-      nextRank?.user_downline_progress.right.current_count,
-      nextRank?.user_downline_progress.right.required_count,
-    ),
-  ].filter(Boolean).length;
+  ];
 
-  const rankProgress = achievedGoals * 20; // 0 | 20 | 40 | 60 | 80 | 100
+  if (nextRank?.user_downline_progress) {
+    goalResults.push(
+      isGoalAchieved(
+        nextRank.user_downline_progress.left.current_count,
+        nextRank.user_downline_progress.left.required_count,
+      ),
+      isGoalAchieved(
+        nextRank.user_downline_progress.right.current_count,
+        nextRank.user_downline_progress.right.required_count,
+      ),
+    );
+  }
+
+  const totalGoals = goalResults.length;
+  const achievedGoals = goalResults.filter(Boolean).length;
+  const rankProgress = totalGoals > 0 ? Math.round((achievedGoals / totalGoals) * 100) : 0;
 
   return (
     <div

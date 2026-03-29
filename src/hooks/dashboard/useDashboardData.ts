@@ -69,7 +69,7 @@ export interface NextRankInfo {
   user_downline_progress: {
     left: DownlineProgress;
     right: DownlineProgress;
-  };
+  } | null;
 }
 
 export interface WeeklyEarning {
