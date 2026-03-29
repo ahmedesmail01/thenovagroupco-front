@@ -42,7 +42,7 @@ export function UserModal({
     (userData?.image || userImage) !== "http://localhost/uploads/";
   const imgSrc = isValidSrc
     ? (userData?.image || userImage)!
-    : `https://api.dicebear.com/7.x/avataaars/svg?seed=${username || displayName}`;
+    : `/images/game-avatar.png`;
 
   // Business stats
   const cv = userData?.member?.current_cv ?? 0;
@@ -85,7 +85,7 @@ export function UserModal({
                 className="w-full h-full object-cover"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src =
-                    `https://api.dicebear.com/7.x/avataaars/svg?seed=${username || displayName}`;
+                    `/images/game-avatar.png`;
                 }}
               />
             </div>
@@ -181,7 +181,7 @@ export function UserModal({
             <div className="w-full mt-6 bg-slate-50 rounded-2xl p-4 flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-white shadow-sm overflow-hidden flex items-center justify-center p-0.5 border border-slate-100 shrink-0">
                 <img
-                  src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${sponsorUser.username}`}
+                  src={`${sponsorUser.image ? sponsorUser.image : `/images/game-avatar.png`}`}
                   className="w-full h-full object-cover rounded-full"
                   alt="Sponsor"
                 />
