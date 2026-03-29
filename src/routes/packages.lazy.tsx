@@ -16,7 +16,6 @@ export const Route = createLazyFileRoute("/packages")({
 });
 
 function PackagesPage() {
-  const navigate = useNavigate();
   const { isAuthenticated } = useAuthStore();
   const [activeTab, setActiveTab] = useState("nova pro");
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
