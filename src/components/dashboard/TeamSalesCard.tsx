@@ -33,8 +33,8 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
 
   // Calculate rank goal progress: each of the 4 goals contributes 25% when fully achieved (>=100%)
   const isGoalAchieved = (
-    userVal: number | null | undefined,
-    targetVal: number | null | undefined,
+    userVal: string | number | null | undefined,
+    targetVal: string | number | null | undefined,
   ) => {
     const user = Number(userVal) || 0;
     const target = Number(targetVal) || 0;
@@ -46,11 +46,18 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
   const achievedGoals = [
     isGoalAchieved(nextRank?.user_left_volume, nextRank?.left_volume),
     isGoalAchieved(nextRank?.user_right_volume, nextRank?.right_volume),
-    isGoalAchieved(nextRank?.user_left_referrals, nextRank?.left_referrals),
-    isGoalAchieved(nextRank?.user_right_referrals, nextRank?.right_referrals),
+    isGoalAchieved(nextRank?.user_direct_referrals, nextRank?.direct_referrals),
+    isGoalAchieved(
+      nextRank?.user_downline_progress.left.current_count,
+      nextRank?.user_downline_progress.left.required_count,
+    ),
+    isGoalAchieved(
+      nextRank?.user_downline_progress.right.current_count,
+      nextRank?.user_downline_progress.right.required_count,
+    ),
   ].filter(Boolean).length;
 
-  const rankProgress = achievedGoals * 25; // 0 | 25 | 50 | 75 | 100
+  const rankProgress = achievedGoals * 20; // 0 | 20 | 40 | 60 | 80 | 100
 
   return (
     <div

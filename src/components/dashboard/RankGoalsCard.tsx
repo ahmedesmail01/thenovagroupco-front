@@ -6,6 +6,7 @@ interface RankGoalItemProps {
   percentage: string;
   achieved: string;
   progress: number; // 0 to 100
+  requiredRankName?: string;
 }
 
 interface Props {
@@ -18,6 +19,7 @@ function GoalItem({
   percentage,
   achieved,
   progress,
+  requiredRankName,
 }: RankGoalItemProps) {
   return (
     <div className="space-y-3 py-4 border-b border-slate-50 last:border-0 relative z-10">
@@ -37,7 +39,12 @@ function GoalItem({
 
       <p className="text-[16px]">
         <span className="font-bold text-brand-blue-btn">{achieved}</span>
-        <span className="text-slate-300 ml-1 ">Achieved</span>
+        <span className="text-slate-300 mx-2 ">Achieved</span>
+        {requiredRankName && (
+          <span className="text-slate-400 mx-2 font-semibold">
+            Rank:{requiredRankName}
+          </span>
+        )}
       </p>
     </div>
   );
@@ -121,49 +128,54 @@ export function RankGoalsCard({ className, data }: Props) {
           )}
         />
         <GoalItem
-          label="Direct Recruits in LEFT"
+          label="Direct Recruits"
           percentage={getPercentageString(
-            Number(nextRank?.user_left_referrals) || 0,
-            Number(nextRank?.left_referrals) || 0,
+            Number(nextRank?.user_direct_referrals) || 0,
+            Number(nextRank?.direct_referrals) || 0,
           )}
           achieved={getAchievedString(
-            Number(nextRank?.user_left_referrals) || 0,
-            Number(nextRank?.left_referrals) || 0,
+            Number(nextRank?.user_direct_referrals) || 0,
+            Number(nextRank?.direct_referrals) || 0,
           )}
           progress={calculateProgress(
-            Number(nextRank?.user_left_referrals) || 0,
-            Number(nextRank?.left_referrals) || 0,
+            Number(nextRank?.user_direct_referrals) || 0,
+            Number(nextRank?.direct_referrals) || 0,
           )}
         />
         <GoalItem
-          label="Direct Recruits in RIGHT"
+          label="Direct Recruits Rank in RIGHT"
+          requiredRankName={
+            nextRank?.user_downline_progress.right.required_rank.name
+          }
           percentage={getPercentageString(
-            Number(nextRank?.user_right_referrals) || 0,
-            Number(nextRank?.right_referrals) || 0,
+            Number(nextRank?.user_downline_progress.right.current_count) || 0,
+            Number(nextRank?.user_downline_progress.right.required_count) || 0,
           )}
           achieved={getAchievedString(
-            Number(nextRank?.user_right_referrals) || 0,
-            Number(nextRank?.right_referrals) || 0,
+            Number(nextRank?.user_downline_progress.right.current_count) || 0,
+            Number(nextRank?.user_downline_progress.right.required_count) || 0,
           )}
           progress={calculateProgress(
-            Number(nextRank?.user_right_referrals) || 0,
-            Number(nextRank?.right_referrals) || 0,
+            Number(nextRank?.user_downline_progress.right.current_count) || 0,
+            Number(nextRank?.user_downline_progress.right.required_count) || 0,
           )}
         />
-        {/* new total  */}
         <GoalItem
-          label="Direct Recruits in RIGHT"
+          label="Direct Recruits Rank in LEFT"
+          requiredRankName={
+            nextRank?.user_downline_progress.left.required_rank.name
+          }
           percentage={getPercentageString(
-            Number(nextRank?.user_right_referrals) || 0,
-            Number(nextRank?.right_referrals) || 0,
+            Number(nextRank?.user_downline_progress.left.current_count) || 0,
+            Number(nextRank?.user_downline_progress.left.required_count) || 0,
           )}
           achieved={getAchievedString(
-            Number(nextRank?.user_right_referrals) || 0,
-            Number(nextRank?.right_referrals) || 0,
+            Number(nextRank?.user_downline_progress.left.current_count) || 0,
+            Number(nextRank?.user_downline_progress.left.required_count) || 0,
           )}
           progress={calculateProgress(
-            Number(nextRank?.user_right_referrals) || 0,
-            Number(nextRank?.right_referrals) || 0,
+            Number(nextRank?.user_downline_progress.left.current_count) || 0,
+            Number(nextRank?.user_downline_progress.left.required_count) || 0,
           )}
         />
       </div>
