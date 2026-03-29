@@ -150,6 +150,22 @@ export function RankGoalsCard({ className, data }: Props) {
             Number(nextRank?.right_referrals) || 0,
           )}
         />
+        {/* new total  */}
+        <GoalItem
+          label="Direct Recruits in RIGHT"
+          percentage={getPercentageString(
+            Number(nextRank?.user_right_referrals) || 0,
+            Number(nextRank?.right_referrals) || 0,
+          )}
+          achieved={getAchievedString(
+            Number(nextRank?.user_right_referrals) || 0,
+            Number(nextRank?.right_referrals) || 0,
+          )}
+          progress={calculateProgress(
+            Number(nextRank?.user_right_referrals) || 0,
+            Number(nextRank?.right_referrals) || 0,
+          )}
+        />
       </div>
     </div>
   );
