@@ -71,9 +71,7 @@ export function Navbar() {
             Home
           </Link>
           <Link
-            to="/"
-            hash="packages"
-            activeOptions={{ includeHash: true }}
+            to="/packages"
             className="text-text-secondary hover:text-brand-blue-light transition-colors [&.active]:text-brand-blue [&.active]:font-bold"
           >
             Packages
@@ -191,9 +189,7 @@ export function Navbar() {
             Home
           </Link>
           <Link
-            to="/"
-            hash="packages"
-            activeOptions={{ includeHash: true }}
+            to="/packages"
             onClick={() => setMenuOpen(false)}
             className="text-text-secondary hover:text-brand-blue-light p-3 rounded-lg hover:bg-white/5 transition-colors [&.active]:text-brand-blue [&.active]:font-bold"
           >

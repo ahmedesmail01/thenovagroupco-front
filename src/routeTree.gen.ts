@@ -14,6 +14,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/_auth'
 
 const RegisterLazyRouteImport = createFileRoute('/register')()
+const PackagesLazyRouteImport = createFileRoute('/packages')()
 const LoginLazyRouteImport = createFileRoute('/login')()
 const AboutLazyRouteImport = createFileRoute('/about')()
 const IndexLazyRouteImport = createFileRoute('/')()
@@ -37,6 +38,11 @@ const RegisterLazyRoute = RegisterLazyRouteImport.update({
   path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/register.lazy').then((d) => d.Route))
+const PackagesLazyRoute = PackagesLazyRouteImport.update({
+  id: '/packages',
+  path: '/packages',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/packages.lazy').then((d) => d.Route))
 const LoginLazyRoute = LoginLazyRouteImport.update({
   id: '/login',
   path: '/login',
@@ -147,6 +153,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/about': typeof AboutLazyRoute
   '/login': typeof LoginLazyRoute
+  '/packages': typeof PackagesLazyRoute
   '/register': typeof RegisterLazyRoute
   '/commissions': typeof AuthCommissionsLazyRoute
   '/dashboard': typeof AuthDashboardLazyRoute
@@ -167,6 +174,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/about': typeof AboutLazyRoute
   '/login': typeof LoginLazyRoute
+  '/packages': typeof PackagesLazyRoute
   '/register': typeof RegisterLazyRoute
   '/commissions': typeof AuthCommissionsLazyRoute
   '/dashboard': typeof AuthDashboardLazyRoute
@@ -189,6 +197,7 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/about': typeof AboutLazyRoute
   '/login': typeof LoginLazyRoute
+  '/packages': typeof PackagesLazyRoute
   '/register': typeof RegisterLazyRoute
   '/_auth/commissions': typeof AuthCommissionsLazyRoute
   '/_auth/dashboard': typeof AuthDashboardLazyRoute
@@ -211,6 +220,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/login'
+    | '/packages'
     | '/register'
     | '/commissions'
     | '/dashboard'
@@ -231,6 +241,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/login'
+    | '/packages'
     | '/register'
     | '/commissions'
     | '/dashboard'
@@ -252,6 +263,7 @@ export interface FileRouteTypes {
     | '/_auth'
     | '/about'
     | '/login'
+    | '/packages'
     | '/register'
     | '/_auth/commissions'
     | '/_auth/dashboard'
@@ -274,6 +286,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   AboutLazyRoute: typeof AboutLazyRoute
   LoginLazyRoute: typeof LoginLazyRoute
+  PackagesLazyRoute: typeof PackagesLazyRoute
   RegisterLazyRoute: typeof RegisterLazyRoute
   CoursesCourseIdLazyRoute: typeof CoursesCourseIdLazyRoute
   CoursesIndexLazyRoute: typeof CoursesIndexLazyRoute
@@ -286,6 +299,13 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/packages': {
+      id: '/packages'
+      path: '/packages'
+      fullPath: '/packages'
+      preLoaderRoute: typeof PackagesLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -454,6 +474,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   AboutLazyRoute: AboutLazyRoute,
   LoginLazyRoute: LoginLazyRoute,
+  PackagesLazyRoute: PackagesLazyRoute,
   RegisterLazyRoute: RegisterLazyRoute,
   CoursesCourseIdLazyRoute: CoursesCourseIdLazyRoute,
   CoursesIndexLazyRoute: CoursesIndexLazyRoute,

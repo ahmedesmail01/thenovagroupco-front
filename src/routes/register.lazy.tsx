@@ -1,4 +1,9 @@
-import { createLazyFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
+import {
+  createLazyFileRoute,
+  Link,
+  useNavigate,
+  useSearch,
+} from "@tanstack/react-router";
 import { useState } from "react";
 import { Stepper } from "../components/ui/Stepper";
 import { useAuthStore } from "../features/auth/useAuthStore";
@@ -59,7 +64,9 @@ function RegisterPage() {
             >
               ×
             </button>
-            <img src={logo} alt="Nova Group" className="h-12 sm:h-16" />
+            <Link to="/">
+              <img src={logo} alt="Nova Group" className="h-12 sm:h-16" />
+            </Link>
           </div>
 
           <div className="text-center mb-[66px]">

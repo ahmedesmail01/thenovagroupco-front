@@ -79,9 +79,9 @@ function LoginPage() {
     >
       <div className="relative z-10 w-full max-w-md">
         <div className="rounded-[12px] font-poppins p-8 pt-2 pb-10 shadow-[0_24px_60px_rgba(0,0,0,0.6)] bg-gradient-to-b from-brand-terquaz to-brand-navy">
-          <div className="flex items-center justify-end">
+          <Link to="/" className="flex items-center justify-end">
             <img src={logo} alt="logo" />
-          </div>
+          </Link>
 
           <div className="text-center mb-8">
             <h1 className="text-3xl font-semibold text-white">Login</h1>
