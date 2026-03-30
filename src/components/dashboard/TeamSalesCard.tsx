@@ -31,40 +31,41 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
 
   const activeCv = getActiveCvCounts();
 
-  // Calculate rank goal progress: each of the 4 goals contributes 25% when fully achieved (>=100%)
-  const isGoalAchieved = (
+  // Calculate aggregate rank goal progress based on the completion percentage of each goal
+  const calculateProgress = (
     userVal: string | number | null | undefined,
     targetVal: string | number | null | undefined,
   ) => {
     const user = Number(userVal) || 0;
     const target = Number(targetVal) || 0;
-    if (target === 0) return false;
-    return user >= target;
+    if (target === 0) return 0;
+    const progress = (user / target) * 100;
+    return Math.min(Math.round(progress), 100);
   };
 
   const nextRank = data?.next_rank;
-  const goalResults = [
-    isGoalAchieved(nextRank?.user_left_volume, nextRank?.left_volume),
-    isGoalAchieved(nextRank?.user_right_volume, nextRank?.right_volume),
-    isGoalAchieved(nextRank?.user_direct_referrals, nextRank?.direct_referrals),
+  const goalProgresses = [
+    calculateProgress(nextRank?.user_left_volume, nextRank?.left_volume),
+    calculateProgress(nextRank?.user_right_volume, nextRank?.right_volume),
+    calculateProgress(nextRank?.user_direct_referrals, nextRank?.direct_referrals),
   ];
 
   if (nextRank?.user_downline_progress) {
-    goalResults.push(
-      isGoalAchieved(
+    goalProgresses.push(
+      calculateProgress(
         nextRank.user_downline_progress.left.current_count,
         nextRank.user_downline_progress.left.required_count,
       ),
-      isGoalAchieved(
+      calculateProgress(
         nextRank.user_downline_progress.right.current_count,
         nextRank.user_downline_progress.right.required_count,
       ),
     );
   }
 
-  const totalGoals = goalResults.length;
-  const achievedGoals = goalResults.filter(Boolean).length;
-  const rankProgress = totalGoals > 0 ? Math.round((achievedGoals / totalGoals) * 100) : 0;
+  const totalGoals = goalProgresses.length;
+  const totalProgress = goalProgresses.reduce((sum, progress) => sum + progress, 0);
+  const rankProgress = totalGoals > 0 ? Math.round(totalProgress / totalGoals) : 0;
 
   return (
     <div
@@ -98,7 +99,7 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
           />
         </div>
 
-        {/* Donut Chart — progress in 25% steps based on next rank goals */}
+        {/* Donut Chart — overall rank goal progress */}
         <SalesDonutChart progress={rankProgress} />
 
         {/* Binary Info Text Overlay */}
