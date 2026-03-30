@@ -75,7 +75,7 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
       )}
     >
       {/* Top Half: Gradient + Background Image */}
-      <div className="relative pt-6 pb-6 px-8 bg-[#1a2d42] min-h-[380px] flex flex-col">
+      <div className="relative pt-4 pb-4 px-8 bg-[#1a2d42] min-h-[320px] flex flex-col">
         {/* Background Image Overlay */}
         <div
           className="absolute inset-0 mix-blend-soft-light pointer-events-none bg-cover bg-center"
@@ -103,7 +103,7 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
         <SalesDonutChart progress={rankProgress} />
 
         {/* Binary Info Text Overlay */}
-        <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-12 text-white/40 text-[10px] font-bold uppercase tracking-[0.2em] z-10">
+        <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-12 text-white/40 text-[10px] font-bold uppercase tracking-[0.2em] z-10">
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-white/20" />
             Binary Analysis
@@ -116,8 +116,8 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
       </div>
 
       {/* Bottom Half: Stats Grid */}
-      <div className="p-6 -mt-10 relative z-20 flex-1">
-        <div className="grid grid-cols-2 gap-4">
+      <div className="p-4 -mt-8 relative z-20 flex-1">
+        <div className="grid grid-cols-2 gap-3">
           <StatItem
             icon={Network}
             value={
