@@ -174,17 +174,20 @@ export function RankGoalsCard({ className, data }: Props) {
                 nextRank?.user_downline_progress.left.required_rank.name
               }
               percentage={getPercentageString(
-                Number(nextRank?.user_downline_progress.left.current_count) || 0,
+                Number(nextRank?.user_downline_progress.left.current_count) ||
+                  0,
                 Number(nextRank?.user_downline_progress.left.required_count) ||
                   0,
               )}
               achieved={getAchievedString(
-                Number(nextRank?.user_downline_progress.left.current_count) || 0,
+                Number(nextRank?.user_downline_progress.left.current_count) ||
+                  0,
                 Number(nextRank?.user_downline_progress.left.required_count) ||
                   0,
               )}
               progress={calculateProgress(
-                Number(nextRank?.user_downline_progress.left.current_count) || 0,
+                Number(nextRank?.user_downline_progress.left.current_count) ||
+                  0,
                 Number(nextRank?.user_downline_progress.left.required_count) ||
                   0,
               )}

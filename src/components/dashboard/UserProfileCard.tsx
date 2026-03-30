@@ -47,7 +47,7 @@ function ProfileAvatar({ src }: { src?: string; username: string }) {
   const isValidSrc = src && src !== "null" && src !== "";
 
   return (
-    <div className="w-24 h-24 rounded-full p-1 bg-white shadow-lg overflow-hidden relative z-10 border border-slate-50">
+    <div className="w-[153px] h-[153px] rounded-full p-1 bg-white shadow-lg overflow-hidden relative z-10 border border-slate-50">
       <img
         src={error || !isValidSrc ? fallbackSrc : src}
         alt="Profile"
@@ -148,7 +148,7 @@ export function UserProfileCard({
       </div>
 
       {/* Avatar Section with Decoration */}
-      <div className="relative mb-4">
+      <div className="relative mb-8 ">
         {/* Decorative Orbit/Stars */}
         <div className="absolute inset-[-20px] pointer-events-none opacity-20">
           <svg
@@ -175,7 +175,7 @@ export function UserProfileCard({
       </div>
 
       {/* User Info */}
-      <div className="space-y-0.5 mb-4 relative z-10">
+      <div className="space-y-0.5 mb-8 relative z-10">
         <h3 className="text-[18px] font-bold text-[#1a2d42]">
           {user.firstName} {user.lastName}
         </h3>
@@ -190,7 +190,7 @@ export function UserProfileCard({
       </div>
 
       {/* Domain Section */}
-      <div className="w-full space-y-3 mb-6 relative z-10">
+      <div className="w-full  space-y-8 mb-6 relative z-10">
         <button className="text-[13px] text-slate-400 font-medium hover:text-brand-blue-btn transition-colors">
           View personalized domain
         </button>
@@ -204,7 +204,7 @@ export function UserProfileCard({
       </div>
 
       {/* Social Links */}
-      <div className="flex justify-center gap-3 relative z-10">
+      <div className="flex justify-center  gap-3 relative z-10">
         <SocialIconButton
           icon={Facebook}
           color="text-[#1877F2]"

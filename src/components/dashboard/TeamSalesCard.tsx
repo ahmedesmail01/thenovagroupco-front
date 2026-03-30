@@ -47,7 +47,10 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
   const goalProgresses = [
     calculateProgress(nextRank?.user_left_volume, nextRank?.left_volume),
     calculateProgress(nextRank?.user_right_volume, nextRank?.right_volume),
-    calculateProgress(nextRank?.user_direct_referrals, nextRank?.direct_referrals),
+    calculateProgress(
+      nextRank?.user_direct_referrals,
+      nextRank?.direct_referrals,
+    ),
   ];
 
   if (nextRank?.user_downline_progress) {
@@ -64,8 +67,12 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
   }
 
   const totalGoals = goalProgresses.length;
-  const totalProgress = goalProgresses.reduce((sum, progress) => sum + progress, 0);
-  const rankProgress = totalGoals > 0 ? Math.round(totalProgress / totalGoals) : 0;
+  const totalProgress = goalProgresses.reduce(
+    (sum, progress) => sum + progress,
+    0,
+  );
+  const rankProgress =
+    totalGoals > 0 ? Math.round(totalProgress / totalGoals) : 0;
 
   return (
     <div
