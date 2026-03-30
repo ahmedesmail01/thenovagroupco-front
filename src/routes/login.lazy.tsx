@@ -56,7 +56,9 @@ function LoginPage() {
           setUser(meResponse.data.user ?? meResponse.data);
         }
 
-        navigate({ to: "/dashboard" });
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirect = urlParams.get("redirect") || "/dashboard";
+        navigate({ to: redirect as any });
       } catch (error) {
         console.error("Failed to load authenticated user after login:", error);
       }
@@ -68,7 +70,9 @@ function LoginPage() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate({ to: "/dashboard" });
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirect = urlParams.get("redirect") || "/dashboard";
+      navigate({ to: redirect as any });
     }
   }, [isAuthenticated, navigate]);
 
