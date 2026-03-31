@@ -31,40 +31,48 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
 
   const activeCv = getActiveCvCounts();
 
-  // Calculate rank goal progress: each of the 4 goals contributes 25% when fully achieved (>=100%)
-  const isGoalAchieved = (
+  // Calculate aggregate rank goal progress based on the completion percentage of each goal
+  const calculateProgress = (
     userVal: string | number | null | undefined,
     targetVal: string | number | null | undefined,
   ) => {
     const user = Number(userVal) || 0;
     const target = Number(targetVal) || 0;
-    if (target === 0) return false;
-    return user >= target;
+    if (target === 0) return 0;
+    const progress = (user / target) * 100;
+    return Math.min(Math.round(progress), 100);
   };
 
   const nextRank = data?.next_rank;
-  const goalResults = [
-    isGoalAchieved(nextRank?.user_left_volume, nextRank?.left_volume),
-    isGoalAchieved(nextRank?.user_right_volume, nextRank?.right_volume),
-    isGoalAchieved(nextRank?.user_direct_referrals, nextRank?.direct_referrals),
+  const goalProgresses = [
+    calculateProgress(nextRank?.user_left_volume, nextRank?.left_volume),
+    calculateProgress(nextRank?.user_right_volume, nextRank?.right_volume),
+    calculateProgress(
+      nextRank?.user_direct_referrals,
+      nextRank?.direct_referrals,
+    ),
   ];
 
   if (nextRank?.user_downline_progress) {
-    goalResults.push(
-      isGoalAchieved(
+    goalProgresses.push(
+      calculateProgress(
         nextRank.user_downline_progress.left.current_count,
         nextRank.user_downline_progress.left.required_count,
       ),
-      isGoalAchieved(
+      calculateProgress(
         nextRank.user_downline_progress.right.current_count,
         nextRank.user_downline_progress.right.required_count,
       ),
     );
   }
 
-  const totalGoals = goalResults.length;
-  const achievedGoals = goalResults.filter(Boolean).length;
-  const rankProgress = totalGoals > 0 ? Math.round((achievedGoals / totalGoals) * 100) : 0;
+  const totalGoals = goalProgresses.length;
+  const totalProgress = goalProgresses.reduce(
+    (sum, progress) => sum + progress,
+    0,
+  );
+  const rankProgress =
+    totalGoals > 0 ? Math.round(totalProgress / totalGoals) : 0;
 
   return (
     <div
@@ -74,7 +82,7 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
       )}
     >
       {/* Top Half: Gradient + Background Image */}
-      <div className="relative pt-6 pb-6 px-8 bg-[#1a2d42] min-h-[380px] flex flex-col">
+      <div className="relative pt-4 pb-4 px-8 bg-[#1a2d42] min-h-[320px] flex flex-col">
         {/* Background Image Overlay */}
         <div
           className="absolute inset-0 mix-blend-soft-light pointer-events-none bg-cover bg-center"
@@ -98,11 +106,11 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
           />
         </div>
 
-        {/* Donut Chart — progress in 25% steps based on next rank goals */}
+        {/* Donut Chart — overall rank goal progress */}
         <SalesDonutChart progress={rankProgress} />
 
         {/* Binary Info Text Overlay */}
-        <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-12 text-white/40 text-[10px] font-bold uppercase tracking-[0.2em] z-10">
+        <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-12 text-white/40 text-[10px] font-bold uppercase tracking-[0.2em] z-10">
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-white/20" />
             Binary Analysis
@@ -115,8 +123,8 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
       </div>
 
       {/* Bottom Half: Stats Grid */}
-      <div className="p-6 -mt-10 relative z-20 flex-1">
-        <div className="grid grid-cols-2 gap-4">
+      <div className="p-4 -mt-8 relative z-20 flex-1">
+        <div className="grid grid-cols-2 gap-3">
           <StatItem
             icon={Network}
             value={
