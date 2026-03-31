@@ -72,8 +72,8 @@ function PackagesPage() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-100px)] bg-[#f8fafc] w-full max-w-[1700px] mx-auto flex flex-col pt-16 mt-16">
-      <div className="text-center mb-12">
+    <div className="min-h-[calc(100vh-100px)] bg-[#f8fafc] w-full max-w-[1700px] mx-auto flex flex-col pt-6 mt-16">
+      {/* <div className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-black text-brand-navy mb-4 tracking-tight">
           Choose Your <span className="text-blue-600">Membership</span>
         </h1>
@@ -81,7 +81,7 @@ function PackagesPage() {
           Elevate your journey with our premium packages designed to give you
           the metabolic edge.
         </p>
-      </div>
+      </div> */}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3 gap-8 max-w-7xl mx-auto w-full px-6 mb-24">
         {packages?.map((pkg) => (
