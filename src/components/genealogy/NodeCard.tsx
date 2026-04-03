@@ -7,6 +7,9 @@ interface NodeCardProps {
   rankName?: string | null;
   color: "red" | "blue" | "teal";
   onClick: () => void;
+  rank?: string;
+  userPackage?: string;
+  rankIcon?: string | null;
 }
 
 export function NodeCard({
@@ -15,6 +18,9 @@ export function NodeCard({
   userImage,
   rankName,
   color,
+  rank,
+  userPackage,
+  rankIcon,
   onClick,
 }: NodeCardProps) {
   const scheme = COLOR_SCHEMES[color];
@@ -70,6 +76,26 @@ export function NodeCard({
           <p className="text-white font-normal text-sm opacity-90 mb-1 mt-1">
             ID: {idCode || "--"}
           </p>
+          {rank && (
+            <div className="flex flex-col items-center gap-1 mb-1">
+              {rankIcon && (
+                <img
+                  src={rankIcon}
+                  alt={rank}
+                  className="w-8 h-8 object-contain mb-1 drop-shadow-sm"
+                  onError={(e) => (e.currentTarget.style.display = "none")}
+                />
+              )}
+              <p className="text-white/90 text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 bg-white/15 backdrop-blur-md rounded-full border border-white/20 shadow-sm leading-tight">
+                {rank}
+              </p>
+            </div>
+          )}
+          {userPackage && (
+            <p className="text-white/90 text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 bg-white/10 backdrop-blur-sm rounded-md border border-white/10 shadow-inner mt-1">
+              PKG: {userPackage}
+            </p>
+          )}
         </div>
       </div>
     </div>

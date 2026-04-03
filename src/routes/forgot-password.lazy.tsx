@@ -16,7 +16,7 @@ export const Route = createLazyFileRoute("/forgot-password")({
 });
 
 const step1Schema = z.object({
-  emailOrPhone: z.string().min(3, "Email or phone is required"),
+  identifier: z.string().min(3, "Email or phone is required"),
 });
 
 const step2Schema = z.object({
@@ -39,8 +39,9 @@ type Step3Data = z.infer<typeof step3Schema>;
 
 interface FindAccountResponse {
   status: boolean;
-  message: string;
-  user: {
+  message: string | { identifier?: string[] };
+  operation_id: string;
+  user?: {
     id: number;
     id_code: number;
     username: string;
@@ -57,10 +58,16 @@ interface FindAccountResponse {
   };
 }
 
+interface VerifyOtpResponse {
+  status: boolean;
+  message: string | Record<string, string[]>;
+}
+
 function ForgotPasswordPage() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [emailOrPhone, setEmailOrPhone] = useState("");
+  const [operationId, setOperationId] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -75,21 +82,43 @@ function ForgotPasswordPage() {
 
   const findAccountMutation = useMutation({
     mutationFn: async (data: Step1Data) => {
-      const isEmail = data.emailOrPhone.includes("@");
-      const body = isEmail
-        ? { email: data.emailOrPhone }
-        : { phone: data.emailOrPhone };
-      const response = await api.post<FindAccountResponse>("user/find-account", body);
+      const body = {
+        identifier: data.identifier,
+      };
+      const response = await api.post<FindAccountResponse>(
+        "user/find-account",
+        body,
+      );
       return response.data;
     },
-    onSuccess: (_res, variables) => {
-      setEmailOrPhone(variables.emailOrPhone);
+    onSuccess: (res, variables) => {
+      if (!res.status) {
+        const errorMsg =
+          typeof res.message === "string"
+            ? res.message
+            : Object.values(res.message || {})[0]?.[0] || "Account not found";
+        toast.error(errorMsg);
+        return;
+      }
+      setEmailOrPhone(variables.identifier);
+      setOperationId(res.operation_id);
       setStep(2);
       toast.success("Verification code sent!");
     },
     onError: (error: unknown) => {
-      const axiosError = error as { response?: { data?: { message?: string } } };
-      toast.error(axiosError.response?.data?.message || "Account not found");
+      const axiosError = error as {
+        response?: {
+          data?: {
+            message?: string | Record<string, string[]>;
+          };
+        };
+      };
+      const data = axiosError.response?.data;
+      const errorMsg =
+        typeof data?.message === "string"
+          ? data.message
+          : Object.values(data?.message || {})[0]?.[0] || "Account not found";
+      toast.error(errorMsg);
     },
   });
 
@@ -104,21 +133,40 @@ function ForgotPasswordPage() {
 
   const verifyCodeMutation = useMutation({
     mutationFn: async (data: Step2Data) => {
-      // Placeholder API for Step 2
-      return api.post("user/verify-code", {
-        account: emailOrPhone,
-        code: data.code,
+      return api.post<VerifyOtpResponse>("user/verify-otp", {
+        otp: data.code,
+        operation_id: operationId,
       });
     },
-    onSuccess: () => {
+    onSuccess: (response) => {
+      const res = response.data;
+      if (!res.status) {
+        const errorMsg =
+          typeof res.message === "string"
+            ? res.message
+            : Object.values(res.message || {})[0]?.[0] ||
+              "Invalid verification code";
+        toast.error(errorMsg);
+        return;
+      }
       setStep(3);
       toast.success("Code verified!");
     },
     onError: (error: unknown) => {
-      const axiosError = error as { response?: { data?: { message?: string } } };
-      toast.error(
-        axiosError.response?.data?.message || "Invalid verification code"
-      );
+      const axiosError = error as {
+        response?: {
+          data?: {
+            message?: string | Record<string, string[]>;
+          };
+        };
+      };
+      const data = axiosError.response?.data;
+      const errorMsg =
+        typeof data?.message === "string"
+          ? data.message
+          : Object.values(data?.message || {})[0]?.[0] ||
+            "Invalid verification code";
+      toast.error(errorMsg);
     },
   });
 
@@ -133,11 +181,10 @@ function ForgotPasswordPage() {
 
   const resetPasswordMutation = useMutation({
     mutationFn: async (data: Step3Data) => {
-      // Placeholder API for Step 3
       return api.post("user/reset-password", {
-        account: emailOrPhone,
         password: data.password,
         password_confirmation: data.confirmPassword,
+        operation_id: operationId,
       });
     },
     onSuccess: () => {
@@ -145,8 +192,12 @@ function ForgotPasswordPage() {
       navigate({ to: "/login" });
     },
     onError: (error: unknown) => {
-      const axiosError = error as { response?: { data?: { message?: string } } };
-      toast.error(axiosError.response?.data?.message || "Failed to reset password");
+      const axiosError = error as {
+        response?: { data?: { message?: string } };
+      };
+      toast.error(
+        axiosError.response?.data?.message || "Failed to reset password",
+      );
     },
   });
 
@@ -191,8 +242,8 @@ function ForgotPasswordPage() {
               <Input
                 label="Email or Phone"
                 placeholder="Enter email or phone number"
-                error={errors1.emailOrPhone?.message}
-                {...register1("emailOrPhone")}
+                error={errors1.identifier?.message}
+                {...register1("identifier")}
               />
               <Button
                 type="submit"

@@ -13,6 +13,9 @@ export function GenealogyNode({
   rankName,
   subscriptionName,
   color,
+  userPackage,
+  rank,
+  rankIcon,
 }: NodeProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,6 +27,9 @@ export function GenealogyNode({
 
   // Use the detailed user data for this node if available from the downline fetch
   const nodeUser = downline?.members?.user;
+  const packageInfo = downline?.members?.package;
+  const rankInfo = downline?.members?.rank;
+
   const displayFullName = nodeUser
     ? nodeUser.first_name
       ? `${nodeUser.first_name} ${nodeUser.last_name || ""}`.trim()
@@ -31,6 +37,11 @@ export function GenealogyNode({
     : fullName;
   const displayImage = nodeUser?.image || userImage;
   const displayIdCode = nodeUser?.id_code || idCode;
+
+  // Prioritize data from downline fetch for the current node
+  const displayRank = rankInfo?.name || rank;
+  const displayPackage = packageInfo?.name || userPackage;
+  const displayRankIcon = rankInfo?.icon || rankIcon;
 
   if (!userId) {
     return null;
@@ -44,6 +55,9 @@ export function GenealogyNode({
         userImage={displayImage}
         rankName={rankName}
         color={color}
+        rank={displayRank}
+        userPackage={displayPackage}
+        rankIcon={displayRankIcon}
         onClick={() => setIsModalOpen(true)}
       />
 
@@ -54,9 +68,10 @@ export function GenealogyNode({
         idCode={displayIdCode}
         fullName={displayFullName}
         userImage={displayImage}
-        rankName={rankName}
         subscriptionName={subscriptionName}
-        color={color}
+        rank={displayRank}
+        userPackage={displayPackage}
+        rankIcon={displayRankIcon}
       />
 
       {/* Expand Button */}

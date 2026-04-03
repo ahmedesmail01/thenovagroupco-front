@@ -231,6 +231,15 @@ export interface DownlineResponse {
     left_leg_member: DownlineMember | null;
     right_leg_member: DownlineMember | null;
     user?: StrictUserData;
+    package?: {
+      id: number;
+      name: string;
+    };
+    rank?: {
+      id: number;
+      name: string;
+      icon: string | null;
+    };
   };
 }
 

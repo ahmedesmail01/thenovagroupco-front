@@ -8,10 +8,11 @@ interface UserModalProps {
   idCode: number | string;
   fullName: string;
   userImage?: string | null;
-  rankName?: string | null;
   subscriptionName?: string | null;
-  color: "red" | "blue" | "teal";
   userData?: StrictUserData;
+  rank?: string;
+  userPackage?: string;
+  rankIcon?: string | null;
 }
 
 export function UserModal({
@@ -20,10 +21,11 @@ export function UserModal({
   idCode,
   fullName,
   userImage,
-  rankName,
   subscriptionName,
-  color,
   userData,
+  rank,
+  userPackage,
+  rankIcon,
 }: UserModalProps) {
   if (!isOpen || typeof document === "undefined") return null;
 
@@ -119,10 +121,17 @@ export function UserModal({
                   </span>
                 </div>
               )}
-              {rankName && (
-                <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-amber-50 border border-amber-200/50">
+              {rank && (
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-50 border border-amber-200/50 shadow-sm">
+                  {rankIcon && (
+                    <img
+                      src={rankIcon}
+                      alt={rank}
+                      className="w-5 h-5 object-contain"
+                    />
+                  )}
                   <span className="text-xs font-bold text-amber-700 capitalize">
-                    {rankName}
+                    {rank}
                   </span>
                 </div>
               )}
@@ -160,17 +169,17 @@ export function UserModal({
           )}
 
           {/* Subscription Row */}
-          {subscriptionName && (
+          {(subscriptionName || userPackage) && (
             <div className="w-full mt-3">
               <div className="bg-slate-50 rounded-2xl p-4 flex flex-col items-center justify-center text-center hover:bg-slate-100 transition-colors">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">
                   Subscription
                 </span>
                 <span
-                  className="text-sm font-extrabold truncate w-full text-[#020617]"
-                  title={subscriptionName}
+                  className="text-sm font-extrabold truncate w-full text-[#020617] uppercase tracking-wide"
+                  title={userPackage || subscriptionName || ""}
                 >
-                  {subscriptionName}
+                  {userPackage || subscriptionName}
                 </span>
               </div>
             </div>
