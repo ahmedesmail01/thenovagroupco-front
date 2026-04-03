@@ -131,12 +131,12 @@ function LoginPage() {
             </div>
 
             <div className="flex items-center justify-end">
-              <button
-                type="button"
+              <Link
+                to="/forgot-password"
                 className="text-white text-[14px] hover:cursor-pointer hover:underline font-medium"
               >
                 Forgot password?
-              </button>
+              </Link>
             </div>
 
             <div className="flex items-center justify-between text-sm">
