@@ -1,6 +1,6 @@
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
-import { type StrictUserData } from "../../features/auth/useUserData";
+import { type StrictUserData, type LeanUserData } from "../../features/auth/useUserData";
 
 interface UserModalProps {
   isOpen: boolean;
@@ -9,7 +9,7 @@ interface UserModalProps {
   fullName: string;
   userImage?: string | null;
   subscriptionName?: string | null;
-  userData?: StrictUserData;
+  userData?: StrictUserData | LeanUserData;
   rank?: string;
   userPackage?: string;
   rankIcon?: string | null;
@@ -35,7 +35,7 @@ export function UserModal({
     : fullName;
   const username = userData?.username;
   const displayIdCode = userData?.id_code || idCode;
-  const status = userData?.status;
+  const status = userData && "status" in userData ? userData.status : undefined;
 
   // Image handling — match UserInfoModal pattern
   const isValidSrc =
@@ -51,8 +51,11 @@ export function UserModal({
   const leftVol = userData?.member?.totla_left_volume ?? 0;
   const rightVol = userData?.member?.totla_right_volume ?? 0;
 
-  // Sponsor info
-  const sponsorUser = userData?.member?.sponsor?.user;
+  // Sponsor info - only available in StrictUserData
+  const sponsorUser =
+    userData && "member" in userData && "sponsor" in (userData.member as any)
+      ? (userData.member as any).sponsor?.user
+      : undefined;
 
   return createPortal(
     <div
