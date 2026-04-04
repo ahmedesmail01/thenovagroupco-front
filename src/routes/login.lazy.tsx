@@ -1,4 +1,4 @@
-import { createLazyFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createLazyFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,6 +19,8 @@ export const Route = createLazyFileRoute("/login")({
 
 function LoginPage() {
   const navigate = useNavigate();
+  const search = useSearch({ from: "/login" }) as { redirect?: string };
+  const redirectParam = search.redirect || "/dashboard";
   const setUser = useAuthStore((s) => s.setUser);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const [showPassword, setShowPassword] = useState(false);
@@ -56,9 +58,7 @@ function LoginPage() {
           setUser(meResponse.data.user ?? meResponse.data);
         }
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const redirect = urlParams.get("redirect") || "/dashboard";
-        navigate({ to: redirect as any });
+        navigate({ to: redirectParam as any });
       } catch (error) {
         console.error("Failed to load authenticated user after login:", error);
       }
@@ -70,11 +70,9 @@ function LoginPage() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      const urlParams = new URLSearchParams(window.location.search);
-      const redirect = urlParams.get("redirect") || "/dashboard";
-      navigate({ to: redirect as any });
+      navigate({ to: redirectParam as any });
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, redirectParam]);
 
   return (
     <div
@@ -82,7 +80,7 @@ function LoginPage() {
       style={{ backgroundImage: 'url("/images/Login-bg.png")' }}
     >
       <div className="relative z-10 w-full max-w-md">
-        <div className="rounded-[12px] font-poppins p-8 pt-2 pb-10 shadow-[0_24px_60px_rgba(0,0,0,0.6)] bg-gradient-to-b from-brand-terquaz to-brand-navy">
+        <div className="rounded-[12px] font-poppins p-8 pt-2 pb-10 shadow-[0_24px_60px_rgba(0,0,0,0.6)] bg-linear-to-b from-brand-terquaz to-brand-navy">
           <Link to="/" className="flex items-center justify-end">
             <img src={logo} alt="logo" />
           </Link>
@@ -170,6 +168,7 @@ function LoginPage() {
             Don't have an account?{" "}
             <Link
               to="/register"
+              search={search.redirect ? { redirect: search.redirect } : undefined}
               className="text-white font-semibold hover:text-brand-blue-light transition-colors underline underline-offset-2"
             >
               Create Account →
