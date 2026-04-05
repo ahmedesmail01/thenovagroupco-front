@@ -80,12 +80,13 @@ export function Navbar() {
           >
             Packages
           </Link>
-          <Link
-            to="/courses"
+          <a
+            href="https://school.thenovagroupco.com/courses"
+            target="_blank"
             className="text-text-secondary hover:text-brand-blue-light transition-colors [&.active]:text-brand-blue [&.active]:font-bold"
           >
             Courses
-          </Link>
+          </a>
         </div>
 
         {/* Auth CTAs — conditionally render based on login status */}
@@ -245,13 +246,14 @@ export function Navbar() {
           >
             Packages
           </Link>
-          <Link
-            to="/courses"
+          <a
+            href="https://school.thenovagroupco.com/courses"
+            target="_blank"
             onClick={() => setMenuOpen(false)}
             className="text-text-secondary hover:text-brand-blue-light p-3 rounded-lg hover:bg-white/5 transition-colors"
           >
             Courses
-          </Link>
+          </a>
           <Link
             to="/about"
             onClick={() => setMenuOpen(false)}
