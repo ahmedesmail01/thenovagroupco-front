@@ -258,13 +258,13 @@ export function Navbar() {
           >
             Courses
           </a>
-          <Link
+          {/* <Link
             to="/about"
             onClick={() => setMenuOpen(false)}
             className="text-text-secondary hover:text-brand-blue-light p-3 rounded-lg hover:bg-white/5 transition-colors"
           >
             About
-          </Link>
+          </Link> */}
           <hr className="border-brand-border my-1" />
           <div className="flex flex-col gap-2">
             {isAuthenticated ? (

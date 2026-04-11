@@ -94,7 +94,7 @@ export function TeamSalesCard({ className, data }: TeamSalesCardProps) {
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full blur-[100px] pointer-events-none" />
 
         {/* Header */}
-        <div className="flex justify-between items-center relative z-10">
+        <div className="flex justify-between items-center relative z-30">
           <h3 className="text-xl font-bold text-white tracking-tight">
             Team Sales
           </h3>
