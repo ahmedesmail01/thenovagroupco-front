@@ -6,6 +6,7 @@ interface StatCardProps {
   title: string;
   label: string;
   className?: string;
+  iconClass?: string;
 }
 
 function StatCardHorizontal({
@@ -13,6 +14,7 @@ function StatCardHorizontal({
   title,
   label,
   className,
+  iconClass,
 }: StatCardProps) {
   return (
     <div
@@ -25,7 +27,7 @@ function StatCardHorizontal({
         <img
           src={iconSrc}
           alt={title}
-          className="w-full h-full object-contain"
+          className={`w-full h-full object-cover ${iconClass}`}
         />
       </div>
       <div className="flex flex-col">
@@ -43,6 +45,8 @@ interface BottomStatsRowProps {
 }
 
 export default function BottomStatsRow({ data }: BottomStatsRowProps) {
+  const nonRankedImage = "/icons/nonRanked.PNG";
+
   const stats = [
     {
       iconSrc: "/icons/bronze-pack.png", // Using bronze icon as placeholder for package
@@ -50,9 +54,10 @@ export default function BottomStatsRow({ data }: BottomStatsRowProps) {
       label: "Current Package",
     },
     {
-      iconSrc: data?.rank.icon || "",
+      iconSrc: data?.rank.icon || nonRankedImage,
       title: data?.rank?.package || "No Rank",
       label: data?.rank?.package || "No Rank",
+      iconClass: "",
     },
     {
       iconSrc: "/icons/referred-members-icon.png",
@@ -74,6 +79,7 @@ export default function BottomStatsRow({ data }: BottomStatsRowProps) {
           iconSrc={stat.iconSrc}
           title={stat.title}
           label={stat.label}
+          iconClass={stat.iconClass}
         />
       ))}
     </div>

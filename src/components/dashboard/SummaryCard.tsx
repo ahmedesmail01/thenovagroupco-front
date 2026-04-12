@@ -7,6 +7,7 @@ export default function SummaryCard({
   showAll,
   iconSrc,
   link,
+  iconClass,
 }: {
   icon?: React.ElementType;
   title: string;
@@ -14,13 +15,14 @@ export default function SummaryCard({
   showAll?: boolean;
   iconSrc?: string;
   link?: string;
+  iconClass?: string;
 }) {
   return (
     <div className="bg-white rounded-[20px] p-6 border border-dash-border shadow-sm flex flex-col gap-4 group hover:shadow-md transition-all">
       <div className="flex justify-between items-start">
         <div className="p-3 rounded-2xl  text-blue-600 group-hover:scale-110 transition-transform">
           {iconSrc ? (
-            <img src={iconSrc} alt="icon" className="w-[65px]" />
+            <img src={iconSrc} alt="icon" className={`w-[65px] ${iconClass}`} />
           ) : (
             Icon && <Icon size={24} />
           )}

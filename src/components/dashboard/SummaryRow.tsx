@@ -9,6 +9,7 @@ interface SummaryRowProps {
 const SummaryRow = ({ data }: SummaryRowProps) => {
   const dollarIcon = "/icons/dollar.png";
   const trophyIcon = "/icons/free-pack.png";
+  const nonRankedImage = "/icons/nonRanked.PNG";
   // const zapIcon = "/icons/nova-rise-pack.png";
   // const walletIcon = "/icons/bronze-pack.png";
 
@@ -38,10 +39,10 @@ const SummaryRow = ({ data }: SummaryRowProps) => {
         label="Next Rank"
       />
       <SummaryCard
-        // iconSrc={walletIcon}
-        iconSrc={data?.rank?.icon || ""}
+        iconSrc={data?.rank?.icon || nonRankedImage}
         title={data?.rank?.name || "No Rank"}
         label={"Current Rank"}
+        iconClass="w-[80px] h-[68px] rounded-full"
       />
     </div>
   );
