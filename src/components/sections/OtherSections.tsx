@@ -2,7 +2,6 @@
 const BackGroundPattern = "/images/bg-pattern.svg";
 const LadyWithCircles = "/images/story-img.png";
 const pkgTriangle = "/images/pkg-triangle.png";
-const eventsBanner = "/images/events-banner.png";
 
 import { Button } from "../ui/Button";
 
@@ -257,10 +256,46 @@ function PackageCard({ pkg }: { pkg: PackageData }) {
   );
 }
 
+const GridImage = ({
+  src,
+  className = "",
+  mobileHeightClass = "h-48 md:h-64",
+}: {
+  src: string;
+  className?: string;
+  mobileHeightClass?: string;
+}) => (
+  <div
+    className={`rounded-[20px] overflow-hidden relative group bg-gray-100 ${className}`}
+  >
+    <img
+      src={src}
+      alt="Event Gallery"
+      className={`w-full ${mobileHeightClass} lg:h-full lg:absolute lg:inset-0 object-cover transition-transform duration-700 group-hover:scale-105`}
+    />
+    <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+  </div>
+);
+
 export function EventsSection() {
+  const dummyImages = [
+    "https://placehold.co/600x600/1a2f3f/ffffff?text=Image+1", // Track 1 - 1
+    "https://placehold.co/600x600/1a2f3f/ffffff?text=Image+2", // Track 1 - 2
+    "https://placehold.co/600x600/1a2f3f/ffffff?text=Image+3", // Track 1 - 3
+    "https://placehold.co/800x1200/1a2f3f/ffffff?text=Image+4", // Track 2 - Top Tall
+    "https://placehold.co/600x600/1a2f3f/ffffff?text=Image+5", // Track 2 - Bot Left
+    "https://placehold.co/600x600/1a2f3f/ffffff?text=Image+6", // Track 2 - Bot Right
+    "https://placehold.co/600x600/1a2f3f/ffffff?text=Image+7", // Track 3 - Top Left
+    "https://placehold.co/600x600/1a2f3f/ffffff?text=Image+8", // Track 3 - Top Right
+    "https://placehold.co/800x1200/1a2f3f/ffffff?text=Image+9", // Track 3 - Bot Tall
+    "https://placehold.co/600x600/1a2f3f/ffffff?text=Image+10", // Track 4 - 1
+    "https://placehold.co/600x600/1a2f3f/ffffff?text=Image+11", // Track 4 - 2
+    "https://placehold.co/600x600/1a2f3f/ffffff?text=Image+12", // Track 4 - 3
+  ];
+
   return (
     <section className="py-24 bg-white" id="events">
-      <div className="max-w-[1200px] mx-auto px-4">
+      <div className="max-w-[1400px] mx-auto px-4 lg:px-[80px]">
         {/* Header */}
         <div className="text-center mb-16 space-y-3">
           <h2 className="text-4xl md:text-[40px] font-bold text-[#1a202c] font-playfair uppercase tracking-wide">
@@ -271,13 +306,47 @@ export function EventsSection() {
           </p>
         </div>
 
-        {/* Banner Image */}
-        <div className="flex justify-center w-full">
-          <img
-            src={eventsBanner}
-            alt="Events"
-            className="w-full h-auto object-contain"
-          />
+        {/* Masonry Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-3 lg:h-[800px]">
+          {/* Track 1 */}
+          <div className="col-span-1 flex flex-col gap-3">
+            <GridImage src={dummyImages[0]} className="lg:flex-[1]" />
+            <GridImage src={dummyImages[1]} className="lg:flex-[1]" />
+            <GridImage src={dummyImages[2]} className="lg:flex-[1]" />
+          </div>
+
+          {/* Track 2 */}
+          <div className="col-span-1 lg:col-span-2 flex flex-col gap-3">
+            <GridImage
+              src={dummyImages[3]}
+              className="lg:flex-[6]"
+              mobileHeightClass="h-[350px] md:h-[400px]"
+            />
+            <div className="lg:flex-[4] grid grid-cols-2 gap-3 h-[200px] md:h-[250px] lg:h-auto">
+              <GridImage src={dummyImages[4]} className="h-full" mobileHeightClass="h-full" />
+              <GridImage src={dummyImages[5]} className="h-full" mobileHeightClass="h-full" />
+            </div>
+          </div>
+
+          {/* Track 3 */}
+          <div className="col-span-1 lg:col-span-2 flex flex-col gap-3">
+            <div className="lg:flex-[4] grid grid-cols-2 gap-3 h-[200px] md:h-[250px] lg:h-auto">
+              <GridImage src={dummyImages[6]} className="h-full" mobileHeightClass="h-full" />
+              <GridImage src={dummyImages[7]} className="h-full" mobileHeightClass="h-full" />
+            </div>
+            <GridImage
+              src={dummyImages[8]}
+              className="lg:flex-[6]"
+              mobileHeightClass="h-[350px] md:h-[400px]"
+            />
+          </div>
+
+          {/* Track 4 */}
+          <div className="col-span-1 flex flex-col gap-3">
+            <GridImage src={dummyImages[9]} className="lg:flex-[1]" />
+            <GridImage src={dummyImages[10]} className="lg:flex-[1]" />
+            <GridImage src={dummyImages[11]} className="lg:flex-[1]" />
+          </div>
         </div>
       </div>
     </section>
