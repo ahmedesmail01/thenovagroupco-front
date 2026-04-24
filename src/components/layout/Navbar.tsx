@@ -10,6 +10,7 @@ import {
   ChevronDown,
   ChevronRight,
 } from "lucide-react";
+import { cn } from "../../lib/utils";
 const logoImg = "/images/nova-logo.png";
 
 export function Navbar() {
@@ -19,7 +20,16 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -45,7 +55,14 @@ export function Navbar() {
   void setLoginModalOpen;
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-40 backdrop-blur-md  h-16">
+    <nav
+      className={cn(
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        scrolled
+          ? "h-16 bg-[#0a192f]/85 backdrop-blur-xl  shadow-xl"
+          : "h-20 bg-linear-to-b from-black/20 to-transparent backdrop-blur-[2px]",
+      )}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 group">
@@ -70,20 +87,35 @@ export function Navbar() {
           <Link
             to="/"
             activeOptions={{ exact: true, includeHash: true }}
-            className="text-text-secondary hover:text-brand-blue-light transition-colors [&.active]:text-brand-blue [&.active]:font-bold"
+            className={cn(
+              "transition-colors [&.active]:font-bold",
+              scrolled
+                ? "text-slate-300 hover:text-white [&.active]:text-white"
+                : "text-white/90 hover:text-white [&.active]:text-white",
+            )}
           >
             Home
           </Link>
           <Link
             to="/packages"
-            className="text-text-secondary hover:text-brand-blue-light transition-colors [&.active]:text-brand-blue [&.active]:font-bold"
+            className={cn(
+              "transition-colors [&.active]:font-bold",
+              scrolled
+                ? "text-slate-300 hover:text-white [&.active]:text-white"
+                : "text-white/90 hover:text-white [&.active]:text-white",
+            )}
           >
             Packages
           </Link>
           <a
             href="https://school.thenovagroupco.com/courses"
             target="_blank"
-            className="text-text-secondary hover:text-brand-blue-light transition-colors [&.active]:text-brand-blue [&.active]:font-bold"
+            className={cn(
+              "transition-colors",
+              scrolled
+                ? "text-slate-300 hover:text-white"
+                : "text-white/90 hover:text-white",
+            )}
           >
             Courses
           </a>
@@ -94,15 +126,23 @@ export function Navbar() {
           {isAuthenticated ? (
             <div className="relative" ref={dropdownRef}>
               <button
-                className="flex items-center gap-2  text-[15px] py-[10px] px-[20px] bg-none"
+                className={cn(
+                  "flex items-center gap-2 text-[15px] py-[10px] px-[20px] bg-none transition-colors",
+                  scrolled ? "text-white" : "text-white shadow-sm",
+                )}
                 onClick={() => setShowUserDropdown(!showUserDropdown)}
               >
-                <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
-                  <UserIcon className="w-4 h-4" />
+                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
+                  <UserIcon className="w-4 h-4 text-white" />
                 </div>
-                <span>{user?.first_name || "Account"}</span>
+                <span className="font-semibold">
+                  {user?.first_name || "Account"}
+                </span>
                 <ChevronDown
-                  className={`w-4 h-4 transition-transform ${showUserDropdown ? "rotate-180" : ""}`}
+                  className={cn(
+                    "w-4 h-4 transition-transform",
+                    showUserDropdown ? "rotate-180" : "",
+                  )}
                 />
               </button>
 
@@ -197,7 +237,12 @@ export function Navbar() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="hover:bg-white/5 text-[15px] py-[10px] px-[26px] border border-white rounded-[8px]"
+                  className={cn(
+                    "text-[15px] py-[10px] px-[26px] border rounded-[8px] transition-all",
+                    scrolled
+                      ? "text-white border-white/20 hover:bg-white/10"
+                      : "text-white border-white/40 hover:bg-white/10 bg-black/5",
+                  )}
                 >
                   Login
                 </Button>

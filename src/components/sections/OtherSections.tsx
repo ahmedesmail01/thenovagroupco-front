@@ -285,18 +285,18 @@ export function EventsSection() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const dummyImages = [
-    "/images/gallery/gallery-01.png", // Track 1 - 1
-    "/images/gallery/gallery-02.png", // Track 1 - 2
-    "/images/gallery/gallery-03.png", // Track 1 - 3
-    "/images/gallery/gallery-04.png", // Track 2 - Top Tall
-    "/images/gallery/gallery-05.png", // Track 2 - Bot Left
-    "/images/gallery/gallery-06.png", // Track 2 - Bot Right
-    "/images/gallery/gallery-07.png", // Track 3 - Top Left
-    "/images/gallery/gallery-08.png", // Track 3 - Top Right
-    "/images/gallery/gallery-09.png", // Track 3 - Bot Tall
-    "/images/gallery/gallery-10.png", // Track 4 - 1
-    "/images/gallery/gallery-11.png", // Track 4 - 2
-    "/images/gallery/gallery-12.png", // Track 4 - 3
+    "/images/peace_of_art_imgs/upslide05.JPG", // Track 1 - 1
+    "/images/peace_of_art_imgs/upslide09.JPG", // Track 1 - 2
+    "/images/peace_of_art_imgs/downslide03.jpeg", // Track 1 - 3
+    "/images/peace_of_art_imgs/upslide08.JPG", // Track 2 - Top Tall
+    "/images/peace_of_art_imgs/downslide21.jpeg", // Track 2 - Bot Left
+    "/images/peace_of_art_imgs/downslide04.jpeg", // Track 2 - Bot Right
+    "/images/peace_of_art_imgs/downslide22.jpeg", // Track 3 - Top Left
+    "/images/peace_of_art_imgs/downslide05.jpeg", // Track 3 - Top Right
+    "/images/peace_of_art_imgs/upslide02.JPG", // Track 3 - Bot Tall
+    "/images/peace_of_art_imgs/downslide10.jpeg", // Track 4 - 1
+    "/images/peace_of_art_imgs/downslide07.jpeg", // Track 4 - 2
+    "/images/peace_of_art_imgs/upslide04.JPG", // Track 4 - 3
   ];
 
   const closeLightbox = () => setSelectedIndex(null);
@@ -335,17 +335,17 @@ export function EventsSection() {
             <div className="col-span-1 flex flex-col gap-3">
               <GridImage
                 src={dummyImages[0]}
-                // onClick={() => setSelectedIndex(0)}
+                onClick={() => setSelectedIndex(0)}
                 className="lg:flex-1"
               />
               <GridImage
                 src={dummyImages[1]}
-                // onClick={() => setSelectedIndex(1)}
+                onClick={() => setSelectedIndex(1)}
                 className="lg:flex-1"
               />
               <GridImage
                 src={dummyImages[2]}
-                // onClick={() => setSelectedIndex(2)}
+                onClick={() => setSelectedIndex(2)}
                 className="lg:flex-1"
               />
             </div>
@@ -354,20 +354,20 @@ export function EventsSection() {
             <div className="col-span-1 lg:col-span-2 flex flex-col gap-3">
               <GridImage
                 src={dummyImages[3]}
-                // onClick={() => setSelectedIndex(3)}
+                onClick={() => setSelectedIndex(3)}
                 className="lg:flex-[6]"
                 mobileHeightClass="h-[350px] md:h-[400px]"
               />
               <div className="lg:flex-[4] grid grid-cols-2 gap-3 h-[200px] md:h-[250px] lg:h-auto">
                 <GridImage
                   src={dummyImages[4]}
-                  // onClick={() => setSelectedIndex(4)}
+                  onClick={() => setSelectedIndex(4)}
                   className="h-full"
                   mobileHeightClass="h-full"
                 />
                 <GridImage
                   src={dummyImages[5]}
-                  // onClick={() => setSelectedIndex(5)}
+                  onClick={() => setSelectedIndex(5)}
                   className="h-full"
                   mobileHeightClass="h-full"
                 />
@@ -379,20 +379,20 @@ export function EventsSection() {
               <div className="lg:flex-[4] grid grid-cols-2 gap-3 h-[200px] md:h-[250px] lg:h-auto">
                 <GridImage
                   src={dummyImages[6]}
-                  // onClick={() => setSelectedIndex(6)}
+                  onClick={() => setSelectedIndex(6)}
                   className="h-full"
                   mobileHeightClass="h-full"
                 />
                 <GridImage
                   src={dummyImages[7]}
-                  // onClick={() => setSelectedIndex(7)}
+                  onClick={() => setSelectedIndex(7)}
                   className="h-full"
                   mobileHeightClass="h-full"
                 />
               </div>
               <GridImage
                 src={dummyImages[8]}
-                // onClick={() => setSelectedIndex(8)}
+                onClick={() => setSelectedIndex(8)}
                 className="lg:flex-[6]"
                 mobileHeightClass="h-[350px] md:h-[400px]"
               />
@@ -402,17 +402,17 @@ export function EventsSection() {
             <div className="col-span-1 flex flex-col gap-3">
               <GridImage
                 src={dummyImages[9]}
-                // onClick={() => setSelectedIndex(9)}
+                onClick={() => setSelectedIndex(9)}
                 className="lg:flex-1"
               />
               <GridImage
                 src={dummyImages[10]}
-                // onClick={() => setSelectedIndex(10)}
+                onClick={() => setSelectedIndex(10)}
                 className="lg:flex-1"
               />
               <GridImage
                 src={dummyImages[11]}
-                // onClick={() => setSelectedIndex(11)}
+                onClick={() => setSelectedIndex(11)}
                 className="lg:flex-1"
               />
             </div>
@@ -468,7 +468,7 @@ export function EventsSection() {
           </button>
 
           {/* Main Image Container */}
-          <div className="relative w-[90vw] max-w-[400px] aspect-square md:aspect-[4/3] flex items-center justify-center bg-black/20 rounded-2xl overflow-hidden shadow-2xl">
+          <div className="relative  flex items-center justify-center bg-black/20 rounded-2xl overflow-hidden shadow-2xl">
             <img
               src={dummyImages[selectedIndex]}
               alt={`Gallery Event ${selectedIndex + 1}`}

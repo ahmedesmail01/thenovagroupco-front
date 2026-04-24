@@ -1,3 +1,5 @@
+import { useRef } from "react";
+import { Maximize } from "lucide-react";
 import unsplashVideo from "../../../public/images/unsplash-videopng.png";
 
 const FOCUS_ITEMS = [
@@ -92,6 +94,27 @@ const WavyLine = ({ className }: { className?: string }) => (
 );
 
 export function FocusSection() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handlePlayVideo = () => {
+    const video = videoRef.current;
+    if (video) {
+      video.muted = false;
+      if (video.requestFullscreen) {
+        video.requestFullscreen();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } else if ((video as any).webkitRequestFullscreen) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (video as any).webkitRequestFullscreen();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } else if ((video as any).msRequestFullscreen) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (video as any).msRequestFullscreen();
+      }
+      video.play();
+    }
+  };
+
   return (
     <section className="py-32 px-4 lg:px-[120px] bg-white relative overflow-hidden">
       <div className="max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-[minmax(0,475px)_1fr] gap-16 items-start">
@@ -114,14 +137,23 @@ export function FocusSection() {
                 className="w-full h-full object-contain"
               />
             </div>
-            <div className="relative z-10 w-full max-h-[570px] aspect-575/670 rounded-[33px] overflow-hidden">
-              <img
-                src={unsplashVideo}
+            <div className="relative z-10 w-full max-h-[570px] aspect-575/670 rounded-[33px] overflow-hidden group/video">
+              <video
+                ref={videoRef}
+                src="https://production.thenovagroupco.com/storage/video1.mp4"
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                autoPlay
+                muted
+                loop
+                playsInline
+                poster={unsplashVideo}
               />
-              {/* <div className="absolute inset-0 bg-black/10" /> */}
-              <button className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-white/30 backdrop-blur-md text-white flex items-center justify-center text-xl shadow-2xl border border-white/40 transform transition-transform group-hover:scale-110">
-                <span className="ml-1">▶</span>
+              <div className="absolute inset-0 bg-black/10 group-hover/video:bg-black/20 transition-colors" />
+              <button
+                onClick={handlePlayVideo}
+                className="absolute bottom-6 left-6 w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md text-white flex items-center justify-center shadow-2xl border border-white/20 transform transition-all duration-300 hover:scale-105 hover:bg-white/20 active:scale-95 group-hover/video:opacity-100 opacity-0"
+              >
+                <Maximize size={20} className="text-white" />
               </button>
             </div>
           </div>
