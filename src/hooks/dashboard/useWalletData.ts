@@ -21,11 +21,16 @@ export interface WalletDataResponse {
   monthly_bounce: MonthlyBounce[];
   balance: string;
   token_wallet_balance: string;
+  personal_purchases: number;
+  total_payout: number;
+  profit_gained: number;
 }
 
-export const useWalletData = () => {
+export type WalletFilter = "last_7_days" | "last_month" | "last_year" | "now";
+
+export const useWalletData = (filter: WalletFilter = "last_7_days") => {
   return useQuery<WalletDataResponse>({
-    queryKey: ["walletData"],
+    queryKey: ["walletData", filter],
     queryFn: async () => {
       const response = await api.get("/member/wallet");
       const raw = response.data;
@@ -36,6 +41,9 @@ export const useWalletData = () => {
         total_receive: Number(raw.total_receive || 0),
         total_transfer: Number(raw.total_transfer || 0),
         total_bounce: Number(raw.total_bounce || 0),
+        personal_purchases: Number(raw.personal_purchases || 0),
+        total_payout: Number(raw.total_payout || 0),
+        profit_gained: Number(raw.profit_gained || 0),
         weekly_earnings:
           raw.weekly_earnings?.map(
             (w: { week: number; total: string | number }) => ({
@@ -54,6 +62,6 @@ export const useWalletData = () => {
         token_wallet_balance: String(raw.token_wallet_balance || "0"),
       };
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 0,
   });
 };

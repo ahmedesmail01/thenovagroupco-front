@@ -15,7 +15,7 @@ export const Route = createLazyFileRoute("/_auth/membership")({
 });
 
 function MembershipRouteComponent() {
-  const [activeTab, setActiveTab] = useState("nova pro");
+  const [activeTab, setActiveTab] = useState("normal");
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);

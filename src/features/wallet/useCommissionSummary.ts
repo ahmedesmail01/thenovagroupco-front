@@ -21,6 +21,6 @@ export const useCommissionSummary = () => {
       const response = await api.get("/commission-summary");
       return response.data;
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 0,
   });
 };

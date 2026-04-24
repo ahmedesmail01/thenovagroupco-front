@@ -20,6 +20,6 @@ export const useCountryAnalytics = () => {
       const response = await api.get("/analytics/countries");
       return response.data;
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 0,
   });
 };

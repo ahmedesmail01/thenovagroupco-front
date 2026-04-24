@@ -16,7 +16,8 @@ const queryClient = new QueryClient({
     queries: {
       refetchOnWindowFocus: true,
       refetchOnReconnect: true,
-      staleTime: 1000 * 30, // 30 seconds — data is considered fresh for 30s, then refetched
+      staleTime: 0,
+      gcTime: 0,
     },
   },
 });
@@ -27,6 +28,7 @@ const router = createRouter({
   context: {
     queryClient,
   },
+  defaultStaleTime: 0,
 });
 
 // Register the router instance for type safety

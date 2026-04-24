@@ -24,6 +24,9 @@ export function MonthlyBounceChart({
       value: item.total,
     })) || [];
 
+  const currentYear = new Date().getFullYear();
+  const prevYear = currentYear - 1;
+
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-50 p-6 w-full">
       <div className="flex justify-between items-center mb-6">
@@ -32,13 +35,13 @@ export function MonthlyBounceChart({
         </h3>
         <div className="flex items-center gap-4 text-xs font-medium">
           <div className="flex items-center gap-1.5 cursor-pointer">
-            <span className="text-slate-800">2024</span>
+            <span className="text-slate-800">{prevYear}</span>
             <div className="w-3 h-3 rounded-full border border-red-200 flex items-center justify-center">
               <div className="w-1.5 h-1.5 rounded-full bg-red-400" />
             </div>
           </div>
           <div className="flex items-center gap-1.5 cursor-pointer">
-            <span className="text-slate-800">2025</span>
+            <span className="text-slate-800">{currentYear}</span>
             <div className="w-3 h-3 rounded-full border border-blue-200 flex items-center justify-center">
               <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
             </div>

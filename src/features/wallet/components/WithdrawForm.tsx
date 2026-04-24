@@ -11,7 +11,7 @@ interface WithdrawFormData {
   network: string;
 }
 
-export function WithdrawForm() {
+export function WithdrawForm({ onSuccess }: { onSuccess?: () => void }) {
   const {
     register,
     handleSubmit,
@@ -49,6 +49,7 @@ export function WithdrawForm() {
             setPin("");
             setIsPinModalOpen(false);
             setPendingData(null);
+            onSuccess?.();
           },
         },
       );

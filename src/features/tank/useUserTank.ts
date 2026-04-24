@@ -56,7 +56,7 @@ export const useUserTank = (page: number = 1, perPage: number = 5) => {
       });
       return response.data;
     },
-    staleTime: 1000 * 60 * 5, // Cache for 5 minutes
+    staleTime: 0, // Cache for 5 minutes
   });
 };
 

@@ -25,6 +25,6 @@ export const useDownlineDetails = () => {
       const response = await api.get("/members/downlines");
       return response.data;
     },
-    staleTime: 1000 * 60 * 5, // Cache for 5 minutes
+    staleTime: 0, // Cache for 5 minutes
   });
 };

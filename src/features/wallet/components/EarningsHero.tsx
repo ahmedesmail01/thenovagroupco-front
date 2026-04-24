@@ -1,6 +1,41 @@
-import { ChevronDown } from "lucide-react";
+import { useState } from "react";
+import { TrendingUp, TrendingDown } from "lucide-react";
+import { formatPrice, cn } from "../../../lib/utils";
+import type { WalletFilter } from "../../../hooks/dashboard/useWalletData";
 
-export function EarningsHero() {
+interface EarningsHeroProps {
+  totalEarnings?: number;
+  personalPurchases?: number;
+  totalPayout?: number;
+  profitGained?: number;
+  isLoading?: boolean;
+  currentFilter?: WalletFilter;
+  onFilterChange?: (filter: WalletFilter) => void;
+}
+
+const filterOptions: { label: string; value: WalletFilter }[] = [
+  { label: "Last 7 Days", value: "last_7_days" },
+  { label: "Last Month", value: "last_month" },
+  { label: "Last Year", value: "last_year" },
+  { label: "Now", value: "now" },
+];
+
+export function EarningsHero({
+  totalEarnings = 0,
+  personalPurchases = 0,
+  totalPayout = 0,
+  profitGained = 0,
+  isLoading = false,
+  currentFilter = "last_7_days",
+  onFilterChange,
+}: EarningsHeroProps) {
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const isLoss = profitGained < 0;
+
+  // const activeFilterLabel =
+  //   filterOptions.find((opt) => opt.value === currentFilter)?.label ||
+  //   "Overall";
+
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-50 flex flex-col md:flex-row overflow-hidden">
       {/* Left Dark Card */}
@@ -43,16 +78,49 @@ export function EarningsHero() {
           </svg>
         </div>
 
-        <div className="flex justify-between items-start relative z-10 w-full text-white">
+        <div className="flex justify-between items-start relative z-40 w-full text-white">
           <h3 className="font-semibold text-base">Total Earnings</h3>
-          <button className="flex items-center gap-1 text-xs border border-white/20 rounded-md px-3 py-1 bg-white/5 hover:bg-white/10 transition-colors">
-            Overall <ChevronDown className="w-3 h-3" />
-          </button>
+          <div className="relative">
+            {/* <button
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
+              className="flex items-center gap-1 text-xs border border-white/20 rounded-md px-3 py-1 bg-white/5 hover:bg-white/10 transition-colors"
+            >
+              {activeFilterLabel} <ChevronDown className="w-3 h-3" />
+            </button> */}
+
+            {isFilterOpen && (
+              <>
+                <div
+                  className="fixed inset-0 z-40"
+                  onClick={() => setIsFilterOpen(false)}
+                />
+                <div className="absolute right-0 mt-2 w-40 bg-white border border-slate-100 rounded-lg shadow-xl z-50 overflow-hidden py-1 animate-in fade-in zoom-in duration-200">
+                  {filterOptions.map((opt) => (
+                    <button
+                      key={opt.value}
+                      onClick={() => {
+                        onFilterChange?.(opt.value);
+                        setIsFilterOpen(false);
+                      }}
+                      className={cn(
+                        "w-full text-left px-4 py-2 text-xs font-medium transition-colors hover:bg-blue-50",
+                        currentFilter === opt.value
+                          ? "text-blue-600 bg-blue-50/50"
+                          : "text-slate-600",
+                      )}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
         </div>
 
         <div className="flex-1 flex items-center justify-center relative z-10">
           <p className="text-white text-5xl font-semibold tracking-wider">
-            $0.00
+            {isLoading ? "..." : formatPrice(totalEarnings)}
           </p>
         </div>
       </div>
@@ -74,7 +142,9 @@ export function EarningsHero() {
               </p>
             </div>
           </div>
-          <p className="text-blue-500 font-semibold text-sm">$0.00</p>
+          <p className="text-blue-500 font-semibold text-sm">
+            {isLoading ? "..." : formatPrice(personalPurchases)}
+          </p>
         </div>
 
         {/* Item 2 */}
@@ -102,26 +172,25 @@ export function EarningsHero() {
               <p className="text-slate-400 text-xs mt-0.5">Payout Processed</p>
             </div>
           </div>
-          <p className="text-red-500 font-semibold text-sm">$0.00</p>
+          <p className="text-red-500 font-semibold text-sm">
+            {isLoading ? "..." : formatPrice(totalPayout)}
+          </p>
         </div>
 
         {/* Item 3 */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center">
-              <svg
-                className="w-5 h-5 text-emerald-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                />
-              </svg>
+            <div
+              className={cn(
+                "w-10 h-10 rounded-full flex items-center justify-center",
+                isLoss ? "bg-red-50" : "bg-emerald-50",
+              )}
+            >
+              {isLoss ? (
+                <TrendingDown className="w-5 h-5 text-red-500" />
+              ) : (
+                <TrendingUp className="w-5 h-5 text-emerald-500" />
+              )}
             </div>
             <div>
               <p className="text-slate-800 font-semibold text-sm">
@@ -132,7 +201,16 @@ export function EarningsHero() {
               </p>
             </div>
           </div>
-          <p className="text-emerald-500 font-semibold text-sm">0%</p>
+          <div className="text-right">
+            <p
+              className={cn(
+                "font-semibold text-sm",
+                isLoss ? "text-red-500" : "text-emerald-500",
+              )}
+            >
+              {isLoading ? "..." : `${(profitGained * 100).toFixed(2)}%`}
+            </p>
+          </div>
         </div>
       </div>
     </div>

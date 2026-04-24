@@ -83,7 +83,9 @@ function CountryProgessItem({
   return (
     <div className="space-y-3 py-4 border-b border-slate-50 last:border-0 relative z-10">
       <div className="flex justify-between items-center">
-        <span className="text-[18px] text-slate-400">{country}</span>
+        <span className="text-[18px] text-slate-400">
+          {country || "Others"}
+        </span>
         <div
           className={cn(
             "px-3 py-1 rounded-lg border text-[12px] font-bold",
@@ -162,7 +164,7 @@ export function MemberJoiningsCard({ className }: { className?: string }) {
       //   </button>
       // }
     >
-      <div className="flex flex-col lg:flex-row gap-8 items-center lg:items-center">
+      <div className="flex flex-col lg:flex-row gap-8 items-center lg:items-start">
         <div className="relative w-full lg:w-[50%] h-64 lg:h-96 flex items-center justify-center bg-white overflow-hidden rounded-2xl border border-slate-100">
           <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
             <button

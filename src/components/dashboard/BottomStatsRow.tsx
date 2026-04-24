@@ -49,7 +49,7 @@ export default function BottomStatsRow({ data }: BottomStatsRowProps) {
 
   const stats = [
     {
-      iconSrc: "/icons/bronze-pack.png", // Using bronze icon as placeholder for package
+      iconSrc: data?.user_package?.pack_icon || "/icons/bronze-pack.png", // Using bronze icon as placeholder for package
       title: data?.user_package?.name || "Member",
       label: "Current Package",
     },
@@ -57,7 +57,7 @@ export default function BottomStatsRow({ data }: BottomStatsRowProps) {
       iconSrc: data?.rank.icon || nonRankedImage,
       title: data?.rank?.package || "No Rank",
       label: data?.rank?.package || "No Rank",
-      iconClass: "",
+      iconClass: "w-[65px] h-auto",
     },
     {
       iconSrc: "/icons/referred-members-icon.png",

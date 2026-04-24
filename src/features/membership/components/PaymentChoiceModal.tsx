@@ -139,7 +139,7 @@ export function PaymentChoiceModal({
 
         <Button
           // variant="ghost"
-          className="w-full !text-slate-400 bg-transparent hover:!text-slate-200"
+          className="w-full !text-slate-200 bg-blue-300 hover:!text-slate-200"
           onClick={onClose}
           disabled={isSubscribing}
         >

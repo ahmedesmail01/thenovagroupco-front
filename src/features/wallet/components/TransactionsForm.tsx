@@ -10,7 +10,7 @@ interface TransactionFormData {
   amount: number;
 }
 
-export function TransactionsForm() {
+export function TransactionsForm({ onSuccess }: { onSuccess?: () => void }) {
   const {
     register,
     handleSubmit,
@@ -46,6 +46,7 @@ export function TransactionsForm() {
             setPin("");
             setIsPinModalOpen(false);
             setPendingData(null);
+            onSuccess?.();
           },
         },
       );

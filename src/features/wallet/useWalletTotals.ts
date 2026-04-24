@@ -43,7 +43,7 @@ export const useWalletTotals = () => {
       const response = await api.get("/wallet-totals");
       return response.data;
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 0,
   });
 };
 
@@ -54,7 +54,7 @@ export const useCurrentBalance = () => {
       const response = await api.get("/current-balance");
       return response.data;
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 0,
   });
 };
 
@@ -65,7 +65,7 @@ export const useTokenWalletBalance = () => {
       const response = await api.get("/token-wallet-balance");
       return response.data;
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 0,
   });
 };
 
@@ -76,7 +76,7 @@ export const useWalletReports = () => {
       const response = await api.get("/wallet-reports");
       return response.data;
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 0,
   });
 };
 

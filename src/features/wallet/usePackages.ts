@@ -20,6 +20,6 @@ export const usePackages = () => {
       const response = await api.get("/packages");
       return response.data;
     },
-    staleTime: 1000 * 60 * 60, // 1 hour
+    staleTime: 0, // 1 hour
   });
 };

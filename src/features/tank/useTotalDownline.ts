@@ -23,6 +23,6 @@ export const useTotalDownline = () => {
       const response = await api.get("/total-down-line");
       return response.data;
     },
-    staleTime: 1000 * 60 * 5, // Cache for 5 minutes
+    staleTime: 0, // Cache for 5 minutes
   });
 };

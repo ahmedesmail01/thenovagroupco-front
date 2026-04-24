@@ -1843,7 +1843,7 @@ export function useCourses(filters: CourseFilters, page: number) {
   return useQuery({
     queryKey: courseKeys.list(filters, page),
     queryFn: () => api.get("/courses", { params: { ...filters, page } }),
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 0,
   });
 }
 

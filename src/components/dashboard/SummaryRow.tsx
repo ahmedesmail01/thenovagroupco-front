@@ -29,7 +29,7 @@ const SummaryRow = ({ data }: SummaryRowProps) => {
         link="/commissions"
       />
       <SummaryCard
-        iconSrc={trophyIcon}
+        iconSrc={data?.user_package?.pack_icon || trophyIcon}
         title={data?.user_package?.name || "Member"}
         label="Current Package"
       />
@@ -42,7 +42,7 @@ const SummaryRow = ({ data }: SummaryRowProps) => {
         iconSrc={data?.rank?.icon || nonRankedImage}
         title={data?.rank?.name || "No Rank"}
         label={"Current Rank"}
-        iconClass="w-[80px] h-[68px] rounded-full"
+        iconClass="w-[65px] h-auto rounded-full"
       />
     </div>
   );

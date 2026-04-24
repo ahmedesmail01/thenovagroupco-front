@@ -8,7 +8,10 @@ import { TransferForm } from "../../features/wallet/components/TransferForm";
 import { WithdrawForm } from "../../features/wallet/components/WithdrawForm";
 import { TransactionsForm } from "../../features/wallet/components/TransactionsForm";
 
+import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useWalletData } from "../../hooks/dashboard/useWalletData";
+import type { WalletFilter } from "../../hooks/dashboard/useWalletData";
 import { formatPrice } from "../../lib/utils";
 
 export const Route = createLazyFileRoute("/_auth/wallet")({
@@ -16,7 +19,13 @@ export const Route = createLazyFileRoute("/_auth/wallet")({
 });
 
 function WalletRouteComponent() {
-  const { data: walletData, isLoading: isWalletLoading } = useWalletData();
+  const [filter, setFilter] = useState<WalletFilter>("last_7_days");
+  const { data: walletData, isLoading: isWalletLoading } = useWalletData(filter);
+  const queryClient = useQueryClient();
+
+  const handleTransactionSuccess = () => {
+    queryClient.invalidateQueries({ queryKey: ["walletData"] });
+  };
 
   return (
     <div className="min-h-[calc(100vh-100px)]  bg-[#f8fafc] flex flex-col gap-6 w-full max-w-[1500px] mx-auto">
@@ -64,7 +73,15 @@ function WalletRouteComponent() {
       <div className="flex flex-col xl:flex-row gap-6">
         {/* Left Column (Earnings & Charts) */}
         <div className="flex-1 flex flex-col gap-6 w-full max-w-full min-w-0">
-          <EarningsHero />
+          <EarningsHero
+            totalEarnings={walletData?.total_earnings}
+            personalPurchases={walletData?.personal_purchases}
+            totalPayout={walletData?.total_payout}
+            profitGained={walletData?.profit_gained}
+            isLoading={isWalletLoading}
+            currentFilter={filter}
+            onFilterChange={setFilter}
+          />
           <WeeklyEarningsChart
             data={walletData?.weekly_earnings}
             isLoading={isWalletLoading}
@@ -83,9 +100,9 @@ function WalletRouteComponent() {
             isCurrentLoading={isWalletLoading}
             isTokenLoading={isWalletLoading}
           />
-          <TransferForm />
-          <WithdrawForm />
-          <TransactionsForm />
+          <TransferForm onSuccess={handleTransactionSuccess} />
+          <WithdrawForm onSuccess={handleTransactionSuccess} />
+          <TransactionsForm onSuccess={handleTransactionSuccess} />
         </div>
       </div>
     </div>

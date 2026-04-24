@@ -4,7 +4,7 @@ import { Button } from "../../../components/ui/Button";
 import { useTransferToTokenWallet } from "../useWalletTotals";
 import toast from "react-hot-toast";
 
-export function TransferForm() {
+export function TransferForm({ onSuccess }: { onSuccess?: () => void }) {
   const [amount, setAmount] = useState("");
   const [pin, setPin] = useState("");
   const [isPinModalOpen, setIsPinModalOpen] = useState(false);
@@ -33,6 +33,7 @@ export function TransferForm() {
           setAmount("");
           setPin("");
           setIsPinModalOpen(false);
+          onSuccess?.();
         },
       },
     );

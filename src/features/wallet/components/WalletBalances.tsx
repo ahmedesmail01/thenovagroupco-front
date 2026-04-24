@@ -16,7 +16,7 @@ export function WalletBalances({
   isTokenLoading,
 }: WalletBalancesProps) {
   const [showCommission, setShowCommission] = useState(false);
-  const [showToken, setShowToken] = useState(true);
+  const [showToken, setShowToken] = useState(false);
 
   return (
     <div className="flex flex-col gap-6">

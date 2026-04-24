@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 
 interface AppState {
   count: number;
@@ -7,15 +6,8 @@ interface AppState {
   decrement: () => void;
 }
 
-export const useStore = create<AppState>()(
-  persist(
-    (set) => ({
-      count: 0,
-      increment: () => set((state) => ({ count: state.count + 1 })),
-      decrement: () => set((state) => ({ count: state.count - 1 })),
-    }),
-    {
-      name: "app-storage",
-    },
-  ),
-);
+export const useStore = create<AppState>((set) => ({
+  count: 0,
+  increment: () => set((state) => ({ count: state.count + 1 })),
+  decrement: () => set((state) => ({ count: state.count - 1 })),
+}));

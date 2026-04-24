@@ -107,7 +107,7 @@ export const useUserData = () => {
       return response.data;
     },
     // Cache for 5 minutes, consider it stale after 1 minute
-    staleTime: 1000 * 60,
+    staleTime: 0,
     gcTime: 1000 * 60 * 5,
   });
 };
@@ -201,7 +201,7 @@ export const useUserByIdData = (userId: string | number | null | undefined) => {
       return response.data;
     },
     enabled: !!userId,
-    staleTime: 1000 * 60,
+    staleTime: 0,
   });
 };
 
@@ -276,6 +276,6 @@ export const useDownline = (userId?: number | string) => {
       return response.data;
     },
     enabled: !!userId,
-    staleTime: 1000 * 60 * 5,
+    staleTime: 0,
   });
 };

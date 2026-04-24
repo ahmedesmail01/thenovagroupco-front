@@ -270,7 +270,7 @@ export function useCourses(filters: CourseFiltersType, page: number) {
         };
       }
     },
-    staleTime: 1000 * 60 * 5,
+    staleTime: 0,
   });
 }
 
@@ -293,6 +293,6 @@ export function useCourse(id: string) {
       }
     },
     enabled: !!id,
-    staleTime: 1000 * 60 * 5,
+    staleTime: 0,
   });
 }

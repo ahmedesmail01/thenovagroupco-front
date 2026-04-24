@@ -20,6 +20,7 @@ export interface CVCounts {
 export interface UserPackage {
   name: string;
   pack_card: string | null;
+  pack_icon?: string | null;
 }
 
 export interface RankInfo {
@@ -114,6 +115,6 @@ export const useDashboardData = () => {
       const response = await api.get("/member/dashboard");
       return response.data;
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 0,
   });
 };

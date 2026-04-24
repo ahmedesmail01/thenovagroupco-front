@@ -18,11 +18,15 @@ export default function SummaryCard({
   iconClass?: string;
 }) {
   return (
-    <div className="bg-white rounded-[20px] p-6 border border-dash-border shadow-sm flex flex-col gap-4 group hover:shadow-md transition-all">
+    <div className="bg-white rounded-[20px] p-6 border border-dash-border shadow-sm flex flex-col items-center md:items-start gap-4 group hover:shadow-md transition-all">
       <div className="flex justify-between items-start">
         <div className="p-3 rounded-2xl  text-blue-600 group-hover:scale-110 transition-transform">
           {iconSrc ? (
-            <img src={iconSrc} alt="icon" className={`w-[65px] ${iconClass}`} />
+            <img
+              src={iconSrc}
+              alt="icon"
+              className={`w-[65px] h-auto  ${iconClass}`}
+            />
           ) : (
             Icon && <Icon size={24} />
           )}
@@ -30,7 +34,7 @@ export default function SummaryCard({
         {showAll && (
           <Link
             to={link}
-            className="text-[14px] font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-lg uppercase tracking-wider hover:bg-blue-100 transition-colors"
+            className="text-sm lg:text-[14px] font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-lg uppercase tracking-wider hover:bg-blue-100 transition-colors"
           >
             Show All
           </Link>
