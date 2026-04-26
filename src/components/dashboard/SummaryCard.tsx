@@ -18,7 +18,7 @@ export default function SummaryCard({
   iconClass?: string;
 }) {
   return (
-    <div className="bg-white rounded-[20px] p-6 border border-dash-border shadow-sm flex flex-col items-center md:items-start gap-4 group hover:shadow-md transition-all">
+    <div className="bg-white rounded-[20px] p-6 border border-dash-border shadow-sm flex flex-row  md:flex-col items-center md:items-start gap-4 group hover:shadow-md transition-all">
       <div className="flex justify-between items-start">
         <div className="p-3 rounded-2xl  text-blue-600 group-hover:scale-110 transition-transform">
           {iconSrc ? (
