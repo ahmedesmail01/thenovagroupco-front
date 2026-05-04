@@ -21,6 +21,7 @@ export interface WalletDataResponse {
   monthly_bounce: MonthlyBounce[];
   balance: string;
   token_wallet_balance: string;
+  pending_earnings: string;
   personal_purchases: number;
   total_payout: number;
   profit_gained: number;
@@ -60,6 +61,7 @@ export const useWalletData = (filter: WalletFilter = "last_7_days") => {
           ) || [],
         balance: String(raw.balance || "0"),
         token_wallet_balance: String(raw.token_wallet_balance || "0"),
+        pending_earnings: Number(raw.pending_earnings || 0),
       };
     },
     staleTime: 0,

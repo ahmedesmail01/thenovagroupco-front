@@ -78,6 +78,7 @@ function WalletRouteComponent() {
             personalPurchases={walletData?.personal_purchases}
             totalPayout={walletData?.total_payout}
             profitGained={walletData?.profit_gained}
+            pendingEarnings={Number(walletData?.pending_earnings || 0)}
             isLoading={isWalletLoading}
             currentFilter={filter}
             onFilterChange={setFilter}

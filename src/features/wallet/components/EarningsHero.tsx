@@ -8,6 +8,7 @@ interface EarningsHeroProps {
   personalPurchases?: number;
   totalPayout?: number;
   profitGained?: number;
+  pendingEarnings?: number;
   isLoading?: boolean;
   currentFilter?: WalletFilter;
   onFilterChange?: (filter: WalletFilter) => void;
@@ -25,6 +26,7 @@ export function EarningsHero({
   personalPurchases = 0,
   totalPayout = 0,
   profitGained = 0,
+  pendingEarnings = 0,
   isLoading = false,
   currentFilter = "last_7_days",
   onFilterChange,
@@ -178,7 +180,7 @@ export function EarningsHero({
         </div>
 
         {/* Item 3 */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between pb-6 border-b border-slate-100">
           <div className="flex items-center gap-4">
             <div
               className={cn(
@@ -211,6 +213,36 @@ export function EarningsHero({
               {isLoading ? "..." : `${(profitGained * 100).toFixed(2)}%`}
             </p>
           </div>
+        </div>
+
+        {/* Item 4 */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center">
+              <svg
+                className="w-5 h-5 text-amber-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 8v4l3 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <div>
+              <p className="text-slate-800 font-semibold text-sm">
+                Pending Earnings
+              </p>
+              <p className="text-slate-400 text-xs mt-0.5">Earnings in review</p>
+            </div>
+          </div>
+          <p className="text-amber-600 font-semibold text-sm">
+            {isLoading ? "..." : formatPrice(pendingEarnings)}
+          </p>
         </div>
       </div>
     </div>

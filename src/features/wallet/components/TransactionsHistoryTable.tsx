@@ -33,22 +33,28 @@ export function TransactionsHistoryTable({
       <table className="w-full text-left border-collapse min-w-[900px]">
         <thead>
           <tr className="border-b border-slate-100">
-            <th className="py-4 px-4 font-semibold text-slate-400 text-sm w-[20%]">
+            <th className="py-4 px-4 font-semibold text-slate-400 text-sm w-[14%]">
               From User
             </th>
-            <th className="py-4 px-4 font-semibold text-slate-400 text-sm w-[15%]">
-              From Use ID
+            <th className="py-4 px-4 font-semibold text-slate-400 text-sm w-[10%]">
+              From ID
             </th>
-            <th className="py-4 px-4 font-semibold text-slate-400 text-sm w-[20%]">
+            <th className="py-4 px-4 font-semibold text-slate-400 text-sm w-[14%]">
               To User
             </th>
-            <th className="py-4 px-4 font-semibold text-slate-400 text-sm w-[15%]">
-              To User ID
+            <th className="py-4 px-4 font-semibold text-slate-400 text-sm w-[10%]">
+              To ID
             </th>
-            <th className="py-4 px-4 font-semibold text-slate-400 text-sm w-[15%]">
+            <th className="py-4 px-4 font-semibold text-slate-400 text-sm w-[12%]">
+              Type
+            </th>
+            <th className="py-4 px-4 font-semibold text-slate-400 text-sm w-[12%]">
               Amount
             </th>
-            <th className="py-4 px-4 font-semibold text-slate-400 text-sm w-[15%]">
+            <th className="py-4 px-4 font-semibold text-slate-400 text-sm w-[12%]">
+              Status
+            </th>
+            <th className="py-4 px-4 font-semibold text-slate-400 text-sm w-[16%]">
               Date
             </th>
           </tr>
@@ -71,8 +77,27 @@ export function TransactionsHistoryTable({
               <td className="py-6 px-4 text-slate-700 font-medium text-[15px]">
                 {tx.receiver?.id_code || "N/A"}
               </td>
+              <td className="py-6 px-4">
+                <span className="px-3 py-1 rounded-full text-xs font-semibold capitalize bg-slate-50 text-slate-600 border border-slate-100">
+                  {/* send_internal_transfer */}
+                  {tx.transaction_type}
+                </span>
+              </td>
               <td className="py-6 px-4 text-[#10b981] font-medium text-[15px]">
                 {formatPrice(Number(tx.amount))}
+              </td>
+              <td className="py-6 px-4">
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-semibold capitalize border ${tx.status?.toLowerCase() === "success" ||
+                    tx.status?.toLowerCase() === "accepted"
+                    ? "bg-emerald-50 text-emerald-600 border-emerald-100"
+                    : tx.status?.toLowerCase() === "sent"
+                      ? "bg-amber-50 text-amber-600 border-amber-100"
+                      : "bg-rose-50 text-rose-600 border-rose-100"
+                    }`}
+                >
+                  {tx.status}
+                </span>
               </td>
               <td className="py-6 px-4 text-slate-700 font-medium text-sm">
                 {new Date(tx.created_at).toLocaleString()}
