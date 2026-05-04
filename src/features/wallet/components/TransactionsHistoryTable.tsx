@@ -1,6 +1,6 @@
 import { type Transaction } from "../useWalletTransactions";
 import { formatPrice } from "../../../lib/utils";
-import { CheckCircle2, Clock, XCircle } from "lucide-react";
+import { CheckCircle2, Clock, XCircle, ArrowUpRight, ArrowDownLeft } from "lucide-react";
 
 interface TransactionsHistoryTableProps {
   data: Transaction[];
@@ -9,13 +9,13 @@ interface TransactionsHistoryTableProps {
 
 const getStatusStyles = (status: string) => {
   const s = status?.toLowerCase();
-  if (s === "accepted" || s === "success" || s === "completed") {
+  if (s === "accepted" || s === "success" || s === "sent" || s === "completed" || s === "received") {
     return {
       container: "bg-emerald-50 text-emerald-600 border-emerald-100",
       icon: <CheckCircle2 className="w-3.5 h-3.5" />,
     };
   }
-  if (s === "pending" || s === "sent") {
+  if (s === "pending") {
     return {
       container: "bg-amber-50 text-amber-600 border-amber-100",
       icon: <Clock className="w-3.5 h-3.5" />,
@@ -30,6 +30,26 @@ const getStatusStyles = (status: string) => {
   return {
     container: "bg-slate-50 text-slate-600 border-slate-100",
     icon: <Clock className="w-3.5 h-3.5" />,
+  };
+};
+
+const getTypeStyles = (type: string) => {
+  const t = type?.toLowerCase();
+  if (t === "withdrawal") {
+    return {
+      container: "bg-rose-50 text-rose-600 border-rose-100",
+      icon: <ArrowUpRight className="w-3.5 h-3.5" />,
+    };
+  }
+  if (t === "receive" || t === "deposit" || t === "sent") {
+    return {
+      container: "bg-emerald-50 text-emerald-600 border-emerald-100",
+      icon: <ArrowDownLeft className="w-3.5 h-3.5" />,
+    };
+  }
+  return {
+    container: "bg-slate-50 text-slate-600 border-slate-100",
+    icon: <ArrowUpRight className="w-3.5 h-3.5" />,
   };
 };
 
@@ -105,10 +125,17 @@ export function TransactionsHistoryTable({
                 {tx.receiver?.id_code || "N/A"}
               </td>
               <td className="py-6 px-4">
-                <span className="px-3 py-1 rounded-full text-xs font-semibold capitalize bg-slate-50 text-slate-600 border border-slate-100">
-                  {/* send_internal_transfer */}
-                  {tx.transaction_type}
-                </span>
+                {(() => {
+                  const styles = getTypeStyles(tx.transaction_type);
+                  return (
+                    <span
+                      className={`px-3 py-1 text-nowrap rounded-full text-xs font-semibold capitalize border flex items-center gap-1.5 w-fit ${styles.container}`}
+                    >
+                      {styles.icon}
+                      {tx.transaction_type?.replace("_", " ")}
+                    </span>
+                  );
+                })()}
               </td>
               <td className="py-6 px-4 text-[#10b981] font-medium text-[15px]">
                 {formatPrice(Number(tx.amount))}
