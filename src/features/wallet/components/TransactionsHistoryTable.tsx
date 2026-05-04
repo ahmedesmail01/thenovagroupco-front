@@ -1,10 +1,37 @@
 import { type Transaction } from "../useWalletTransactions";
 import { formatPrice } from "../../../lib/utils";
+import { CheckCircle2, Clock, XCircle } from "lucide-react";
 
 interface TransactionsHistoryTableProps {
   data: Transaction[];
   isLoading: boolean;
 }
+
+const getStatusStyles = (status: string) => {
+  const s = status?.toLowerCase();
+  if (s === "accepted" || s === "success" || s === "completed") {
+    return {
+      container: "bg-emerald-50 text-emerald-600 border-emerald-100",
+      icon: <CheckCircle2 className="w-3.5 h-3.5" />,
+    };
+  }
+  if (s === "pending" || s === "sent") {
+    return {
+      container: "bg-amber-50 text-amber-600 border-amber-100",
+      icon: <Clock className="w-3.5 h-3.5" />,
+    };
+  }
+  if (s === "rejected" || s === "failed" || s === "cancelled") {
+    return {
+      container: "bg-rose-50 text-rose-600 border-rose-100",
+      icon: <XCircle className="w-3.5 h-3.5" />,
+    };
+  }
+  return {
+    container: "bg-slate-50 text-slate-600 border-slate-100",
+    icon: <Clock className="w-3.5 h-3.5" />,
+  };
+};
 
 export function TransactionsHistoryTable({
   data,
@@ -87,17 +114,17 @@ export function TransactionsHistoryTable({
                 {formatPrice(Number(tx.amount))}
               </td>
               <td className="py-6 px-4">
-                <span
-                  className={`px-3 py-1 rounded-full text-xs font-semibold capitalize border ${tx.status?.toLowerCase() === "success" ||
-                    tx.status?.toLowerCase() === "accepted"
-                    ? "bg-emerald-50 text-emerald-600 border-emerald-100"
-                    : tx.status?.toLowerCase() === "sent"
-                      ? "bg-amber-50 text-amber-600 border-amber-100"
-                      : "bg-rose-50 text-rose-600 border-rose-100"
-                    }`}
-                >
-                  {tx.status}
-                </span>
+                {(() => {
+                  const styles = getStatusStyles(tx.status);
+                  return (
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-semibold capitalize border flex items-center gap-1.5 w-fit ${styles.container}`}
+                    >
+                      {styles.icon}
+                      {tx.status}
+                    </span>
+                  );
+                })()}
               </td>
               <td className="py-6 px-4 text-slate-700 font-medium text-sm">
                 {new Date(tx.created_at).toLocaleString()}
