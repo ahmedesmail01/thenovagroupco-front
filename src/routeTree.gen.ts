@@ -35,6 +35,7 @@ const AuthRankRewardLazyRouteImport = createFileRoute('/_auth/rank-reward')()
 const AuthProfileLazyRouteImport = createFileRoute('/_auth/profile')()
 const AuthNovaProLazyRouteImport = createFileRoute('/_auth/nova-pro')()
 const AuthMembershipLazyRouteImport = createFileRoute('/_auth/membership')()
+const AuthMailboxLazyRouteImport = createFileRoute('/_auth/mailbox')()
 const AuthLibraryLazyRouteImport = createFileRoute('/_auth/library')()
 const AuthGenealogyLazyRouteImport = createFileRoute('/_auth/genealogy')()
 const AuthDashboardLazyRouteImport = createFileRoute('/_auth/dashboard')()
@@ -160,6 +161,11 @@ const AuthMembershipLazyRoute = AuthMembershipLazyRouteImport.update({
 } as any).lazy(() =>
   import('./routes/_auth/membership.lazy').then((d) => d.Route),
 )
+const AuthMailboxLazyRoute = AuthMailboxLazyRouteImport.update({
+  id: '/mailbox',
+  path: '/mailbox',
+  getParentRoute: () => AuthRoute,
+} as any).lazy(() => import('./routes/_auth/mailbox.lazy').then((d) => d.Route))
 const AuthLibraryLazyRoute = AuthLibraryLazyRouteImport.update({
   id: '/library',
   path: '/library',
@@ -202,6 +208,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthDashboardLazyRoute
   '/genealogy': typeof AuthGenealogyLazyRoute
   '/library': typeof AuthLibraryLazyRoute
+  '/mailbox': typeof AuthMailboxLazyRoute
   '/membership': typeof AuthMembershipLazyRoute
   '/nova-pro': typeof AuthNovaProLazyRoute
   '/profile': typeof AuthProfileLazyRoute
@@ -228,6 +235,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthDashboardLazyRoute
   '/genealogy': typeof AuthGenealogyLazyRoute
   '/library': typeof AuthLibraryLazyRoute
+  '/mailbox': typeof AuthMailboxLazyRoute
   '/membership': typeof AuthMembershipLazyRoute
   '/nova-pro': typeof AuthNovaProLazyRoute
   '/profile': typeof AuthProfileLazyRoute
@@ -256,6 +264,7 @@ export interface FileRoutesById {
   '/_auth/dashboard': typeof AuthDashboardLazyRoute
   '/_auth/genealogy': typeof AuthGenealogyLazyRoute
   '/_auth/library': typeof AuthLibraryLazyRoute
+  '/_auth/mailbox': typeof AuthMailboxLazyRoute
   '/_auth/membership': typeof AuthMembershipLazyRoute
   '/_auth/nova-pro': typeof AuthNovaProLazyRoute
   '/_auth/profile': typeof AuthProfileLazyRoute
@@ -284,6 +293,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/genealogy'
     | '/library'
+    | '/mailbox'
     | '/membership'
     | '/nova-pro'
     | '/profile'
@@ -310,6 +320,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/genealogy'
     | '/library'
+    | '/mailbox'
     | '/membership'
     | '/nova-pro'
     | '/profile'
@@ -337,6 +348,7 @@ export interface FileRouteTypes {
     | '/_auth/dashboard'
     | '/_auth/genealogy'
     | '/_auth/library'
+    | '/_auth/mailbox'
     | '/_auth/membership'
     | '/_auth/nova-pro'
     | '/_auth/profile'
@@ -514,6 +526,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthMembershipLazyRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/mailbox': {
+      id: '/_auth/mailbox'
+      path: '/mailbox'
+      fullPath: '/mailbox'
+      preLoaderRoute: typeof AuthMailboxLazyRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/library': {
       id: '/_auth/library'
       path: '/library'
@@ -550,6 +569,7 @@ interface AuthRouteChildren {
   AuthDashboardLazyRoute: typeof AuthDashboardLazyRoute
   AuthGenealogyLazyRoute: typeof AuthGenealogyLazyRoute
   AuthLibraryLazyRoute: typeof AuthLibraryLazyRoute
+  AuthMailboxLazyRoute: typeof AuthMailboxLazyRoute
   AuthMembershipLazyRoute: typeof AuthMembershipLazyRoute
   AuthNovaProLazyRoute: typeof AuthNovaProLazyRoute
   AuthProfileLazyRoute: typeof AuthProfileLazyRoute
@@ -565,6 +585,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthDashboardLazyRoute: AuthDashboardLazyRoute,
   AuthGenealogyLazyRoute: AuthGenealogyLazyRoute,
   AuthLibraryLazyRoute: AuthLibraryLazyRoute,
+  AuthMailboxLazyRoute: AuthMailboxLazyRoute,
   AuthMembershipLazyRoute: AuthMembershipLazyRoute,
   AuthNovaProLazyRoute: AuthNovaProLazyRoute,
   AuthProfileLazyRoute: AuthProfileLazyRoute,
