@@ -1,8 +1,9 @@
 import { useMailboxStore } from "../../features/mailbox/useMailboxStore";
 import { useInbox, useSentMessages, useTrashMessages } from "../../features/mailbox/useMailbox";
-import { Loader2, Mail, MailOpen, Trash2, Reply } from "lucide-react";
+import { Loader2, Mail, MailOpen, Trash2, Reply, Check, CheckCheck } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "../../lib/utils";
+import type { InboxMessage, SentMessage } from "../../features/mailbox/types";
 
 export function MessageList() {
   const { activeFolder, openMessage } = useMailboxStore();
@@ -46,19 +47,22 @@ export function MessageList() {
       </div>
 
       <div className="flex-1 overflow-y-auto p-3 md:p-6 flex flex-col gap-3">
-        {messages.map((msg: any) => {
+        {messages.map((msg: InboxMessage | SentMessage) => {
           // Determine the display properties based on message type
-          const isUnread = isInbox && !msg.is_read;
-          const displaySender = isSent 
-            ? `To: ${msg.recipients_count} recipient(s)` 
-            : msg.message?.sender?.name || "Unknown Sender";
-          const displaySubject = isSent ? msg.subject : msg.message?.subject;
-          const displayBodyPreview = isSent ? msg.body : msg.message?.body;
-          
+          const isUnread = isInbox && !("recipients_count" in msg) && !msg.is_read;
+          const displaySender = isSent
+            ? `To: ${(msg as SentMessage).recipients_count} recipient(s)`
+            : (msg as InboxMessage).message?.sender?.username || (msg as InboxMessage).message?.sender?.name || "Unknown Sender";
+          const displaySubject = isSent ? (msg as SentMessage).subject : (msg as InboxMessage).message?.subject;
+          const displayBodyPreview = isSent ? (msg as SentMessage).body : (msg as InboxMessage).message?.body;
+
+          const isSentReadByAll = isSent && (msg as SentMessage).recipients?.length > 0 && (msg as SentMessage).recipients?.every((r) => r.is_read);
+          const isSentReadBySome = isSent && !isSentReadByAll && (msg as SentMessage).recipients?.some((r) => r.is_read);
+
           return (
             <div
               key={msg.id}
-              onClick={() => openMessage(msg.id, activeFolder as any)}
+              onClick={() => openMessage(isSent ? (msg as SentMessage).id : (msg as InboxMessage).message_id, activeFolder as "inbox" | "sent" | "trash", msg)}
               className={cn(
                 "group flex flex-col sm:flex-row sm:items-center gap-3 p-4 md:p-5 rounded-2xl cursor-pointer transition-all border",
                 isUnread
@@ -72,7 +76,7 @@ export function MessageList() {
                 ) : (
                   <div className="w-2.5 h-2.5 rounded-full bg-transparent shrink-0" />
                 )}
-                <div className={cn("w-11 h-11 rounded-full flex items-center justify-center shrink-0 transition-colors", 
+                <div className={cn("w-11 h-11 rounded-full flex items-center justify-center shrink-0 transition-colors",
                   isUnread ? "bg-dash-accent/10 text-dash-accent" : "bg-dash-bg text-dash-muted group-hover:bg-dash-accent/10 group-hover:text-dash-accent")}>
                   <Mail size={20} />
                 </div>
@@ -86,7 +90,16 @@ export function MessageList() {
                   <span className={cn("text-base truncate", isUnread ? "font-bold text-dash-text" : "font-semibold text-dash-text/80")}>
                     {displaySubject || "No Subject"}
                   </span>
-                  <span className="text-xs font-medium text-dash-muted whitespace-nowrap shrink-0">
+                  <span className="text-xs font-medium text-dash-muted whitespace-nowrap shrink-0 flex items-center gap-1">
+                    {isSent && (
+                      isSentReadByAll ? (
+                        <CheckCheck size={14} className="text-blue-500" />
+                      ) : isSentReadBySome ? (
+                        <CheckCheck size={14} className="text-dash-muted" />
+                      ) : (
+                        <Check size={14} className="text-dash-muted" />
+                      )
+                    )}
                     {format(new Date(msg.created_at), "MMM d, h:mm a")}
                   </span>
                 </div>

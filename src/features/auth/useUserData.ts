@@ -92,6 +92,7 @@ export interface UserDataResponse {
   message: string;
   "user data": UserData;
   subscription: string;
+  messages_count: number | 0;
   sponsor: any | null;
   profile: Profile;
 }
@@ -109,6 +110,7 @@ export const useUserData = () => {
     // Cache for 5 minutes, consider it stale after 1 minute
     staleTime: 0,
     gcTime: 1000 * 60 * 5,
+    refetchInterval: 5000,
   });
 };
 

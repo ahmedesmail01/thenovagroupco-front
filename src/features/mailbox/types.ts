@@ -1,12 +1,27 @@
 export interface MailboxUser {
   id: number;
-  name: string;
+  name?: string;
+  username?: string;
+  id_code?: number;
   email: string;
+  image?: string | null;
 }
 
 export interface MailboxRecipient {
   id: number;
+  message_id: number;
   recipient_id: number;
+  is_read: boolean;
+  read_at: string | null;
+  deleted_by_recipient: boolean;
+  deleted_by_sender: boolean;
+  recipient_archived: boolean;
+  sender_archived: boolean;
+  started: number;
+  important: boolean;
+  muted: boolean;
+  created_at: string;
+  updated_at: string;
   recipient: MailboxUser;
 }
 
@@ -15,8 +30,13 @@ export interface MailboxMessageData {
   sender_id: number;
   subject: string;
   body: string;
+  parent_message_id?: number | null;
+  is_system_message?: boolean;
+  priority?: string;
+  expires_at?: string | null;
   delivery_type: string;
   tree_side: string;
+  include_sender?: boolean;
   created_at: string;
   updated_at: string;
   sender?: MailboxUser;
@@ -30,6 +50,12 @@ export interface InboxMessage {
   is_read: boolean;
   read_at: string | null;
   deleted_by_recipient: boolean;
+  deleted_by_sender?: boolean;
+  recipient_archived?: boolean;
+  sender_archived?: boolean;
+  started?: number;
+  important?: boolean;
+  muted?: boolean;
   created_at: string;
   updated_at: string;
   message: MailboxMessageData;

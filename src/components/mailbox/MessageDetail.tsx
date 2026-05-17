@@ -3,10 +3,12 @@ import { useMessageDetails, useMoveToTrash, useRestoreMessage } from "../../feat
 import { ArrowLeft, Loader2, Trash2, Reply, RefreshCw, UserCircle2 } from "lucide-react";
 import { format } from "date-fns";
 import toast from "react-hot-toast";
+import type { InboxMessage, SentMessage } from "../../features/mailbox/types";
 
 export function MessageDetail() {
-  const { activeMessageId, activeMessageType, closeMessage } = useMailboxStore();
-  const { data: response, isLoading } = useMessageDetails(activeMessageId);
+  const { activeMessageId, activeMessageType, activeMessageData, closeMessage } = useMailboxStore();
+  const isSent = activeMessageType === "sent";
+  const { data: response, isLoading } = useMessageDetails(isSent ? null : activeMessageId);
   const moveToTrash = useMoveToTrash();
   const restoreMessage = useRestoreMessage();
 
@@ -18,7 +20,7 @@ export function MessageDetail() {
     );
   }
 
-  const messageWrapper = response?.data;
+  const messageWrapper = isSent ? activeMessageData : response?.data;
   if (!messageWrapper) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center bg-dash-bg">
@@ -27,12 +29,16 @@ export function MessageDetail() {
     );
   }
 
-  const isSent = activeMessageType === "sent";
+
   
   // Normalize data between inbox/trash and sent structures
-  const messageData = isSent ? messageWrapper : (messageWrapper as any).message;
-  const displaySenderName = isSent ? "You" : messageData?.sender?.name || "Unknown";
-  const displaySenderEmail = isSent ? "" : messageData?.sender?.email || "";
+  const messageData = isSent 
+    ? (messageWrapper as SentMessage) 
+    : (messageWrapper as InboxMessage).message;
+
+  const inboxMessageData = !isSent ? (messageWrapper as InboxMessage).message : null;
+  const displaySenderName = isSent ? "You" : inboxMessageData?.sender?.username || inboxMessageData?.sender?.name || "Unknown";
+  const displaySenderEmail = isSent ? "" : inboxMessageData?.sender?.email || "";
   const displayDate = messageWrapper.created_at ? format(new Date(messageWrapper.created_at), "PPP 'at' p") : "";
 
   const handleTrash = async () => {
@@ -110,9 +116,14 @@ export function MessageDetail() {
             <div className="flex flex-col sm:items-end gap-1.5 pl-18 sm:pl-0">
               <p className="text-sm font-medium text-dash-muted">{displayDate}</p>
               {isSent && (
-                <p className="text-xs font-bold text-dash-accent bg-dash-accent/10 inline-flex items-center px-2.5 py-1 rounded-lg">
-                  To: {(messageWrapper as any).recipients_count} recipients ({(messageWrapper as any).delivery_type})
-                </p>
+                <div className="flex flex-col gap-1 items-end">
+                  <p className="text-xs font-bold text-dash-accent bg-dash-accent/10 inline-flex items-center px-2.5 py-1 rounded-lg">
+                    To: {(messageWrapper as SentMessage).recipients_count} recipients ({(messageWrapper as SentMessage).delivery_type})
+                  </p>
+                  <p className="text-xs text-dash-muted">
+                    {(messageWrapper as SentMessage).recipients?.map((r) => r.recipient.username || r.recipient.name).join(", ")}
+                  </p>
+                </div>
               )}
             </div>
           </div>

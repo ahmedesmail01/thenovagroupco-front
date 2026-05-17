@@ -6,6 +6,7 @@ import {
   User,
   Menu,
   LayoutDashboard,
+  Mail,
 } from "lucide-react";
 import { useAuthStore } from "../../features/auth/useAuthStore";
 import { useState } from "react";
@@ -59,13 +60,16 @@ export function AuthNavbar({ onMenuClick }: AuthNavbarProps) {
 
       <div className="flex items-center gap-6">
         {/* Notifications / Mailbox */}
-        <Link 
+        <Link
           to="/mailbox"
           className="relative p-2 text-dash-muted hover:text-dash-accent hover:bg-dash-bg rounded-lg transition-colors"
         >
-          <Bell size={20} />
-          <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 border-2 border-dash-sidebar rounded-full" />
-        </Link>
+          {/* <Bell size={20} /> */}
+          <Mail size={20} />
+          {user && user?.messages_count > 0 &&
+            <span className="absolute top-0 right-0 text-white text-[10px] px-1 bg-red-500 border-2 border-dash-sidebar rounded-full" >{user?.messages_count}</span>
+
+          }        </Link>
 
         {/* User Profile */}
         <div className="relative">
