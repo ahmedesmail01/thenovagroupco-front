@@ -12,6 +12,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/_auth'
+import { Route as AuthBillingRouteImport } from './routes/_auth/billing'
 
 const TermsAndConditionsLazyRouteImport = createFileRoute(
   '/terms-and-conditions',
@@ -32,6 +33,7 @@ const AuthTransactionsLazyRouteImport = createFileRoute('/_auth/transactions')()
 const AuthTankLazyRouteImport = createFileRoute('/_auth/tank')()
 const AuthSupportLazyRouteImport = createFileRoute('/_auth/support')()
 const AuthRankRewardLazyRouteImport = createFileRoute('/_auth/rank-reward')()
+const AuthPromotionalLazyRouteImport = createFileRoute('/_auth/promotional')()
 const AuthProfileLazyRouteImport = createFileRoute('/_auth/profile')()
 const AuthNovaProLazyRouteImport = createFileRoute('/_auth/nova-pro')()
 const AuthMembershipLazyRouteImport = createFileRoute('/_auth/membership')()
@@ -40,6 +42,15 @@ const AuthLibraryLazyRouteImport = createFileRoute('/_auth/library')()
 const AuthGenealogyLazyRouteImport = createFileRoute('/_auth/genealogy')()
 const AuthDashboardLazyRouteImport = createFileRoute('/_auth/dashboard')()
 const AuthCommissionsLazyRouteImport = createFileRoute('/_auth/commissions')()
+const AuthBillingSubscriptionsLazyRouteImport = createFileRoute(
+  '/_auth/billing/subscriptions',
+)()
+const AuthBillingPaymentMethodsLazyRouteImport = createFileRoute(
+  '/_auth/billing/payment-methods',
+)()
+const AuthBillingPaymentHistoryLazyRouteImport = createFileRoute(
+  '/_auth/billing/payment-history',
+)()
 
 const TermsAndConditionsLazyRoute = TermsAndConditionsLazyRouteImport.update({
   id: '/terms-and-conditions',
@@ -142,6 +153,13 @@ const AuthRankRewardLazyRoute = AuthRankRewardLazyRouteImport.update({
 } as any).lazy(() =>
   import('./routes/_auth/rank-reward.lazy').then((d) => d.Route),
 )
+const AuthPromotionalLazyRoute = AuthPromotionalLazyRouteImport.update({
+  id: '/promotional',
+  path: '/promotional',
+  getParentRoute: () => AuthRoute,
+} as any).lazy(() =>
+  import('./routes/_auth/promotional.lazy').then((d) => d.Route),
+)
 const AuthProfileLazyRoute = AuthProfileLazyRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -192,6 +210,35 @@ const AuthCommissionsLazyRoute = AuthCommissionsLazyRouteImport.update({
 } as any).lazy(() =>
   import('./routes/_auth/commissions.lazy').then((d) => d.Route),
 )
+const AuthBillingRoute = AuthBillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthBillingSubscriptionsLazyRoute =
+  AuthBillingSubscriptionsLazyRouteImport.update({
+    id: '/subscriptions',
+    path: '/subscriptions',
+    getParentRoute: () => AuthBillingRoute,
+  } as any).lazy(() =>
+    import('./routes/_auth/billing/subscriptions.lazy').then((d) => d.Route),
+  )
+const AuthBillingPaymentMethodsLazyRoute =
+  AuthBillingPaymentMethodsLazyRouteImport.update({
+    id: '/payment-methods',
+    path: '/payment-methods',
+    getParentRoute: () => AuthBillingRoute,
+  } as any).lazy(() =>
+    import('./routes/_auth/billing/payment-methods.lazy').then((d) => d.Route),
+  )
+const AuthBillingPaymentHistoryLazyRoute =
+  AuthBillingPaymentHistoryLazyRouteImport.update({
+    id: '/payment-history',
+    path: '/payment-history',
+    getParentRoute: () => AuthBillingRoute,
+  } as any).lazy(() =>
+    import('./routes/_auth/billing/payment-history.lazy').then((d) => d.Route),
+  )
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
@@ -204,6 +251,7 @@ export interface FileRoutesByFullPath {
   '/privacy-policy': typeof PrivacyPolicyLazyRoute
   '/register': typeof RegisterLazyRoute
   '/terms-and-conditions': typeof TermsAndConditionsLazyRoute
+  '/billing': typeof AuthBillingRouteWithChildren
   '/commissions': typeof AuthCommissionsLazyRoute
   '/dashboard': typeof AuthDashboardLazyRoute
   '/genealogy': typeof AuthGenealogyLazyRoute
@@ -212,6 +260,7 @@ export interface FileRoutesByFullPath {
   '/membership': typeof AuthMembershipLazyRoute
   '/nova-pro': typeof AuthNovaProLazyRoute
   '/profile': typeof AuthProfileLazyRoute
+  '/promotional': typeof AuthPromotionalLazyRoute
   '/rank-reward': typeof AuthRankRewardLazyRoute
   '/support': typeof AuthSupportLazyRoute
   '/tank': typeof AuthTankLazyRoute
@@ -219,6 +268,9 @@ export interface FileRoutesByFullPath {
   '/wallet': typeof AuthWalletLazyRoute
   '/courses/$courseId': typeof CoursesCourseIdLazyRoute
   '/courses/': typeof CoursesIndexLazyRoute
+  '/billing/payment-history': typeof AuthBillingPaymentHistoryLazyRoute
+  '/billing/payment-methods': typeof AuthBillingPaymentMethodsLazyRoute
+  '/billing/subscriptions': typeof AuthBillingSubscriptionsLazyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
@@ -231,6 +283,7 @@ export interface FileRoutesByTo {
   '/privacy-policy': typeof PrivacyPolicyLazyRoute
   '/register': typeof RegisterLazyRoute
   '/terms-and-conditions': typeof TermsAndConditionsLazyRoute
+  '/billing': typeof AuthBillingRouteWithChildren
   '/commissions': typeof AuthCommissionsLazyRoute
   '/dashboard': typeof AuthDashboardLazyRoute
   '/genealogy': typeof AuthGenealogyLazyRoute
@@ -239,6 +292,7 @@ export interface FileRoutesByTo {
   '/membership': typeof AuthMembershipLazyRoute
   '/nova-pro': typeof AuthNovaProLazyRoute
   '/profile': typeof AuthProfileLazyRoute
+  '/promotional': typeof AuthPromotionalLazyRoute
   '/rank-reward': typeof AuthRankRewardLazyRoute
   '/support': typeof AuthSupportLazyRoute
   '/tank': typeof AuthTankLazyRoute
@@ -246,6 +300,9 @@ export interface FileRoutesByTo {
   '/wallet': typeof AuthWalletLazyRoute
   '/courses/$courseId': typeof CoursesCourseIdLazyRoute
   '/courses': typeof CoursesIndexLazyRoute
+  '/billing/payment-history': typeof AuthBillingPaymentHistoryLazyRoute
+  '/billing/payment-methods': typeof AuthBillingPaymentMethodsLazyRoute
+  '/billing/subscriptions': typeof AuthBillingSubscriptionsLazyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -260,6 +317,7 @@ export interface FileRoutesById {
   '/privacy-policy': typeof PrivacyPolicyLazyRoute
   '/register': typeof RegisterLazyRoute
   '/terms-and-conditions': typeof TermsAndConditionsLazyRoute
+  '/_auth/billing': typeof AuthBillingRouteWithChildren
   '/_auth/commissions': typeof AuthCommissionsLazyRoute
   '/_auth/dashboard': typeof AuthDashboardLazyRoute
   '/_auth/genealogy': typeof AuthGenealogyLazyRoute
@@ -268,6 +326,7 @@ export interface FileRoutesById {
   '/_auth/membership': typeof AuthMembershipLazyRoute
   '/_auth/nova-pro': typeof AuthNovaProLazyRoute
   '/_auth/profile': typeof AuthProfileLazyRoute
+  '/_auth/promotional': typeof AuthPromotionalLazyRoute
   '/_auth/rank-reward': typeof AuthRankRewardLazyRoute
   '/_auth/support': typeof AuthSupportLazyRoute
   '/_auth/tank': typeof AuthTankLazyRoute
@@ -275,6 +334,9 @@ export interface FileRoutesById {
   '/_auth/wallet': typeof AuthWalletLazyRoute
   '/courses/$courseId': typeof CoursesCourseIdLazyRoute
   '/courses/': typeof CoursesIndexLazyRoute
+  '/_auth/billing/payment-history': typeof AuthBillingPaymentHistoryLazyRoute
+  '/_auth/billing/payment-methods': typeof AuthBillingPaymentMethodsLazyRoute
+  '/_auth/billing/subscriptions': typeof AuthBillingSubscriptionsLazyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -289,6 +351,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/register'
     | '/terms-and-conditions'
+    | '/billing'
     | '/commissions'
     | '/dashboard'
     | '/genealogy'
@@ -297,6 +360,7 @@ export interface FileRouteTypes {
     | '/membership'
     | '/nova-pro'
     | '/profile'
+    | '/promotional'
     | '/rank-reward'
     | '/support'
     | '/tank'
@@ -304,6 +368,9 @@ export interface FileRouteTypes {
     | '/wallet'
     | '/courses/$courseId'
     | '/courses/'
+    | '/billing/payment-history'
+    | '/billing/payment-methods'
+    | '/billing/subscriptions'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -316,6 +383,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/register'
     | '/terms-and-conditions'
+    | '/billing'
     | '/commissions'
     | '/dashboard'
     | '/genealogy'
@@ -324,6 +392,7 @@ export interface FileRouteTypes {
     | '/membership'
     | '/nova-pro'
     | '/profile'
+    | '/promotional'
     | '/rank-reward'
     | '/support'
     | '/tank'
@@ -331,6 +400,9 @@ export interface FileRouteTypes {
     | '/wallet'
     | '/courses/$courseId'
     | '/courses'
+    | '/billing/payment-history'
+    | '/billing/payment-methods'
+    | '/billing/subscriptions'
   id:
     | '__root__'
     | '/'
@@ -344,6 +416,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/register'
     | '/terms-and-conditions'
+    | '/_auth/billing'
     | '/_auth/commissions'
     | '/_auth/dashboard'
     | '/_auth/genealogy'
@@ -352,6 +425,7 @@ export interface FileRouteTypes {
     | '/_auth/membership'
     | '/_auth/nova-pro'
     | '/_auth/profile'
+    | '/_auth/promotional'
     | '/_auth/rank-reward'
     | '/_auth/support'
     | '/_auth/tank'
@@ -359,6 +433,9 @@ export interface FileRouteTypes {
     | '/_auth/wallet'
     | '/courses/$courseId'
     | '/courses/'
+    | '/_auth/billing/payment-history'
+    | '/_auth/billing/payment-methods'
+    | '/_auth/billing/subscriptions'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -505,6 +582,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRankRewardLazyRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/promotional': {
+      id: '/_auth/promotional'
+      path: '/promotional'
+      fullPath: '/promotional'
+      preLoaderRoute: typeof AuthPromotionalLazyRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/profile': {
       id: '/_auth/profile'
       path: '/profile'
@@ -561,10 +645,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCommissionsLazyRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/billing': {
+      id: '/_auth/billing'
+      path: '/billing'
+      fullPath: '/billing'
+      preLoaderRoute: typeof AuthBillingRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/billing/subscriptions': {
+      id: '/_auth/billing/subscriptions'
+      path: '/subscriptions'
+      fullPath: '/billing/subscriptions'
+      preLoaderRoute: typeof AuthBillingSubscriptionsLazyRouteImport
+      parentRoute: typeof AuthBillingRoute
+    }
+    '/_auth/billing/payment-methods': {
+      id: '/_auth/billing/payment-methods'
+      path: '/payment-methods'
+      fullPath: '/billing/payment-methods'
+      preLoaderRoute: typeof AuthBillingPaymentMethodsLazyRouteImport
+      parentRoute: typeof AuthBillingRoute
+    }
+    '/_auth/billing/payment-history': {
+      id: '/_auth/billing/payment-history'
+      path: '/payment-history'
+      fullPath: '/billing/payment-history'
+      preLoaderRoute: typeof AuthBillingPaymentHistoryLazyRouteImport
+      parentRoute: typeof AuthBillingRoute
+    }
   }
 }
 
+interface AuthBillingRouteChildren {
+  AuthBillingPaymentHistoryLazyRoute: typeof AuthBillingPaymentHistoryLazyRoute
+  AuthBillingPaymentMethodsLazyRoute: typeof AuthBillingPaymentMethodsLazyRoute
+  AuthBillingSubscriptionsLazyRoute: typeof AuthBillingSubscriptionsLazyRoute
+}
+
+const AuthBillingRouteChildren: AuthBillingRouteChildren = {
+  AuthBillingPaymentHistoryLazyRoute: AuthBillingPaymentHistoryLazyRoute,
+  AuthBillingPaymentMethodsLazyRoute: AuthBillingPaymentMethodsLazyRoute,
+  AuthBillingSubscriptionsLazyRoute: AuthBillingSubscriptionsLazyRoute,
+}
+
+const AuthBillingRouteWithChildren = AuthBillingRoute._addFileChildren(
+  AuthBillingRouteChildren,
+)
+
 interface AuthRouteChildren {
+  AuthBillingRoute: typeof AuthBillingRouteWithChildren
   AuthCommissionsLazyRoute: typeof AuthCommissionsLazyRoute
   AuthDashboardLazyRoute: typeof AuthDashboardLazyRoute
   AuthGenealogyLazyRoute: typeof AuthGenealogyLazyRoute
@@ -573,6 +702,7 @@ interface AuthRouteChildren {
   AuthMembershipLazyRoute: typeof AuthMembershipLazyRoute
   AuthNovaProLazyRoute: typeof AuthNovaProLazyRoute
   AuthProfileLazyRoute: typeof AuthProfileLazyRoute
+  AuthPromotionalLazyRoute: typeof AuthPromotionalLazyRoute
   AuthRankRewardLazyRoute: typeof AuthRankRewardLazyRoute
   AuthSupportLazyRoute: typeof AuthSupportLazyRoute
   AuthTankLazyRoute: typeof AuthTankLazyRoute
@@ -581,6 +711,7 @@ interface AuthRouteChildren {
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
+  AuthBillingRoute: AuthBillingRouteWithChildren,
   AuthCommissionsLazyRoute: AuthCommissionsLazyRoute,
   AuthDashboardLazyRoute: AuthDashboardLazyRoute,
   AuthGenealogyLazyRoute: AuthGenealogyLazyRoute,
@@ -589,6 +720,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthMembershipLazyRoute: AuthMembershipLazyRoute,
   AuthNovaProLazyRoute: AuthNovaProLazyRoute,
   AuthProfileLazyRoute: AuthProfileLazyRoute,
+  AuthPromotionalLazyRoute: AuthPromotionalLazyRoute,
   AuthRankRewardLazyRoute: AuthRankRewardLazyRoute,
   AuthSupportLazyRoute: AuthSupportLazyRoute,
   AuthTankLazyRoute: AuthTankLazyRoute,

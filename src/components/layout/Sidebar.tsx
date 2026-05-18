@@ -15,6 +15,8 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
+  CreditCard,
+  Megaphone,
 } from "lucide-react";
 import { useAuthStore } from "../../features/auth/useAuthStore";
 import { cn } from "../../lib/utils";
@@ -51,6 +53,8 @@ export function Sidebar({
     { icon: CircleDollarSign, label: "Commissions", to: "/commissions" },
     { icon: Trophy, label: "Rank Reward", to: "/rank-reward" },
     { icon: Users, label: "Membership", to: "/membership" },
+    { icon: CreditCard, label: "Billing", to: "/billing" },
+    { icon: Megaphone, label: "Promotional", to: "/promotional" },
     // { icon: Zap, label: "NOVA PRO+", to: "/nova-pro" },
     { icon: UserCircle, label: "Profile", to: "/profile" },
     { icon: LifeBuoy, label: "Support", to: "/support" },
