@@ -60,7 +60,7 @@ export function AuthNavbar({ onMenuClick }: AuthNavbarProps) {
 
       <div className="flex items-center gap-6">
         {/* Notifications / Mailbox */}
-        {/* <Link
+        <Link
           to="/mailbox"
           className="relative p-2 text-dash-muted hover:text-dash-accent hover:bg-dash-bg rounded-lg transition-colors"
         >
@@ -68,7 +68,7 @@ export function AuthNavbar({ onMenuClick }: AuthNavbarProps) {
           {user && user?.messages_count > 0 &&
             <span className="absolute top-0 right-0 text-white text-[10px] px-1 bg-red-500 border-2 border-dash-sidebar rounded-full" >{user?.messages_count}</span>
 
-          }        </Link> */}
+          }        </Link>
 
         {/* User Profile */}
         <div className="relative">
