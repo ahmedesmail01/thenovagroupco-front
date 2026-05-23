@@ -32,9 +32,9 @@ function PaymentMethodsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h1 className="text-2xl font-bold text-gray-900">Payment Methods</h1>
         <div className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg shadow-sm text-sm font-medium text-gray-700">
-          <CreditCard size={18} className="text-purple-600" />
+          <CreditCard size={18} className="text-dash-accent" />
           Hostinger balance: <span className="text-gray-900 font-bold">$0.00</span>
-          <HelpCircle size={16} className="text-purple-600 cursor-pointer ml-1" />
+          <HelpCircle size={16} className="text-dash-accent cursor-pointer ml-1" />
         </div>
       </div>
 
@@ -48,7 +48,7 @@ function PaymentMethodsPage() {
             You have <span className="font-bold text-gray-900">1 active</span> payment methods
           </span>
         </div>
-        <button className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium rounded-lg transition-colors whitespace-nowrap">
+        <button className="px-4 py-2 bg-dash-accent hover:bg-dash-accent/80 text-white text-sm font-medium rounded-lg transition-colors whitespace-nowrap">
           Add payment method
         </button>
       </div>

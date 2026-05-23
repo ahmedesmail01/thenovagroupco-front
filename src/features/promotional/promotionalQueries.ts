@@ -3,10 +3,13 @@ import api from "../../lib/api";
 
 // ─── Types ────────────────────────────────────────────────────
 export interface PromotionalTool {
+  id?: number;
   title: string;
   description: string;
   thumbnail: string;
   pdf_link: string;
+  created_at?: string | null;
+  updated_at?: string | null;
 }
 
 // ─── Dummy Data (Fallback) ────────────────────────────────────

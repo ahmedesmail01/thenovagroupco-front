@@ -13,8 +13,8 @@ function PromotionalPage() {
     <div className="max-w-7xl mx-auto space-y-8">
       {/* Header */}
       <div className="flex items-center gap-3 border-b border-dash-border/50 pb-6">
-        <div className="p-3 bg-purple-100 rounded-xl">
-          <Megaphone className="w-6 h-6 text-purple-600" />
+        <div className="p-3 bg-dash-accent/10 rounded-xl">
+          <Megaphone className="w-6 h-6 text-dash-accent" />
         </div>
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Promotional Tools</h1>
@@ -95,7 +95,7 @@ function PromotionalPage() {
                     href={tool.pdf_link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-purple-50 hover:bg-purple-100 text-purple-700 font-medium rounded-lg transition-colors text-sm"
+                    className="flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-dash-accent/10 hover:bg-dash-accent/20 text-dash-accent font-medium rounded-lg transition-colors text-sm"
                   >
                     <Download className="w-4 h-4" />
                     View / Download PDF

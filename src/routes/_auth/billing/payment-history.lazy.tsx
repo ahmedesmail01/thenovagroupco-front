@@ -40,28 +40,26 @@ function PaymentHistoryPage() {
         <div className="flex border-b border-gray-200 px-6 overflow-x-auto no-scrollbar">
           <button
             onClick={() => setActiveTab("payment")}
-            className={`py-4 px-2 font-medium text-sm transition-colors relative ${
-              activeTab === "payment"
-                ? "text-purple-600"
-                : "text-gray-500 hover:text-gray-900"
-            }`}
+            className={`py-4 px-2 font-medium text-sm transition-colors relative ${activeTab === "payment"
+              ? "text-dash-accent"
+              : "text-gray-500 hover:text-gray-900"
+              }`}
           >
             Payment history
             {activeTab === "payment" && (
-              <div className="absolute bottom-0 left-0 w-full h-0.5 bg-purple-600" />
+              <div className="absolute bottom-0 left-0 w-full h-0.5 bg-dash-accent" />
             )}
           </button>
           <button
             onClick={() => setActiveTab("refund")}
-            className={`py-4 px-6 font-medium text-sm transition-colors relative ${
-              activeTab === "refund"
-                ? "text-purple-600"
-                : "text-gray-500 hover:text-gray-900"
-            }`}
+            className={`py-4 px-6 font-medium text-sm transition-colors relative ${activeTab === "refund"
+              ? "text-dash-accent"
+              : "text-gray-500 hover:text-gray-900"
+              }`}
           >
             Refund history
             {activeTab === "refund" && (
-              <div className="absolute bottom-0 left-0 w-full h-0.5 bg-purple-600" />
+              <div className="absolute bottom-0 left-0 w-full h-0.5 bg-dash-accent" />
             )}
           </button>
         </div>
@@ -92,7 +90,7 @@ function PaymentHistoryPage() {
                     <td className="px-6 py-4 font-semibold text-gray-900">
                       {payment.paymentId}
                     </td>
-                    <td className="px-6 py-4 text-purple-600 font-medium">
+                    <td className="px-6 py-4 text-dash-accent font-medium">
                       {payment.subscriptionId}
                     </td>
                     <td className="px-6 py-4">
@@ -110,7 +108,7 @@ function PaymentHistoryPage() {
                       {payment.amount}
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <button className="text-purple-600 hover:text-purple-800 transition-colors">
+                      <button className="text-dash-accent hover:text-purple-800 transition-colors">
                         <ChevronRight size={20} />
                       </button>
                     </td>
