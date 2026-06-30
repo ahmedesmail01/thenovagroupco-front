@@ -61,6 +61,14 @@ function RouteComponent() {
   const error = searchMemberId ? errSearch : errCurrent;
   const userData = searchMemberId ? searchUserData : currentUserData;
 
+  const rootIdCode = searchMemberId
+    ? searchUserData && "user" in searchUserData
+      ? searchUserData.user.id_code
+      : undefined
+    : currentUserData && "user data" in currentUserData
+      ? currentUserData["user data"].id_code
+      : undefined;
+
   // Resolve the Member ID for the UserInfoModal (searched user or logged-in user)
   const rootMemberId = searchMemberId
     ? searchUserData && "user" in searchUserData
@@ -125,7 +133,7 @@ function RouteComponent() {
       <UserInfoModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        userId={rootMemberId || null}
+        userId={rootIdCode || null}
       />
     </div>
   );
