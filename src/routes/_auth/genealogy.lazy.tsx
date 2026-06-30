@@ -13,7 +13,7 @@ export const Route = createLazyFileRoute("/_auth/genealogy")({
 });
 
 function RouteComponent() {
-  const [searchUserId, setSearchUserId] = useState<string | undefined>(
+  const [searchMemberId, setSearchMemberId] = useState<string | undefined>(
     undefined,
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,12 +30,12 @@ function RouteComponent() {
     isLoading: isLoadSearch,
     isError: isErrSearch,
     error: errSearch,
-  } = useUserByIdData(searchUserId);
+  } = useUserByIdData(searchMemberId);
 
   useEffect(() => {
     // Determine if we just successfully fetched a user by ID
     if (
-      searchUserId &&
+      searchMemberId &&
       searchUserData &&
       searchUserData.status &&
       !isLoadSearch &&
@@ -47,31 +47,31 @@ function RouteComponent() {
     }
 
     // Handle search error
-    if (searchUserId && isErrSearch && errSearch) {
+    if (searchMemberId && isErrSearch && errSearch) {
       toast.error(
         errSearch instanceof Error ? errSearch.message : "User not found",
       );
-      const timer = setTimeout(() => setSearchUserId(undefined), 0); // Reset search on error
+      const timer = setTimeout(() => setSearchMemberId(undefined), 0); // Reset search on error
       return () => clearTimeout(timer);
     }
-  }, [searchUserId, searchUserData, isLoadSearch, isErrSearch, errSearch]);
+  }, [searchMemberId, searchUserData, isLoadSearch, isErrSearch, errSearch]);
 
-  const isLoading = searchUserId ? isLoadSearch : isLoadCurrent;
-  const isError = searchUserId ? isErrSearch : isErrCurrent;
-  const error = searchUserId ? errSearch : errCurrent;
-  const userData = searchUserId ? searchUserData : currentUserData;
+  const isLoading = searchMemberId ? isLoadSearch : isLoadCurrent;
+  const isError = searchMemberId ? isErrSearch : isErrCurrent;
+  const error = searchMemberId ? errSearch : errCurrent;
+  const userData = searchMemberId ? searchUserData : currentUserData;
 
-  // Resolve the ID for the UserInfoModal (searched user or logged-in user)
-  const rootIdCode = searchUserId
+  // Resolve the Member ID for the UserInfoModal (searched user or logged-in user)
+  const rootMemberId = searchMemberId
     ? searchUserData && "user" in searchUserData
-      ? searchUserData.user.id_code
+      ? searchUserData.user.member?.id
       : undefined
     : currentUserData && "user data" in currentUserData
-      ? currentUserData["user data"].id_code
+      ? currentUserData["user data"].member?.id
       : undefined;
 
   const handleReset = () => {
-    setSearchUserId(undefined);
+    setSearchMemberId(undefined);
     setIsModalOpen(false);
   };
 
@@ -113,10 +113,10 @@ function RouteComponent() {
       >
         <div className="flex flex-col h-full gap-6">
           <GenealogyFilters
-            onSearch={(id) => setSearchUserId(id)}
+            onSearch={(id) => setSearchMemberId(id)}
             onReset={handleReset}
             onOpenInfo={() => setIsModalOpen(true)}
-            hasSearch={!!searchUserId}
+            hasSearch={!!searchMemberId}
           />
           <GenealogyTree userData={userData} />
         </div>
@@ -125,7 +125,7 @@ function RouteComponent() {
       <UserInfoModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        userId={rootIdCode || null}
+        userId={rootMemberId || null}
       />
     </div>
   );

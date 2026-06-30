@@ -17,7 +17,7 @@ export function GenealogyTree({ userData }: GenealogyTreeProps) {
   if ("user data" in userData) {
     const root = userData["user data"];
     const profile = userData.profile;
-    userId = root.id;
+    userId = root.member?.id || root.id;
     idCode = root.id_code;
     fullName = root.first_name
       ? `${root.first_name} ${root.last_name || ""}`.trim()
@@ -26,7 +26,7 @@ export function GenealogyTree({ userData }: GenealogyTreeProps) {
     subscriptionName = profile.subscription;
   } else if ("user" in userData) {
     const root = userData.user;
-    userId = root.id;
+    userId = root.member?.id || root.id;
     idCode = root.id_code;
     fullName = root.first_name
       ? `${root.first_name} ${root.last_name || ""}`.trim()

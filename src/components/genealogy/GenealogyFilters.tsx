@@ -42,7 +42,7 @@ export function GenealogyFilters({
             type="text"
             value={searchId}
             onChange={(e) => setSearchId(e.target.value)}
-            placeholder="Search by ID"
+            placeholder="Search by Member ID"
             className="w-full bg-white border border-dash-border rounded-lg pl-3 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-dash-accent/20 focus:border-dash-accent transition-all shadow-sm text-slate-900"
           />
           <Search
